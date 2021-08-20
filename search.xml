@@ -18,4 +18,15 @@
 <p>More info: <a class="link"   href="https://hexo.io/docs/one-command-deployment.html" >Deployment<i class="fas fa-external-link-alt"></i></a></p>
 ]]></content>
   </entry>
+  <entry>
+    <title>BUUCTF</title>
+    <url>/2021/08/20/BUUctf/</url>
+    <content><![CDATA[<p>##WEB</p>
+<p>###[HCTF 2018]WarmUp</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p>###[极客大挑战2019]EasySQL</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
 </search>
