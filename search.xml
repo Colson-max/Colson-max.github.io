@@ -21,11 +21,8 @@
   <entry>
     <title>BUUCTF</title>
     <url>/2021/08/20/BUUctf/</url>
-    <content><![CDATA[<p>##WEB</p>
-<p>###[HCTF 2018]WarmUp</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-<p>###[极客大挑战2019]EasySQL</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<h2 id="WEB"><a href="#WEB" class="headerlink" title="WEB"></a>WEB</h2><h3 id="HCTF-2018-WarmUp"><a href="#HCTF-2018-WarmUp" class="headerlink" title="[HCTF 2018]WarmUp"></a>[HCTF 2018]WarmUp</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="极客大挑战2019-EasySQL"><a href="#极客大挑战2019-EasySQL" class="headerlink" title="[极客大挑战2019]EasySQL"></a>[极客大挑战2019]EasySQL</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
 ]]></content>
   </entry>
