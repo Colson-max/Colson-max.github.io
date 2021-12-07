@@ -21,7 +21,8 @@
   <entry>
     <title>Java面向对象</title>
     <url>/2021/12/07/Java%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1/</url>
-    <content><![CDATA[<h1 id="Java面向对象"><a href="#Java面向对象" class="headerlink" title="Java面向对象"></a>Java面向对象</h1><h2 id="1-1-封装"><a href="#1-1-封装" class="headerlink" title="1 . 1 封装"></a>1 . 1 封装</h2><p>封装：是指隐藏对象的属性和实现细节，仅对外提供公共访问方式（黑盒）</p>
+    <content><![CDATA[<p>此篇为–转载sxw师傅的文章</p>
+<h1 id="Java面向对象"><a href="#Java面向对象" class="headerlink" title="Java面向对象"></a>Java面向对象</h1><h2 id="1-1-封装"><a href="#1-1-封装" class="headerlink" title="1 . 1 封装"></a>1 . 1 封装</h2><p>封装：是指隐藏对象的属性和实现细节，仅对外提供公共访问方式（黑盒）</p>
 <h3 id="1-1-1-封装的好处"><a href="#1-1-1-封装的好处" class="headerlink" title="1 . 1 . 1 封装的好处"></a>1 . 1 . 1 封装的好处</h3><ul>
 <li>将内部变化隔离开，内部如何变化都不是关心的内容</li>
 <li>便于使用，直接调用，有相应的接口</li>
