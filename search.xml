@@ -200,9 +200,9 @@ super必须放在子类构造函数的第一行
 ]]></content>
   </entry>
   <entry>
-    <title></title>
+    <title>网络协议分析</title>
     <url>/2022/01/16/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h1 id="网络协议分析"><a href="#网络协议分析" class="headerlink" title="网络协议分析"></a>网络协议分析</h1><h2 id="一、ARP协议"><a href="#一、ARP协议" class="headerlink" title="一、ARP协议"></a>一、ARP协议</h2><h3 id="1-ARP协议的格式"><a href="#1-ARP协议的格式" class="headerlink" title="1.ARP协议的格式"></a>1.ARP协议的格式</h3><p><img src="C:\Users\Colson\AppData\Roaming\Typora\typora-user-images\image-20220116162256083.png" alt="image-20220116162256083"></p>
+    <content><![CDATA[<h2 id="一、ARP协议"><a href="#一、ARP协议" class="headerlink" title="一、ARP协议"></a>一、ARP协议</h2><h3 id="1-ARP协议的格式"><a href="#1-ARP协议的格式" class="headerlink" title="1.ARP协议的格式"></a>1.ARP协议的格式</h3><p><img src="C:\Users\Colson\AppData\Roaming\Typora\typora-user-images\image-20220116162256083.png" alt="image-20220116162256083"></p>
 <h3 id="2-ARP报文结构"><a href="#2-ARP报文结构" class="headerlink" title="2.ARP报文结构"></a>2.ARP报文结构</h3><p>硬件类型：表示硬件地址的类型，值为 1 表示以太网地址。<br>协议类型：表示要映射的协议地址类型。它的值为 0x0800 表示IP地址类型。<br>硬件地址长度和协议地址长度以字节为单位，对于以太网上的IP地址的ARP请求或应答来说，他们的值分别为６和４；<br>操作类型（ｏｐ）：１表示ARP请求，２表示ARP应答。<br>发送端MAC地址：发送方设备的硬件地址。<br>发送端IP地址：发送方设备的IP地址。<br>目标MAC地址：接受方设备的硬件地址。<br>目标IP地址：接收方设备的IP地址。</p>
 <h2 id="二、TCP-IP协议的层次及OSI-RM模型的网络层次及各层的主要作用及各层的主要协议"><a href="#二、TCP-IP协议的层次及OSI-RM模型的网络层次及各层的主要作用及各层的主要协议" class="headerlink" title="二、TCP/IP协议的层次及OSI/RM模型的网络层次及各层的主要作用及各层的主要协议"></a>二、TCP/IP协议的层次及OSI/RM模型的网络层次及各层的主要作用及各层的主要协议</h2><p><img src="C:\Users\Colson\AppData\Roaming\Typora\typora-user-images\image-20220116164031342.png" alt="image-20220116164031342"></p>
 ]]></content>
