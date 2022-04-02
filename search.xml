@@ -75,4 +75,166 @@
         <tag>-Hexo</tag>
       </tags>
   </entry>
+  <entry>
+    <title>C语言基础</title>
+    <url>/2022/04/02/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="C-语言基础"><a href="#C-语言基础" class="headerlink" title="C 语言基础"></a>C 语言基础</h1><h2 id="hello-world"><a href="#hello-world" class="headerlink" title="hello world"></a>hello world</h2><p>C程序：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">//helloWorld.c</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;hello world!\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>linux编译</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ gcc hello.c</span><br><span class="line">$ ./a.out</span><br><span class="line">hello world!</span><br></pre></td></tr></table></figure>
+
+<p>gcc命令依次执行四步操作：1.预处理    2.编译    3.汇编    4.链接</p>
+<img src="https://colson-max.github.io/2022/04/02/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/04/02/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/1.png" class width="1">
+
+<h2 id="1-数据类型"><a href="#1-数据类型" class="headerlink" title="1. 数据类型"></a>1. 数据类型</h2><h3 id="1-1-变量"><a href="#1-1-变量" class="headerlink" title="1.1 变量"></a>1.1 变量</h3><h4 id="1-1-1-概念"><a href="#1-1-1-概念" class="headerlink" title="1.1.1 概念"></a>1.1.1 概念</h4><p>变量相当于内存中一个数据存储空间的表示，通过变量名可以访问到变量(值)</p>
+<h4 id="1-1-2-使用步骤"><a href="#1-1-2-使用步骤" class="headerlink" title="1.1.2 使用步骤"></a>1.1.2 使用步骤</h4><p>1.声明变量    int num;<br>2.赋值           num = 60;<br>3.使用命令    printf(“num = %d”,num);<br>—-或者 一步到位    int num = 60—-</p>
+<h4 id="1-1-3-变量使用注意事项"><a href="#1-1-3-变量使用注意事项" class="headerlink" title="1.1.3 变量使用注意事项"></a>1.1.3 变量使用注意事项</h4><ol>
+<li>变量表示内存中的一个存储区域（不同的数据类型，占用的空间大小不一样）</li>
+<li>该区域有自己的名称 和类型</li>
+<li>变量必须先声明，后使用</li>
+<li>该区域的数据可以在同一类型范围内不断变化</li>
+<li>变量在同一个作用域内不能重名</li>
+<li>变量三要素 (变量名+值+数据类型)</li>
+</ol>
+<h3 id="1-2-常量"><a href="#1-2-常量" class="headerlink" title="1.2    常量"></a>1.2    常量</h3><h4 id="1-2-1-字面常量"><a href="#1-2-1-字面常量" class="headerlink" title="1.2.1 字面常量"></a>1.2.1 字面常量</h4><p>字面常量是直接写出的固定值，它包含C语言中可用的数据类型，可分为整型常量，字符常量等。</p>
+<h4 id="1-2-2-const-修饰的常变量"><a href="#1-2-2-const-修饰的常变量" class="headerlink" title="1.2.2 const 修饰的常变量"></a>1.2.2 const 修饰的常变量</h4><p>C语言标准提供了 <strong>const</strong> 关键字，在定义变量的同时，在变量名之前加上 const 修饰。<br>值不能被修改，在整个作用域中都维持原值。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">int</span> a = <span class="number">1</span>;	<span class="comment">//const修饰，a 是常变量，但 a 本质上依然是变量，具有&#x27;常&#x27;属性，不能被修改</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-3-define-定义的标识符常量"><a href="#1-2-3-define-定义的标识符常量" class="headerlink" title="1.2.3 define 定义的标识符常量"></a>1.2.3 define 定义的标识符常量</h4><p>C语言提供了 <strong>define</strong> 命令定义标识符常量，该标识符常量在程序中是个定值，通常用于代表数组容量或涉及数学的常量。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> PI 3.14159</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> SIZE 10			<span class="comment">// SIZE 代表数组元素个数</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span>				<span class="comment">//如需修改数组大小，只需要将 SIZE 代表的值修改即可</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> arr[SIZE] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="1-2-4-枚举常量"><a href="#1-2-4-枚举常量" class="headerlink" title="1.2.4 枚举常量"></a>1.2.4 枚举常量</h4><p>数值较小且为非负整数。如一周有7天等。C语言提供了一种<strong>枚举（Enum）类型</strong>，能够列出所有可能会用到的取值，并给它们取一个名字</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="class"><span class="keyword">enum</span> <span class="title">Sex</span>&#123;</span>				<span class="comment">//枚举常量     性别</span></span><br><span class="line">        MALE, </span><br><span class="line">        FEMALE,</span><br><span class="line">        SECRET</span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="class"><span class="keyword">enum</span> <span class="title">Sex</span> <span class="title">s</span> =</span> FEMALE;  	<span class="comment">//利用枚举常量给变量赋值</span></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, MALE);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, FEMALE);</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,SECRET);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong></p>
+<ul>
+<li><p>不能对枚举常量赋值，只能将它们的值赋给其他的变量。</p>
+</li>
+<li><p>不能再定义与枚举常量名字相同的变量。</p>
+</li>
+<li><p>不能用<code>&amp;</code>取得它们的地址。</p>
+</li>
+</ul>
+<h3 id="1-3-基本数据类型"><a href="#1-3-基本数据类型" class="headerlink" title="1.3 基本数据类型"></a>1.3 基本数据类型</h3><h4 id="1-3-1-整型"><a href="#1-3-1-整型" class="headerlink" title="1.3.1 整型"></a>1.3.1 整型</h4><table>
+<thead>
+<tr>
+<th align="center">基本整型</th>
+<th align="center">int</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">短整型</td>
+<td align="center">short int</td>
+</tr>
+<tr>
+<td align="center">长整型</td>
+<td align="center">long int</td>
+</tr>
+</tbody></table>
+<h4 id="1-3-2-浮点型"><a href="#1-3-2-浮点型" class="headerlink" title="1.3.2 浮点型"></a>1.3.2 浮点型</h4><h4 id="1-3-3-字符型"><a href="#1-3-3-字符型" class="headerlink" title="1.3.3 字符型"></a>1.3.3 字符型</h4><h2 id="2-运算符与表达式"><a href="#2-运算符与表达式" class="headerlink" title="2.运算符与表达式"></a>2.运算符与表达式</h2><h3 id="2-1-赋值运算-算数运算"><a href="#2-1-赋值运算-算数运算" class="headerlink" title="2.1 赋值运算/算数运算"></a>2.1 赋值运算/算数运算</h3><table>
+<thead>
+<tr>
+<th align="center">名称</th>
+<th align="center">形式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">简单的赋值运算</td>
+<td align="center"><strong>v = e</strong>，e 可以是常量、变量或者表达式</td>
+</tr>
+<tr>
+<td align="center">复合赋值运算</td>
+<td align="center">加、减、乘、除，等</td>
+</tr>
+<tr>
+<td align="center">自增自减运算</td>
+<td align="center">i ++ 、i –，等</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-关系运算"><a href="#2-2-关系运算" class="headerlink" title="2.2 关系运算"></a>2.2 关系运算</h3><table>
+<thead>
+<tr>
+<th align="center">关系</th>
+<th align="center">C语言中的表示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">大于</td>
+<td align="center">&gt;</td>
+</tr>
+<tr>
+<td align="center">小于</td>
+<td align="center">&lt;</td>
+</tr>
+<tr>
+<td align="center">等于</td>
+<td align="center">==</td>
+</tr>
+<tr>
+<td align="center">大于等于</td>
+<td align="center">&gt;=</td>
+</tr>
+<tr>
+<td align="center">小于等于</td>
+<td align="center">&lt;=</td>
+</tr>
+<tr>
+<td align="center">不等于</td>
+<td align="center">!=</td>
+</tr>
+</tbody></table>
+<h3 id="2-3-逻辑运算"><a href="#2-3-逻辑运算" class="headerlink" title="2.3 逻辑运算"></a>2.3 逻辑运算</h3><p>！、&amp;&amp;、||</p>
+<h2 id="3-语句与控制流"><a href="#3-语句与控制流" class="headerlink" title="3. 语句与控制流"></a>3. 语句与控制流</h2><p>一个函数包含声明部分和执行部分。声明部分不是语句，不产生机器指令。执行部分由语句组成，编译后产生机器指令。</p>
+<img src="https://colson-max.github.io/2022/04/02/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/04/02/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/2.png" class width="2">
+
+<h3 id="3-1-输入输出语句"><a href="#3-1-输入输出语句" class="headerlink" title="3.1 输入输出语句"></a>3.1 输入输出语句</h3><h4 id="3-1-1-输入"><a href="#3-1-1-输入" class="headerlink" title="3.1.1 输入"></a>3.1.1 输入</h4><p>scanf()</p>
+<h4 id="3-1-2-输出"><a href="#3-1-2-输出" class="headerlink" title="3.1.2 输出"></a>3.1.2 输出</h4><p>printf()</p>
+<h3 id="3-2-判断语句"><a href="#3-2-判断语句" class="headerlink" title="3.2 判断语句"></a><strong>3.2 判断语句</strong></h3><p>eg:成绩判断 ps:简单易懂</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> source;</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;source);</span><br><span class="line">    <span class="keyword">if</span>( source &gt; <span class="number">100</span> || source &lt; <span class="number">0</span> )&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;ERROR&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>( source &gt;= <span class="number">90</span> &amp;&amp; source &lt;= <span class="number">100</span> )&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;A&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>( source &gt;= <span class="number">70</span> &amp;&amp; source &lt; <span class="number">90</span> )&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;B&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>( source &gt;= <span class="number">60</span> &amp;&amp; source &lt; <span class="number">70</span> )&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;C&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Failed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-循环语句"><a href="#3-3-循环语句" class="headerlink" title="3.3 循环语句"></a><strong>3.3 循环语句</strong></h3><h4 id="3-3-1-while循环"><a href="#3-3-1-while循环" class="headerlink" title="3.3.1 while循环"></a>3.3.1 while循环</h4><figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">while</span>( a &lt; <span class="number">20</span> )&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;a = %d\n&quot;</span>,a);</span><br><span class="line">        a++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//output: a=10	a=11	a=12	a=13 ...... a=19</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-3-2-for循环"><a href="#3-3-2-for循环" class="headerlink" title="3.3.2 for循环"></a>3.3.2 for循环</h4><p>举例同上：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>( <span class="keyword">int</span> a = <span class="number">10</span>; a &lt; <span class="number">20</span>; a = a + <span class="number">1</span> )&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;a=%d\n&quot;</span>,a);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="4-函数"><a href="#4-函数" class="headerlink" title="4.函数"></a><strong>4.函数</strong></h2><h3 id="4-1-定义函数"><a href="#4-1-定义函数" class="headerlink" title="4.1 定义函数"></a>4.1 定义函数</h3><p>C 语言中函数由一个函数头和一个函数主体构成。<br>函数定义的一般形式如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">return_type function_name( parameter list )&#123;</span><br><span class="line">	body of the function</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>eg: C语言中的 max() 函数：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">( <span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> result;</span><br><span class="line">    <span class="keyword">if</span>( num1 &lt; num2)&#123;</span><br><span class="line">        result = num1;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        result = num2;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-2-声明函数"><a href="#4-2-声明函数" class="headerlink" title="4.2  声明函数"></a>4.2  声明函数</h3><p>函数声明会告诉编译器函数名称及如何调用函数。函数的实际主体可以单独定义。<br>比如上面max() 函数的例子，函数声明是：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>在函数声明中，参数的名称并不重要，只有参数的类型是必需的，因此下面也是有效的声明：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span>,<span class="keyword">int</span>)</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-调用函数"><a href="#4-3-调用函数" class="headerlink" title="4.3 调用函数"></a>4.3 调用函数</h3><p>eg:</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span></span>;  <span class="comment">//函数声明</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span>&#123;</span><br><span class="line">    </span><br><span class="line">   <span class="keyword">int</span> a = <span class="number">100</span>;</span><br><span class="line">   <span class="keyword">int</span> b = <span class="number">200</span>;				<span class="comment">//局部变量定义</span></span><br><span class="line">   <span class="keyword">int</span> ret;</span><br><span class="line"></span><br><span class="line">   ret = max(a, b);			<span class="comment">//调用函数来获取最大值</span></span><br><span class="line">   <span class="built_in">printf</span>( <span class="string">&quot;Max value is : %d\n&quot;</span>, ret );</span><br><span class="line">   <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">max</span><span class="params">(<span class="keyword">int</span> num1, <span class="keyword">int</span> num2)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">int</span> result;</span><br><span class="line">   <span class="keyword">if</span> (num1 &gt; num2)&#123;</span><br><span class="line">       result = num1;</span><br><span class="line">   &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">       result = num2;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> result; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-4-函数参数"><a href="#4-4-函数参数" class="headerlink" title="4.4 函数参数"></a>4.4 函数参数</h3><p>如果函数要使用参数，则必须声明接受参数值的变量。这些变量称为函数的<strong>形式参数</strong>。<br>形参就像函数内的其他局部变量，在进入函数时被创建，退出函数时被销毁。</p>
+<p>当调用函数时，有两种向函数传递参数的方式：</p>
+<h4 id="4-4-1-传值调用"><a href="#4-4-1-传值调用" class="headerlink" title="4.4.1 传值调用"></a>4.4.1 传值调用</h4><p>把参数的实际值复制给函数的形式参数。在这种情况下，修改函数内的形式参数不会影响实际参数。<br>默认情况下，C 语言使用<em>传值调用</em>方法来传递参数。意味着函数内的代码不会改变用于调用函数的实际参数。</p>
+<p>函数 swap() 定义如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">   <span class="keyword">int</span> temp;</span><br><span class="line">   temp = x; 		<span class="comment">//保存 x 的值 </span></span><br><span class="line">   x = y;    		<span class="comment">// 把 y 赋值给 x </span></span><br><span class="line">   y = temp; 		<span class="comment">// 把 temp 赋值给 y </span></span><br><span class="line">   <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过传递实参来调用函数 swap():</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> x,<span class="keyword">int</span> y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    temp = x;</span><br><span class="line">    x = y;</span><br><span class="line">    y = temp;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">200</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;before change,a = %d\n&quot;</span>,a );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;before change,b = %d\n&quot;</span>,b );</span><br><span class="line"></span><br><span class="line">    swap(a,b);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;after change,a = %d\n&quot;</span>,a );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;after change,b = %d\n&quot;</span>,b );</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果是：<img src="https://colson-max.github.io/2022/04/02/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/3.png" alt="3"></p>
+<p>可以看出来：虽然在函数内改变了 a 和 b 的值，但是实际上 a 和 b 的值并没有发生变化。</p>
+<h4 id="4-4-2-引用调用"><a href="#4-4-2-引用调用" class="headerlink" title="4.4.2 引用调用"></a>4.4.2 引用调用</h4><p>通过引用传递方式，形参为指向实参地址的指针，当对形参的指向操作时，就相当于对实参本身进行的操作。<br>传递指针可以让多个函数访问指针所引用的对象，而不用把对象声明为全局可访问。</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> *x, <span class="keyword">int</span> *y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    temp = *x;			<span class="comment">//保存地址 x 的值</span></span><br><span class="line">    *x = *y;			<span class="comment">//把 y 赋值给 x</span></span><br><span class="line">    *y = temp;			<span class="comment">//把 temp 赋值给 y</span></span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>同理：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> *x,<span class="keyword">int</span> *y)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> temp;</span><br><span class="line">    temp = *x;</span><br><span class="line">    *x = *y;</span><br><span class="line">    *y = temp;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">100</span>;</span><br><span class="line">    <span class="keyword">int</span> b = <span class="number">200</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;before change,a = %d\n&quot;</span>,a );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;before change,b = %d\n&quot;</span>,b );</span><br><span class="line"></span><br><span class="line">    swap(&amp;a,&amp;b);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;after change,a = %d\n&quot;</span>,a );</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;after change,b = %d\n&quot;</span>,b );</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/02/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/4.png" alt="4"></p>
+<p>引用调用在函数内改变了 a 和 b 的值，实际上也改变了函数外 a 和 b 的值。</p>
+]]></content>
+      <tags>
+        <tag>-C</tag>
+      </tags>
+  </entry>
 </search>
