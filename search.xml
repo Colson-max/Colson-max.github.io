@@ -55,8 +55,7 @@
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
 <p>之后当你通过” hexo new ‘文件名’ “ 新建博客后，会产生一个和文件同名的文件夹。</p>
-<img src="https://colson-max.github.io/2022/04/02/hexo%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/04/02/hexo%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/image-20220402180427262.png" class title="image-20220402180427262">
-
+<p><img src="https://colson-max.github.io/2022/04/02/hexo%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/1.png" alt="1"></p>
 <h3 id="2-下载插件"><a href="#2-下载插件" class="headerlink" title="2.下载插件"></a>2.下载插件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install https://github.com/CodeFalling/hexo-asset-image --save</span><br></pre></td></tr></table></figure>
 
 <h3 id="3-md-格式语言插入图片"><a href="#3-md-格式语言插入图片" class="headerlink" title="3.md 格式语言插入图片"></a>3.md 格式语言插入图片</h3><p>自行 google/baidu</p>
