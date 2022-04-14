@@ -229,6 +229,9 @@
 <p>参考：<a href="https://www.runoob.com/">https://www.runoob.com/</a></p>
 <p>​           <a href="https://www.csdn.net/">https://www.csdn.net/</a></p>
 ]]></content>
+      <categories>
+        <category>C语言基础</category>
+      </categories>
       <tags>
         <tag>-C</tag>
       </tags>
@@ -343,8 +346,11 @@
 <h3 id="4-无重复字符的最长子串"><a href="#4-无重复字符的最长子串" class="headerlink" title="4.无重复字符的最长子串"></a>4.无重复字符的最长子串</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">lengthOfLongestSubstring</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        Set&lt;Character&gt; occ = <span class="keyword">new</span> HashSet&lt;Character&gt;();			<span class="comment">//哈希集合，记录每个字符是否出现过</span></span><br><span class="line">        <span class="keyword">int</span> n = s.leagth();</span><br><span class="line">        <span class="keyword">int</span> rk = -<span class="number">1</span>, ans = <span class="number">0</span>;			<span class="comment">//右指针，初始值为-1，相当于我们在字符串的左边界的左侧，还没有开始移动</span></span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; ++i)&#123;</span><br><span class="line">            <span class="keyword">if</span>(i != <span class="number">0</span>)&#123;</span><br><span class="line">                occ.remove(s.charAt(i - <span class="number">1</span>));    <span class="comment">//左指针向右移动一格，移除一个字符</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">while</span>(rk + <span class="number">1</span> &lt; n &amp;&amp; !occ.contains(s.charAt(rk +<span class="number">1</span>)))&#123;   <span class="comment">//不断向右移动右指针</span></span><br><span class="line">                occ.add(s.charAt(rk +<span class="number">1</span>));   </span><br><span class="line">                ++rk;</span><br><span class="line">            &#125;</span><br><span class="line">            ans = Math.max(ans,rk - i + <span class="number">1</span>);    <span class="comment">//第 i 个到 rk 个字符是一个极长的无重复字符子串</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 ]]></content>
+      <categories>
+        <category>-[算法]</category>
+      </categories>
       <tags>
-        <tag>-算法</tag>
+        <tag>-[算法] -[Java]</tag>
       </tags>
   </entry>
   <entry>
@@ -418,6 +424,9 @@
 <h4 id="4-8-反转和排序"><a href="#4-8-反转和排序" class="headerlink" title="4.8 反转和排序"></a>4.8 反转和排序</h4><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a= [<span class="number">1</span>,<span class="number">5</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">a.reverse()					 	<span class="comment">#将列表元素反转</span></span><br><span class="line"><span class="built_in">print</span>(a)						<span class="comment">#[9, 3, 4, 2, 5, 1]</span></span><br><span class="line"></span><br><span class="line">a.sort()						<span class="comment">#升序</span></span><br><span class="line"><span class="built_in">print</span>(a)						<span class="comment">#[1, 2, 3, 4, 5, 9]</span></span><br><span class="line"></span><br><span class="line">a.sort(reverse=<span class="literal">True</span>)			 <span class="comment">#降序</span></span><br><span class="line"><span class="built_in">print</span>(a)						<span class="comment">#[9, 5, 4, 3, 2, 1]</span></span><br></pre></td></tr></table></figure>
 
 ]]></content>
+      <categories>
+        <category>-[python基础]</category>
+      </categories>
       <tags>
         <tag>-python</tag>
       </tags>
