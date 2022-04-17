@@ -248,7 +248,11 @@
         </header>
 
         <div class="post-content">
-            <h1 id="hexo-博客图片无法显示解决方案"><a href="#hexo-博客图片无法显示解决方案" class="headerlink" title="hexo 博客图片无法显示解决方案"></a>hexo 博客图片无法显示解决方案</h1><h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>根据此问题，网上有许多的解决方法，我也试过很多，根本原因是 hexo 升级后，对应的插件 hexo-asset-image 并未升级，所遗留下来的 bug 。</p>
+            <h1 id="hexo-博客图片无法显示解决方案"><a href="#hexo-博客图片无法显示解决方案" class="headerlink" title="hexo 博客图片无法显示解决方案"></a>hexo 博客图片无法显示解决方案</h1><hr>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ea78bdd0551f">https://www.jianshu.com/p/ea78bdd0551f</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/androidV/article/details/105781570">https://blog.csdn.net/androidV/article/details/105781570</a></p>
+<hr>
+<h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>根据此问题，网上有许多的解决方法，我也试过很多，根本原因是 hexo 升级后，对应的插件 hexo-asset-image 并未升级，所遗留下来的 bug 。</p>
 <h2 id="网上常见的解决方案"><a href="#网上常见的解决方案" class="headerlink" title="网上常见的解决方案"></a>网上常见的解决方案</h2><h3 id="1-修改博客配置"><a href="#1-修改博客配置" class="headerlink" title="1.修改博客配置"></a>1.修改博客配置</h3><p>修改博客根目录中 _config.yml 文件配置项 post_asset_folder 为 true:</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
@@ -261,13 +265,6 @@
 <p>修改 <code>node_module/hexo-asset-image/index.js</code> 中的（大概58行附近）</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原来的</span></span><br><span class="line">$(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, config.root + link + src);   </span><br><span class="line"><span class="comment">//修改为如下</span></span><br><span class="line">$(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, data.permalink +src);		<span class="comment">//data.permalink 是全路径</span></span><br></pre></td></tr></table></figure>
 
-
-
-
-
-<p>参考：</p>
-<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ea78bdd0551f">https://www.jianshu.com/p/ea78bdd0551f</a></p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/androidV/article/details/105781570">https://blog.csdn.net/androidV/article/details/105781570</a></p>
 
         </div>
 
