@@ -13,7 +13,7 @@
 
 
 
-<title>归档: 2022/4 | Colson</title>
+<title>Java-正则 | Colson</title>
 
 
 
@@ -161,103 +161,162 @@
     }
 </script>
             <div class="main">
-                <div class="post-wrap archive">
+                <div class="container">
     
     
-        
-
-        
-            <h3>2022</h3>
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/">docker部署MongoDB副本集</a>
-            <span class="archive-item-date">四月 21, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/19/Java-%E6%AD%A3%E5%88%99/">Java-正则</a>
-            <span class="archive-item-date">四月 19, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/17/Java-%E6%B3%9B%E5%9E%8B/">Java-泛型</a>
-            <span class="archive-item-date">四月 17, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/16/Java-%E5%BC%82%E5%B8%B8/">Java-异常</a>
-            <span class="archive-item-date">四月 16, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/13/Java-%E6%B3%A8%E8%A7%A3/">Java-注解</a>
-            <span class="archive-item-date">四月 13, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/12/Java-%E6%9E%9A%E4%B8%BE/">Java-枚举</a>
-            <span class="archive-item-date">四月 12, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/06/LeeCode%E7%AE%97%E6%B3%95%E6%95%B4%E7%90%86-Java/">LeeCode算法整理(Java)</a>
-            <span class="archive-item-date">四月 6, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/06/Python%E5%9F%BA%E7%A1%80/">Python基础</a>
-            <span class="archive-item-date">四月 6, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/02/C%E8%AF%AD%E8%A8%80%E5%9F%BA%E7%A1%80/">C语言基础</a>
-            <span class="archive-item-date">四月 2, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/02/hexo%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">hexo博客图片不显示解决方案</a>
-            <span class="archive-item-date">四月 2, 2022</span>
-        </article>
-    
-    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
 </div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Java-正则</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Colson·Max</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 19, 2022&nbsp;&nbsp;15:35:55</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Java-正则表达式"><a href="#Java-正则表达式" class="headerlink" title="Java-正则表达式"></a>Java-正则表达式</h2><hr>
+<p>参考：<a target="_blank" rel="noopener" href="https://www.runoob.com/java/java-regular-expressions.html">https://www.runoob.com/java/java-regular-expressions.html</a></p>
+<hr>
+<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><ol>
+<li>定义了字符串的模式</li>
+<li>可以用来搜索、编辑、处理文本</li>
+</ol>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Colson·Max</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://colson-max.github.io/2022/04/19/Java-%E6%AD%A3%E5%88%99/">https://colson-max.github.io/2022/04/19/Java-%E6%AD%A3%E5%88%99/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe world?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/JavaSE/"># -JavaSE</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/">docker部署MongoDB副本集</a>
+            
+            
+            <a class="next" rel="next" href="/2022/04/17/Java-%E6%B3%9B%E5%9E%8B/">Java-泛型</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
             </div>
             <footer id="footer" class="footer">
     <div class="copyright">

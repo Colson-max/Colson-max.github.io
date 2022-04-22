@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Colson·Max">
+
+
+
+
+
+<title>docker部署MongoDB副本集 | Colson</title>
+
+
+
+    <link rel="icon" href="/image/tommy-shelby.jpg">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Colson&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Colson&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">docker部署MongoDB副本集</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Colson·Max</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 21, 2022&nbsp;&nbsp;16:12:22</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Docker-部署-MongoDB-副本集"><a href="#Docker-部署-MongoDB-副本集" class="headerlink" title="Docker 部署 MongoDB 副本集"></a>Docker 部署 MongoDB 副本集</h1><hr>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://outmanzzq.github.io/2019/01/30/docker-mongo-replica/">https://outmanzzq.github.io/2019/01/30/docker-mongo-replica/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ec53891d638b">https://www.jianshu.com/p/ec53891d638b</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-container-usage.html">https://www.runoob.com/docker/docker-container-usage.html</a></p>
+<hr>
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><ul>
+<li>熟悉 docker 的使用 </li>
+<li>熟悉 MongoDB </li>
+</ul>
+<p>MongoDB 副本可以提供更高的读取容量，就像客户端可以发送数据到不同的服务器。在不同数据中心维护数据副本可以增加分布式应用的数据局部性和可用性。还可以因为灾难恢复、报告、备份等原因来保存额外的副本。</p>
+<hr>
+<h3 id="MongoDB-中的副本"><a href="#MongoDB-中的副本" class="headerlink" title="MongoDB 中的副本"></a>MongoDB 中的副本</h3><p>一、一个副本集就是一组维护相同数据的 mongodb 实例</p>
+<p>二、一个数据集包含一些<strong>数据承载节点</strong>和一个可选的<strong>仲裁节点</strong>。<br>        数据承载节点中，只能有一个被认为是主承载节点，其它的被认为是次要节点。<br>        主节点接收所有的写入操作。<br>        主节点将对其数据集所做的所有更改记录到其 oplog</p>
+<p>三、次要节点复制主节点的oplog 并将操作应用到其数据集（次要数据集反映了主数据集）<br>        如果主节点不可用，一个合格的次要节点将被选为新的主节点</p>
+<p>四、可以添加一个额外的 mongodb实例到副本集中来作为<strong>仲裁节点</strong>。<br>        仲裁节点不维护数据集。<br>        如果副本集有偶数个成员，添加一个仲裁节点来在选举中获得一个主节点的选票</p>
+<p>五、仲裁节点将永远是仲裁节点，但主节点可能变为次要节点，次要节点也可能通过选举成为主要节点。</p>
+<hr>
+<h3 id="异步复制"><a href="#异步复制" class="headerlink" title="异步复制"></a>异步复制</h3><p>次要节点的异步应用来自主节点的操作</p>
+<p>通过在主节点之后的应用操作，副本集可以不管一个或多个成员的失败而继续实现其功能</p>
+<hr>
+<h3 id="故障切换"><a href="#故障切换" class="headerlink" title="故障切换"></a>故障切换</h3><ul>
+<li><p>当<strong>主节点</strong>超过一定时间(10s)没有与副本集的其它成员通信，一个合格的次要节点将举行选举来将它自己选举为新的主节点</p>
+</li>
+<li><p>MongoDB 3.2 版本后引入了版本 1 的复制协议，它减少了副本集的故障切换时间并加速了多个同时存在的主节点的检测。</p>
+</li>
+<li><p>故障切换一般在1min内完成</p>
+</li>
+</ul>
+<hr>
+<h3 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h3><ul>
+<li>客户端默认从主节点进行读操作，然后通过指定读偏好将读操作发送给次要节点</li>
+</ul>
+<hr>
+<h3 id="副本集成员"><a href="#副本集成员" class="headerlink" title="副本集成员"></a>副本集成员</h3><ul>
+<li>主节点接收所有<strong>写操作</strong></li>
+<li>次要节点从主节点<strong>复制操作</strong>来保持与主节点相同的数据集。次要节点可以有特殊配置文件的附加配置（比如次要节点可以对选举弃权或优先级为0）</li>
+<li>副本集推荐的最低配置是带有三个数据承载节点三成员的副本集：一个主节点和两个次要节点。</li>
+<li>也可以部署为两个数据承载节点的三成员副本集：一个主，一个次要，一个仲裁；但冗余性稍差。</li>
+</ul>
+<h4 id="主节点"><a href="#主节点" class="headerlink" title="主节点"></a>主节点</h4><ul>
+<li>副本集中接收<strong>写操作</strong>的唯一成员。</li>
+<li>MongoDB 在主节点上应用<strong>写操作</strong>，然后将操作记录在主节点的 oplog 上。</li>
+<li>次要节点复制oplog并将操作应用到它们的数据集上。</li>
+</ul>
+<h4 id="次要节点"><a href="#次要节点" class="headerlink" title="次要节点"></a>次要节点</h4><ul>
+<li>次要节点维护主节点数据集的一个副本。复制数据时，次要节点在异步过程中从主节点的 oplog 应用操作到它自己的数据集。副本集可以有一个或多个次要节点。</li>
+<li>次要节点可以通过配置来达到实现一些效果：<ul>
+<li>防止被选举为主节点，以便允许它留在次要节点数据中心或作为冷备用。</li>
+<li>防止应用从中读取，以便允许它运行需要与正常流量分离的应用。</li>
+<li>保存一个运行的历史快照，以便从某些错误中恢复，如误删数据库。</li>
+</ul>
+</li>
+</ul>
+<h4 id="仲裁节点"><a href="#仲裁节点" class="headerlink" title="仲裁节点"></a>仲裁节点</h4><p>仲裁节点没有数据集的副本，不能变成主节点。副本集可以有仲裁节点在选举主节点中投票。仲裁节点永远只有一张选票，这样副本集的投票成员数量不均等，而无需承担一个复制数据的成员的额外开销。</p>
+<ul>
+<li><strong>不要在还承载副本集的主节点或次要节点的系统上运行仲裁节点。</strong></li>
+</ul>
+<h4 id="副本集-oplog"><a href="#副本集-oplog" class="headerlink" title="副本集 oplog"></a>副本集 oplog</h4><ul>
+<li>oplog：<strong>操作日志</strong>，一个特殊的固定集合，保持所有修改数据库上数据的操作的滚动记录。</li>
+<li>副本集的所有成员都包含一份 oplog 的副本，在 local.oplog.rs 中，这允许它们维护数据库的当前状态。</li>
+<li>为了减轻复制的困难，所有的副本集成员成员都发送 ping 到所有其它成员。</li>
+<li>任何成员都可以从其它成员那里导入 oplog。</li>
+<li>oplog 中的每个操作都是幂等（idempotent）的。即，oplog 对目标资料应用不管一次或多次操作，都产生相同的结果。</li>
+</ul>
+<h4 id="oplog-大小"><a href="#oplog-大小" class="headerlink" title="oplog 大小"></a>oplog 大小</h4><ul>
+<li><p>当第一次开始一个副本集成员时，MongoDB 以默认大小创建一个 oplog。</p>
+</li>
+<li><p>如果可以预料副本集工作量的大小，可以将 oplog 设置为比默认值大些。相反，如果应用主要用来执行读操作和少量写操作，一个小的 oplog 可能就足够了。</p>
+</li>
+<li><p><strong>以下情况可能需要较大的 oplog：</strong></p>
+<ul>
+<li>一次更新多个文档</li>
+<li>删除与插入量大致相同的数据时</li>
+<li>大量的就地更新</li>
+</ul>
+</li>
+<li><p>oplog 状态</p>
+<p>使用 rs.printReplicationInfo() 方法来查看，包括其大小和操作的时间范围</p>
+</li>
+</ul>
+<hr>
+<h2 id="在-Docker-中部署"><a href="#在-Docker-中部署" class="headerlink" title="在 Docker 中部署"></a>在 Docker 中部署</h2><ul>
+<li>我们要从 mongo 镜像创建三个容器，都处在它们的 docker 容器网络内。</li>
+<li>这三个容器将被命名为 mongo1、mongo2 和 mongo3。它们将作为副本集的三个 mongo 实例。</li>
+<li>暴露它们的端口到本地机器，以便可以从本地机器的 mongo shell 来访问它们中的任意一个。</li>
+<li>这三个 mongo 容器中的每一个都应该能与这个网络中的所有其它容器通信。</li>
+</ul>
+<h3 id="一、拉取镜像"><a href="#一、拉取镜像" class="headerlink" title="一、拉取镜像"></a>一、拉取镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建工作目录</span></span><br><span class="line">mkdir -p /server/docker-compose/mongo-replica &amp;&amp; <span class="built_in">cd</span> /server/docker-compose/mongo-replica</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉取镜像</span></span><br><span class="line">docker pull mongo</span><br><span class="line"><span class="comment"># docker images 查看已经拉取的镜像</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/1.png" alt="1"></p>
+<h3 id="二、建立网络"><a href="#二、建立网络" class="headerlink" title="二、建立网络"></a>二、建立网络</h3><p>创建一个名为 my-mongo-cluster 的网络:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create my-mongo-cluster</span><br></pre></td></tr></table></figure>
+
+<p>查看当前系统中的网络:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network ls</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/3.png" alt="3"></p>
+<h3 id="三、创建容器"><a href="#三、创建容器" class="headerlink" title="三、创建容器"></a>三、创建容器</h3><p>使用以下命令启动第一个容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run \								<span class="comment"># 从镜像启动容器</span></span><br><span class="line">-p 30001:27017 \							<span class="comment"># 暴露容器中的27017端口，映射到本机的30001端口</span></span><br><span class="line">--name mongo1 \								<span class="comment"># 给容器命名为 mongo1 </span></span><br><span class="line">--net my-mongo-cluster \					 <span class="comment"># 将此容器添加到 my-mongo-cluster 网络</span></span><br><span class="line">mongo mongod --replSet my-mongo-set 		  <span class="comment"># mongo：用来生成此容器的镜像的名称</span></span><br><span class="line"><span class="comment"># mongod --replSet my-mongo-set：执行 mongod 命令，将此实例添加到名称为 my-mongo-set 的副本集</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#------第二个-------</span></span><br><span class="line">docker run \</span><br><span class="line">-p 30002:27017 \</span><br><span class="line">--name mongo2 \</span><br><span class="line">--net my-mongo-cluster \</span><br><span class="line">mongo mongod --replSet my-mongo-set </span><br><span class="line"><span class="comment">#------第三个-------</span></span><br><span class="line">docker run \</span><br><span class="line">-p 30003:27017 \</span><br><span class="line">--name mongo3 \</span><br><span class="line">--net my-mongo-cluster \</span><br><span class="line">mongo mongod --replSet my-mongo-set </span><br></pre></td></tr></table></figure>
+
+<h3 id="四、配置副本集"><a href="#四、配置副本集" class="headerlink" title="四、配置副本集"></a>四、配置副本集</h3><p>进入 mongo1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mongo1 mongo</span><br></pre></td></tr></table></figure>
+
+<p> 输入下列命令进行配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&gt; db = (new Mongo(<span class="string">&#x27;localhost:27017&#x27;</span>)).getDB(<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line"><span class="built_in">test</span></span><br><span class="line"><span class="comment"># 第一个 _id 键应当和 —replSet 标签为 mongo 实例设置的值一样，这个例子中是 my-mongo-set。</span></span><br><span class="line">&gt; config = &#123;<span class="string">&quot;_id&quot;</span> : <span class="string">&quot;my-mongo-set&quot;</span>,<span class="string">&quot;members&quot;</span> : [		</span><br><span class="line">		&#123;</span><br><span class="line">             <span class="string">&quot;_id&quot;</span> : 0,</span><br><span class="line">             <span class="string">&quot;host&quot;</span> : <span class="string">&quot;mongo1:27017&quot;</span></span><br><span class="line">         &#125;,</span><br><span class="line">         &#123;</span><br><span class="line">             <span class="string">&quot;_id&quot;</span> : 1,</span><br><span class="line">             <span class="string">&quot;host&quot;</span> : <span class="string">&quot;mongo2:27017&quot;</span></span><br><span class="line">         &#125;,</span><br><span class="line">         &#123;</span><br><span class="line">             <span class="string">&quot;_id&quot;</span> : 2,</span><br><span class="line">             <span class="string">&quot;host&quot;</span> : <span class="string">&quot;mongo3:27017&quot;</span></span><br><span class="line">         &#125;</span><br><span class="line">     ]</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动副本集</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rs.initiate(config)</span><br></pre></td></tr></table></figure>
+
+<p>再看mongo1</p>
+<p><img src="https://colson-max.github.io/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/4.png" alt="4"></p>
+<p>到此配置完成！！！</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Colson·Max</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://colson-max.github.io/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/">https://colson-max.github.io/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe world?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/docker/"># -docker</a>
+                    
+                        <a href="/tags/MongoDB/"># -MongoDB</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2022/04/19/Java-%E6%AD%A3%E5%88%99/">Java-正则</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Colson·Max | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
