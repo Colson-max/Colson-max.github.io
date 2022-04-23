@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Colson·Max">
+
+
+
+
+
+<title>Python-异常 | Colson</title>
+
+
+
+    <link rel="icon" href="/image/tommy-shelby.jpg">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Colson&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Colson&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Python-异常</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Colson·Max</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 23, 2022&nbsp;&nbsp;16:00:58</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="Python-异常"><a href="#Python-异常" class="headerlink" title="Python-异常"></a>Python-异常</h2><hr>
+<p>参考：</p>
+<hr>
+<h3 id="异常报错"><a href="#异常报错" class="headerlink" title="异常报错"></a>异常报错</h3><p>打开一个不存在的文件，找不到 hello.txt 文件，会抛出异常 FileNotFoundError ，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/23/Python-%E5%BC%82%E5%B8%B8/1.png" alt="1"></p>
+<h3 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h3><ul>
+<li>把可能产生异常的代码放到 try 中，把相应的处理方法放在 except 中</li>
+<li>程序捕获到了异常，但是 pass 实现了相应的实现，可以把 pass 改成其它的语句</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span> IOError:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>此处 except 捕获的异常类型是 IOError ，如果是其它类型，那么 except 将不会生效。</p>
+<p><strong>Python 的一些内建异常</strong></p>
+<table>
+<thead>
+<tr>
+<th>异常类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Exception</td>
+<td>常规错误基类</td>
+</tr>
+<tr>
+<td>AttributeError</td>
+<td>对象没有这个属性</td>
+</tr>
+<tr>
+<td>IOError</td>
+<td>输入/输出 操作异常</td>
+</tr>
+<tr>
+<td>IndexError</td>
+<td>序列中没有此索引</td>
+</tr>
+<tr>
+<td>KeyError</td>
+<td>映射中没有这个键</td>
+</tr>
+<tr>
+<td>NameError</td>
+<td>未声明/未初始化对象</td>
+</tr>
+<tr>
+<td>SyntaxError</td>
+<td>Python语法错误</td>
+</tr>
+<tr>
+<td>TypeError</td>
+<td>对类型无效的操作</td>
+</tr>
+<tr>
+<td>ValueError</td>
+<td>传入无效的参数</td>
+</tr>
+<tr>
+<td>ZeroDivisionError</td>
+<td>除（取模）零（所有数据类型）</td>
+</tr>
+</tbody></table>
+<p><strong>捕获多个异常</strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)	<span class="comment"># 文件不存在，报错 IOError</span></span><br><span class="line">    <span class="built_in">print</span>(num)		<span class="comment"># num没有被定义，报错 NameError</span></span><br><span class="line"><span class="keyword">except</span> (IOError,NameError):			<span class="comment">#  用元组形式</span></span><br><span class="line">  	<span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="获取异常的信息描述"><a href="#获取异常的信息描述" class="headerlink" title="获取异常的信息描述"></a>获取异常的信息描述</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span> IOError <span class="keyword">as</span> result:</span><br><span class="line">    <span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># output: [Errno 2] No such file or directory: &#x27;hello.txt&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="try…finally"><a href="#try…finally" class="headerlink" title="try…finally"></a>try…finally</h3><p>[^在程序中，如果一个段代码必须要执行，即无论异常是否产生都要执行，那么此时就需要使用ﬁnally。 比如文件关闭，释放锁，把数据库连接返还给连接池等]: </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Colson·Max</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://colson-max.github.io/2022/04/23/Python-%E5%BC%82%E5%B8%B8/">https://colson-max.github.io/2022/04/23/Python-%E5%BC%82%E5%B8%B8/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe world?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/python/"># -python</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/">docker部署MongoDB副本集</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Colson·Max | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

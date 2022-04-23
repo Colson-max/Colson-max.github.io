@@ -345,7 +345,168 @@
 <h4 id="5-6-查找键值"><a href="#5-6-查找键值" class="headerlink" title="5.6 查找键值"></a>5.6 查找键值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> this <span class="keyword">import</span> d</span><br><span class="line"></span><br><span class="line"><span class="built_in">dict</span> = &#123; <span class="string">&quot;name&quot;</span> : <span class="string">&quot;colson&quot;</span>, <span class="string">&quot;age&quot;</span>:<span class="number">20</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">dict</span>.keys())</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">dict</span>.values())</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">dict</span>.items())</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> <span class="built_in">dict</span>.keys():</span><br><span class="line">    <span class="built_in">print</span>(key)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span>  value <span class="keyword">in</span> <span class="built_in">dict</span>.values():</span><br><span class="line">    <span class="built_in">print</span>(value)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> key,value <span class="keyword">in</span> <span class="built_in">dict</span>.items():</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;(key = %s, value  = %s)&quot;</span> %(key,value))</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://colson-max.github.io/2022/04/06/Python%E5%9F%BA%E7%A1%80/4.png" alt="4"></p>
-<h3 id="6-函数"><a href="#6-函数" class="headerlink" title="6. 函数"></a>6. 函数</h3>
+<hr>
+<h3 id="6-函数"><a href="#6-函数" class="headerlink" title="6. 函数"></a>6. 函数</h3><h4 id="6-1-定义"><a href="#6-1-定义" class="headerlink" title="6.1 定义"></a>6.1 定义</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">info</span>(<span class="params">a,b</span>):</span> 		<span class="comment"># 函数定义</span></span><br><span class="line">    c = a + b</span><br><span class="line">    <span class="built_in">print</span>(c)</span><br><span class="line">info(<span class="number">1</span>,<span class="number">2</span>)	<span class="comment">#函数调用</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="6-2-返回值"><a href="#6-2-返回值" class="headerlink" title="6.2 返回值"></a>6.2 返回值</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">info</span>(<span class="params">a,b</span>):</span></span><br><span class="line">    c = a + b</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line"><span class="built_in">print</span>(info(<span class="number">1</span>,<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="7-文件操作"><a href="#7-文件操作" class="headerlink" title="7. 文件操作"></a>7. 文件操作</h3><h4 id="7-1-打开文件"><a href="#7-1-打开文件" class="headerlink" title="7.1 打开文件"></a>7.1 打开文件</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="built_in">open</span>(<span class="string">&#x27;test.txt&#x27;</span>,<span class="string">&#x27;w&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="center"><strong>模式</strong></th>
+<th align="left"><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">r</td>
+<td align="left">以只读方式打开文件。文件的指针将会放在文件的开头。这是默认模式。</td>
+</tr>
+<tr>
+<td align="center">w</td>
+<td align="left">打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td align="center">a</td>
+<td align="left">打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</td>
+</tr>
+<tr>
+<td align="center">rb</td>
+<td align="left">以二进制格式打开一个文件用于只读。文件指针将会放在文件的开头。这是默认模式。</td>
+</tr>
+<tr>
+<td align="center">wb</td>
+<td align="left">以二进制格式打开一个文件只用于写入。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td align="center">ab</td>
+<td align="left">以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。也就是说，新的内容将会被写入到已有内容之后。如果该文件不存在，创建新文件进行写入。</td>
+</tr>
+<tr>
+<td align="center">r+</td>
+<td align="left">打开一个文件用于读写。文件指针将会放在文件的开头。</td>
+</tr>
+<tr>
+<td align="center">w+</td>
+<td align="left">打开一个文件用于读写。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td align="center">a+</td>
+<td align="left">打开一个文件用于读写。如果该文件已存在，文件指针将会放在文件的结尾。文件打开时会是追加模式。如果该文件不存在，创建新文件用于读写。</td>
+</tr>
+<tr>
+<td align="center">rb+</td>
+<td align="left">以二进制格式打开一个文件用于读写。文件指针将会放在文件的开头。</td>
+</tr>
+<tr>
+<td align="center">wb+</td>
+<td align="left">以二进制格式打开一个文件用于读写。如果该文件已存在则将其覆盖。如果该文件不存在，创建新文件。</td>
+</tr>
+<tr>
+<td align="center">ab+</td>
+<td align="left">以二进制格式打开一个文件用于追加。如果该文件已存在，文件指针将会放在文件的结尾。如果该文件不存在，创建新文件用于读写。</td>
+</tr>
+</tbody></table>
+<h4 id="7-2-关闭文件"><a href="#7-2-关闭文件" class="headerlink" title="7.2 关闭文件"></a>7.2 关闭文件</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-3-读操作"><a href="#7-3-读操作" class="headerlink" title="7.3 读操作"></a>7.3 读操作</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="built_in">open</span>(<span class="string">&quot;test.txt&quot;</span>,<span class="string">&quot;r&quot;</span>)	<span class="comment"># 打开文件，&quot;读&quot;模式</span></span><br><span class="line">content = file.read(<span class="number">5</span>)		<span class="comment"># 读取 5 个字符</span></span><br><span class="line"><span class="built_in">print</span>(content)</span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-4-写操作"><a href="#7-4-写操作" class="headerlink" title="7.4 写操作"></a>7.4 写操作</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file = <span class="built_in">open</span>(<span class="string">&quot;test.txt&quot;</span>,<span class="string">&quot;w&quot;</span>)	<span class="comment"># 打开文件，“写”模式，文件不存在就在当前路径新建</span></span><br><span class="line">file.write(<span class="string">&quot;hello,world&quot;</span>)	<span class="comment"># write 将字符写入文件</span></span><br><span class="line">file.close()</span><br></pre></td></tr></table></figure>
+
+<h4 id="7-5-OS模块"><a href="#7-5-OS模块" class="headerlink" title="7.5 OS模块"></a>7.5 OS模块</h4><p>先导入模块</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br></pre></td></tr></table></figure>
+
+<h5 id="os模块中的函数"><a href="#os模块中的函数" class="headerlink" title="os模块中的函数:"></a>os模块中的函数:</h5><table>
+<thead>
+<tr>
+<th align="left">序号</th>
+<th align="center">函数名称</th>
+<th align="left">描述</th>
+<th align="left">格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">1</td>
+<td align="center">getcwd()</td>
+<td align="left">获取当前的工作目录</td>
+<td align="left">os.getcwd() 返回值：路径字符串</td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="center">chdir()</td>
+<td align="left">修改当前工作目录</td>
+<td align="left">os.chdir() 返回值:None</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="center">listdir()</td>
+<td align="left">获取指定文件夹中的 所有文件和文件夹组成的列表</td>
+<td align="left">os.listdir(目录路径) 返回值：目录中内容名称的列表</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="center">mkdir()</td>
+<td align="left">创建一个目录/文件夹</td>
+<td align="left">os.mkdir(目录路径) 返回值：None</td>
+</tr>
+<tr>
+<td align="left">5</td>
+<td align="center">makedirs()</td>
+<td align="left">递归创建文件夹</td>
+<td align="left">os.makedirs(路径)</td>
+</tr>
+<tr>
+<td align="left">6</td>
+<td align="center">rmdir()</td>
+<td align="left">移除一个目录（必须是空目录）</td>
+<td align="left">os.rmdir(目录路径) 返回值:None</td>
+</tr>
+<tr>
+<td align="left">7</td>
+<td align="center">removedirs()</td>
+<td align="left">递归删除文件夹</td>
+<td align="left">os.removedirs(目录路径) 返回值：None 注意最底层目录必须为空</td>
+</tr>
+<tr>
+<td align="left">8</td>
+<td align="center">rename()</td>
+<td align="left">修改文件和文件夹的名称</td>
+<td align="left">os.rename(源文件或文件夹，目标文件或文件夹) 返回值：None</td>
+</tr>
+<tr>
+<td align="left">9</td>
+<td align="center">stat()</td>
+<td align="left">获取文件的相关 信息</td>
+<td align="left">os.stat(文件路径) 返回值：包含文件信息的元组</td>
+</tr>
+<tr>
+<td align="left">10</td>
+<td align="center">system()</td>
+<td align="left">执行系统命令</td>
+<td align="left">os.system() 返回值：整型 慎用！来个rm -rf 就寄了</td>
+</tr>
+<tr>
+<td align="left">11</td>
+<td align="center">getenv()</td>
+<td align="left">获取系统环境变量</td>
+<td align="left">os.getenv(获取的环境变量名称) 返回值：字符串</td>
+</tr>
+<tr>
+<td align="left">12</td>
+<td align="center">putenv()</td>
+<td align="left">设置系统环境变量</td>
+<td align="left">os.putenv(‘环境变量名称’,值) 返回值：无 注意：无法正常的getenv检测到。</td>
+</tr>
+<tr>
+<td align="left">13</td>
+<td align="center">exit()</td>
+<td align="left">推出当前执行命令，直接关闭当前操作</td>
+<td align="left">exit() 返回值：无</td>
+</tr>
+</tbody></table>
+<h3 id><a href="#" class="headerlink" title></a></h3>
         </div>
 
         
