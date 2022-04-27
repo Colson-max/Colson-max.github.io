@@ -13,7 +13,7 @@
 
 
 
-<title>归档: 2022/4 | Colson</title>
+<title>Java-反射 | Colson</title>
 
 
 
@@ -161,107 +161,158 @@
     }
 </script>
             <div class="main">
-                <div class="post-wrap archive">
+                <div class="container">
     
     
-        
-
-        
-            <h3>2022</h3>
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/">DVWA搭建</a>
-            <span class="archive-item-date">四月 27, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/">DVWA-SQL注入</a>
-            <span class="archive-item-date">四月 27, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/24/Java-%E5%8F%8D%E5%B0%84/">Java-反射</a>
-            <span class="archive-item-date">四月 24, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/23/Python-%E5%BC%82%E5%B8%B8/">Python-异常</a>
-            <span class="archive-item-date">四月 23, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/">docker部署MongoDB副本集</a>
-            <span class="archive-item-date">四月 21, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/19/Java-%E6%AD%A3%E5%88%99/">Java-正则</a>
-            <span class="archive-item-date">四月 19, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/17/Java-%E6%B3%9B%E5%9E%8B/">Java-泛型</a>
-            <span class="archive-item-date">四月 17, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/16/Java-%E5%BC%82%E5%B8%B8/">Java-异常</a>
-            <span class="archive-item-date">四月 16, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/13/Java-%E6%B3%A8%E8%A7%A3/">Java-注解</a>
-            <span class="archive-item-date">四月 13, 2022</span>
-        </article>
-    
-        
-
-        
-
-        <article class="archive-item">
-            <a class="archive-item-link" href="/2022/04/12/Java-%E6%9E%9A%E4%B8%BE/">Java-枚举</a>
-            <span class="archive-item-date">四月 12, 2022</span>
-        </article>
-    
-    
-    <nav class="pagination">
-        <span class="page-number current">1</span><a class="page-number" href="/archives/2022/04/page/2/">2</a>
-    </nav>
-
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
 </div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Java-反射</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Colson·Max</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">四月 24, 2022&nbsp;&nbsp;15:16:28</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Java-反射"><a href="#Java-反射" class="headerlink" title="Java - 反射"></a>Java - 反射</h1><hr>
+<p>参考：</p>
+<hr>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Colson·Max</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://colson-max.github.io/2022/04/24/Java-%E5%8F%8D%E5%B0%84/">https://colson-max.github.io/2022/04/24/Java-%E5%8F%8D%E5%B0%84/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe world?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Java/"># -Java</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/">DVWA-SQL注入</a>
+            
+            
+            <a class="next" rel="next" href="/2022/04/23/Python-%E5%BC%82%E5%B8%B8/">Python-异常</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
             </div>
             <footer id="footer" class="footer">
     <div class="copyright">

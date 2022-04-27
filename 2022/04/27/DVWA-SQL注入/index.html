@@ -13,7 +13,7 @@
 
 
 
-<title>Python-异常 | Colson</title>
+<title>DVWA-SQL注入 | Colson</title>
 
 
 
@@ -230,7 +230,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">Python-异常</h1>
+            <h1 class="post-title">DVWA-SQL注入</h1>
             
                 <div class="post-meta">
                     
@@ -239,7 +239,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">四月 23, 2022&nbsp;&nbsp;16:00:58</a>
+                        Date: <a href="#">四月 27, 2022&nbsp;&nbsp;14:22:17</a>
                         </span>
                     
                     
@@ -248,82 +248,16 @@
         </header>
 
         <div class="post-content">
-            <h2 id="Python-异常"><a href="#Python-异常" class="headerlink" title="Python-异常"></a>Python-异常</h2><hr>
-<p>参考：</p>
-<p><a target="_blank" rel="noopener" href="https://jwt1399.top/posts/34992.html#toc-heading-44">https://jwt1399.top/posts/34992.html#toc-heading-44</a></p>
-<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/gavin_john/article/details/50738323">http://blog.csdn.net/gavin_john/article/details/50738323</a></p>
-<hr>
-<h3 id="异常报错"><a href="#异常报错" class="headerlink" title="异常报错"></a>异常报错</h3><p>打开一个不存在的文件，找不到 hello.txt 文件，会抛出异常 FileNotFoundError ，</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/23/Python-%E5%BC%82%E5%B8%B8/1.png" alt="1"></p>
-<h3 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h3><ul>
-<li>把可能产生异常的代码放到 try 中，把相应的处理方法放在 except 中</li>
-<li>程序捕获到了异常，但是 pass 实现了相应的实现，可以把 pass 改成其它的语句</li>
+            <h1 id="DVWA-SQL注入"><a href="#DVWA-SQL注入" class="headerlink" title="DVWA - SQL注入"></a>DVWA - SQL注入</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
+<li>建议手工注入，可以了解 sql注入 的过程和原理。</li>
+<li>不建议使用工具比如说 sqlmap 来进行数据库的爆破。</li>
 </ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span> IOError:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<p>此处 except 捕获的异常类型是 IOError ，如果是其它类型，那么 except 将不会生效。</p>
-<p><strong>Python 的一些内建异常</strong></p>
-<table>
-<thead>
-<tr>
-<th>异常类型</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Exception</td>
-<td>常规错误基类</td>
-</tr>
-<tr>
-<td>AttributeError</td>
-<td>对象没有这个属性</td>
-</tr>
-<tr>
-<td>IOError</td>
-<td>输入/输出 操作异常</td>
-</tr>
-<tr>
-<td>IndexError</td>
-<td>序列中没有此索引</td>
-</tr>
-<tr>
-<td>KeyError</td>
-<td>映射中没有这个键</td>
-</tr>
-<tr>
-<td>NameError</td>
-<td>未声明/未初始化对象</td>
-</tr>
-<tr>
-<td>SyntaxError</td>
-<td>Python语法错误</td>
-</tr>
-<tr>
-<td>TypeError</td>
-<td>对类型无效的操作</td>
-</tr>
-<tr>
-<td>ValueError</td>
-<td>传入无效的参数</td>
-</tr>
-<tr>
-<td>ZeroDivisionError</td>
-<td>除（取模）零（所有数据类型）</td>
-</tr>
-</tbody></table>
-<p><strong>捕获多个异常</strong></p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)	<span class="comment"># 文件不存在，报错 IOError</span></span><br><span class="line">    <span class="built_in">print</span>(num)		<span class="comment"># num没有被定义，报错 NameError</span></span><br><span class="line"><span class="keyword">except</span> (IOError,NameError):			<span class="comment">#  用元组形式</span></span><br><span class="line">  	<span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="获取异常的信息描述"><a href="#获取异常的信息描述" class="headerlink" title="获取异常的信息描述"></a>获取异常的信息描述</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span> IOError <span class="keyword">as</span> result:</span><br><span class="line">    <span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># output: [Errno 2] No such file or directory: &#x27;hello.txt&#x27;</span></span><br></pre></td></tr></table></figure>
-
+<p><strong>强烈建议：</strong>在 docker 上配置 LAMP 环境来搭建靶场，会方便许多，dvwa 是在本地开启的，在本地 windows（ mac 我不知道） 上配置环境会很麻烦。</p>
 <hr>
-<h3 id="try…finally"><a href="#try…finally" class="headerlink" title="try…finally"></a>try…finally</h3><p>在程序中，如果一个段代码必须要执行，即无论异常是否产生都要执行，那么此时就需要使用ﬁnally。 比如文件关闭，释放锁，把数据库连接返还给连接池等</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    file = <span class="built_in">open</span>(<span class="string">&#x27;test.txt&#x27;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            content = file.readline()</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(content) == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            time.sleep(<span class="number">2</span>)</span><br><span class="line">            <span class="built_in">print</span>(content)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span>	<span class="comment"># 读取文件时发生异常，将被读取到</span></span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        file.close()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;关闭文件&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;没有这个文件&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-
+<p><strong>参考：</strong></p>
+<hr>
+<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2>
         </div>
 
         
@@ -337,7 +271,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://colson-max.github.io/2022/04/23/Python-%E5%BC%82%E5%B8%B8/">https://colson-max.github.io/2022/04/23/Python-%E5%BC%82%E5%B8%B8/</a></span>
+                        <span><a href="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/">https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/</a></span>
                     </p>
                 
                 
@@ -361,7 +295,9 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/python/"># -python</a>
+                        <a href="/tags/DVWA/"># -DVWA</a>
+                    
+                        <a href="/tags/SQL%E6%B3%A8%E5%85%A5/"># -SQL注入</a>
                     
                         
                 </span>
@@ -374,10 +310,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2022/04/24/Java-%E5%8F%8D%E5%B0%84/">Java-反射</a>
+                <a class="prev" rel="prev" href="/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/">DVWA搭建</a>
             
             
-            <a class="next" rel="next" href="/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/">docker部署MongoDB副本集</a>
+            <a class="next" rel="next" href="/2022/04/24/Java-%E5%8F%8D%E5%B0%84/">Java-反射</a>
             
         </section>
 

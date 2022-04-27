@@ -262,7 +262,7 @@
 <h3 id="throws"><a href="#throws" class="headerlink" title="throws"></a>throws</h3><p>将发生的异常抛出，交给调用方法处理，最顶级的处理者就是JVM</p>
 ]]></content>
       <tags>
-        <tag>-JavaSE</tag>
+        <tag>-Java</tag>
       </tags>
   </entry>
   <entry>
@@ -277,7 +277,7 @@
 </ol>
 ]]></content>
       <tags>
-        <tag>-JavaSE</tag>
+        <tag>-Java</tag>
       </tags>
   </entry>
   <entry>
@@ -315,7 +315,7 @@
 
 ]]></content>
       <tags>
-        <tag>-JavaSE</tag>
+        <tag>-Java</tag>
       </tags>
   </entry>
   <entry>
@@ -363,7 +363,7 @@
 <hr>
 ]]></content>
       <tags>
-        <tag>-JavaSE</tag>
+        <tag>-Java</tag>
       </tags>
   </entry>
   <entry>
@@ -387,7 +387,7 @@
 <p>Inherited //子类会继承父类注解</p>
 ]]></content>
       <tags>
-        <tag>-JavaSE</tag>
+        <tag>-Java</tag>
       </tags>
   </entry>
   <entry>
@@ -1014,6 +1014,70 @@
 ]]></content>
       <tags>
         <tag>-python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DVWA-SQL注入</title>
+    <url>/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="DVWA-SQL注入"><a href="#DVWA-SQL注入" class="headerlink" title="DVWA - SQL注入"></a>DVWA - SQL注入</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
+<li>建议手工注入，可以了解 sql注入 的过程和原理。</li>
+<li>不建议使用工具比如说 sqlmap 来进行数据库的爆破。</li>
+</ul>
+<hr>
+<p><strong>强烈建议：</strong>在 docker 上配置 LAMP 环境来搭建靶场，会方便许多，dvwa 是在本地开启的，在本地 windows（ mac 我不知道） 上配置环境会很麻烦。</p>
+<hr>
+<p><strong>参考：</strong></p>
+<hr>
+<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2>]]></content>
+      <tags>
+        <tag>-DVWA</tag>
+        <tag>-SQL注入</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DVWA搭建</title>
+    <url>/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="DVWA-搭建"><a href="#DVWA-搭建" class="headerlink" title="DVWA 搭建"></a>DVWA 搭建</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
+<li>DVWA 是一个基于 php / mysql 的web 靶机，提供安全学习和参考的平台。</li>
+<li>DVWA是运行在本地的，所以个人推荐在 服务器/Linux 上搭建，在 windows 平台上使用集成环境还好，分开配置非常麻烦 ( mac 上我不知道 )</li>
+<li>我个人是在 windows 平台配置的，为了写这个博客，在docker上再搞一次。</li>
+</ul>
+<hr>
+<p>参考：</p>
+<p><a href="https://zhuanlan.zhihu.com/p/126668420">https://zhuanlan.zhihu.com/p/126668420</a></p>
+<hr>
+<h2 id="Windows-平台"><a href="#Windows-平台" class="headerlink" title="Windows 平台"></a>Windows 平台</h2><ul>
+<li><strong>建议使用 phpstudy 搭建。</strong></li>
+<li>网上有很多教程，每个人遇到的问题不尽相同，在这就不做阐述了</li>
+</ul>
+<h2 id="Docker-下的-Linux-平台"><a href="#Docker-下的-Linux-平台" class="headerlink" title="Docker 下的 Linux 平台"></a>Docker 下的 Linux 平台</h2><h3 id="1-拉取镜像"><a href="#1-拉取镜像" class="headerlink" title="1. 拉取镜像"></a>1. 拉取镜像</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull vulnerables/web-dvwa</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-运行"><a href="#2-运行" class="headerlink" title="2. 运行"></a>2. 运行</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run --rm -it -p 80:80 vulnerables/web-dvwa</span><br></pre></td></tr></table></figure>
+
+<p>之后访问服务器 ip:80 就可以了</p>
+<h2 id="登录-DVWA"><a href="#登录-DVWA" class="headerlink" title="登录 DVWA"></a>登录 DVWA</h2><p><img src="https://colson-max.github.io/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/1.png" alt="1"></p>
+<p>之后登录界面</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 账号： admin</span><br><span class="line"># 密码： password</span><br></pre></td></tr></table></figure>
+
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><ul>
+<li>在   DVWA Security   可以调试靶场题目的难度</li>
+</ul>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/2.png" alt="2"></p>
+]]></content>
+      <tags>
+        <tag>-docker</tag>
+        <tag>-DVWA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java-反射</title>
+    <url>/2022/04/24/Java-%E5%8F%8D%E5%B0%84/</url>
+    <content><![CDATA[<h1 id="Java-反射"><a href="#Java-反射" class="headerlink" title="Java - 反射"></a>Java - 反射</h1><hr>
+<p>参考：</p>
+<hr>
+]]></content>
+      <tags>
+        <tag>-Java</tag>
       </tags>
   </entry>
 </search>
