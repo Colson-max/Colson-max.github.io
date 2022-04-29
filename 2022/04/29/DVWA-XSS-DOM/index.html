@@ -13,7 +13,7 @@
 
 
 
-<title>DVWA搭建 | Colson</title>
+<title>DVWA-XSS(DOM) | Colson</title>
 
 
 
@@ -230,7 +230,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">DVWA搭建</h1>
+            <h1 class="post-title">DVWA-XSS(DOM)</h1>
             
                 <div class="post-meta">
                     
@@ -239,7 +239,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">四月 27, 2022&nbsp;&nbsp;15:48:07</a>
+                        Date: <a href="#">四月 29, 2022&nbsp;&nbsp;15:08:38</a>
                         </span>
                     
                     
@@ -248,32 +248,26 @@
         </header>
 
         <div class="post-content">
-            <h1 id="DVWA-搭建"><a href="#DVWA-搭建" class="headerlink" title="DVWA 搭建"></a>DVWA 搭建</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
-<li>DVWA 是一个基于 php / mysql 的web 靶机，提供安全学习和参考的平台。</li>
-<li>DVWA是运行在本地的，所以个人推荐在 服务器/Linux 上搭建，在 windows 平台上使用集成环境还好，分开配置非常麻烦 ( mac 上我不知道 )</li>
-<li>我个人是在 windows 平台配置的，为了写这个博客，在docker上再搞一次。</li>
-</ul>
+            <h1 id="DVWA-XSS-DOM"><a href="#DVWA-XSS-DOM" class="headerlink" title="DVWA-XSS(DOM)"></a>DVWA-XSS(DOM)</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对象模型的一种漏洞。</p>
+<p>在网站页面中有许多页面的元素，当页面到达浏览器时浏览器会为页面创建一个顶级的Document object文档对象，接着生成各个子文档对象，每个页面元素对应一个文档对象，每个文档对象包含属性、方法和事件。可以通过<strong>JS脚本</strong>对文档对象进行编辑从而修改页面的元素。也就是说，客户端的脚本程序可以通过DOM来动态修改页面内容，从客户端获取DOM中的数据并在本地执行。基于这个特性，就可以利用JS脚本来实现XSS漏洞的利用。</p>
 <hr>
 <p>参考：</p>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/126668420">https://zhuanlan.zhihu.com/p/126668420</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.freebuf.com/articles/web/253358.html">https://www.freebuf.com/articles/web/253358.html</a></p>
 <hr>
-<h2 id="Windows-平台"><a href="#Windows-平台" class="headerlink" title="Windows 平台"></a>Windows 平台</h2><ul>
-<li><strong>建议使用 phpstudy 搭建。</strong></li>
-<li>网上有很多教程，每个人遇到的问题不尽相同，在这就不做阐述了</li>
+<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2><ul>
+<li>查看服务端源代码，发现什么都没有，那我们可以尝试直接注入</li>
 </ul>
-<h2 id="Docker-下的-Linux-平台"><a href="#Docker-下的-Linux-平台" class="headerlink" title="Docker 下的 Linux 平台"></a>Docker 下的 Linux 平台</h2><h3 id="1-拉取镜像"><a href="#1-拉取镜像" class="headerlink" title="1. 拉取镜像"></a>1. 拉取镜像</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull vulnerables/web-dvwa</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-运行"><a href="#2-运行" class="headerlink" title="2. 运行"></a>2. 运行</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --rm -it -p 80:80 vulnerables/web-dvwa</span><br></pre></td></tr></table></figure>
-
-<p>之后访问服务器 ip:80 就可以了</p>
-<h2 id="登录-DVWA"><a href="#登录-DVWA" class="headerlink" title="登录 DVWA"></a>登录 DVWA</h2><p><img src="https://colson-max.github.io/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/1.png" alt="1"></p>
-<p>之后登录界面</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 账号： admin</span><br><span class="line"># 密码： password</span><br></pre></td></tr></table></figure>
-
-<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><ul>
-<li>在   DVWA Security   可以调试靶场题目的难度</li>
+<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/1.png" alt="1"></p>
+<ul>
+<li><p>主页面随便选个 English ，点击 Select</p>
+<img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/2.png" alt="2" style="zoom:67%;"></li>
 </ul>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/2.png" alt="2"></p>
+<p>​    我们发现上方 url 处多了一串字符 “ <strong>?default=English</strong> “</p>
+<ul>
+<li><p>我们可以直接构造语句” <strong>default=<script>alert(/xss/)</script></strong> “</p>
+<img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/3.png" alt="3" style="zoom:67%;"></li>
+</ul>
+<hr>
 
         </div>
 
@@ -288,7 +282,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://colson-max.github.io/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/">https://colson-max.github.io/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/</a></span>
+                        <span><a href="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/">https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/</a></span>
                     </p>
                 
                 
@@ -312,9 +306,9 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/docker/"># -docker</a>
-                    
                         <a href="/tags/DVWA/"># -DVWA</a>
+                    
+                        <a href="/tags/XSS/"># -XSS</a>
                     
                         
                 </span>
@@ -327,10 +321,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2022/04/29/DVWA-XSS-DOM/">DVWA-XSS(DOM)</a>
+                <a class="prev" rel="prev" href="/2022/04/29/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a>
             
             
-            <a class="next" rel="next" href="/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/">DVWA-SQL注入</a>
+            <a class="next" rel="next" href="/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/">DVWA搭建</a>
             
         </section>
 
