@@ -13,7 +13,7 @@
 
 
 
-<title>SQL注入 | Colson</title>
+<title>DVWA-XSS-Reflected | Colson</title>
 
 
 
@@ -230,7 +230,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">SQL注入</h1>
+            <h1 class="post-title">DVWA-XSS-Reflected</h1>
             
                 <div class="post-meta">
                     
@@ -239,7 +239,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">四月 29, 2022&nbsp;&nbsp;19:50:53</a>
+                        Date: <a href="#">五月 6, 2022&nbsp;&nbsp;17:48:41</a>
                         </span>
                     
                     
@@ -248,68 +248,37 @@
         </header>
 
         <div class="post-content">
-            <h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
-<li><strong>sql注入</strong>可以说是 web 安全的重点，也可以说是学习安全的必经之路，非常基础，非常使用。</li>
-</ul>
-<p>基础的东西可以多学一学，而且 SQL 注入 的相关知识点可以覆盖的非常广，复习这部分内容可以让我重温一遍很多知识点，包括 一些 SQL 语句，web基础知识，数据库的一些结构等等。</p>
+            <h1 id="DVWA-XSS-Reflected"><a href="#DVWA-XSS-Reflected" class="headerlink" title="DVWA-XSS(Reflected)"></a>DVWA-XSS(Reflected)</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>反射型XXS是一种非持久性的攻击，它指的是恶意攻击者往Web页面里插入恶意代码，当用户浏览该页之时，嵌入其中Web里面的html代码会被执行，从而达到恶意攻击用户的目的。</p>
 <hr>
 <p>参考：</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://ctf-wiki.org/web/sqli/">https://ctf-wiki.org/web/sqli/</a></li>
-<li></li>
-<li><a target="_blank" rel="noopener" href="http://drops.xmd5.com/static/drops/tools-1548.html">http://drops.xmd5.com/static/drops/tools-1548.html</a></li>
-</ul>
+<p><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000019484055">https://segmentfault.com/a/1190000019484055</a></p>
 <hr>
-<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
-<li>SQL 注入是一种将 SQL 代码插入或添加到应用（用户）的输入参数中，之后再将这些参数传递给后台的 SQL 服务器加以解析并执行的攻击。</li>
-<li>攻击者能够修改 SQL 语句，该进程将与执行命令的组件（如数据库服务器、应用服务器或 WEB 服务器）拥有相同的权限。</li>
-<li>如果 WEB 应用开发人员无法确保在将从 WEB 表单、cookie、输入参数等收到的值传递给 SQL 查询（该查询在数据库服务器上执行）之前已经对其进行过验证，通常就会出现 SQL 注入漏洞。</li>
-</ul>
-<hr>
-<h2 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h2><ul>
-<li><p>Burp Suite</p>
-<p>非常好用的工具，可以说是web必备的工具了。基本的拦截、抓包、改包、分析、加密解密都可以实现。还有很多功能我还没有弄明白，总之它很强大就对了，真心推荐 。</p>
-</li>
-<li><p>HackBar</p>
-<p>小狐自带的拓展程序，很简洁很方便，也可以实现很多的功能，可以说是最实用的，我个人用的少。</p>
-</li>
-<li><p>sqlmap</p>
-<p>非常强大的自动化SQL注入工具，主要是扫描并且自动注入，目前支持市场上大部分数据库，功能甚至包括数据库指纹识别、数据库枚举、数据提取、访问等。非常强大，并且可以跨平台使用。</p>
-<p>[^但是我个人不建议用sqlmap，它的操作可以说难度并不大，主要是输入命令，对我们的实际学习帮助不大，而且就平时的靶机训练，根本不需要扫目录，我们学安全初衷是要维护数据，而非窃取数据，而sqlmap的命令比较复杂，上手难度还是有的，建议从基础知识开始学，手工注入。]: </p>
-</li>
-</ul>
-<hr>
-<h2 id="常见的注入参数"><a href="#常见的注入参数" class="headerlink" title="常见的注入参数"></a>常见的注入参数</h2><ul>
-<li>user()</li>
-<li>database()</li>
-<li>version()</li>
-<li>concat()</li>
-<li>group_concat()</li>
-<li>concat_ws()</li>
-<li>hex() / unhex()</li>
-<li>load_file()</li>
-</ul>
-<hr>
-<h2 id="万能密码"><a href="#万能密码" class="headerlink" title="万能密码"></a>万能密码</h2><ul>
-<li>admin’ – 或者 admin’ #</li>
-<li>‘ or 1=1 – 或者 ‘ or 1=1 #</li>
-<li>‘) or ‘1’=’1 – 或者 ‘) or (‘1’=’1 – </li>
-</ul>
-<hr>
-<h2 id="注入语句小技巧"><a href="#注入语句小技巧" class="headerlink" title="注入语句小技巧"></a>注入语句小技巧</h2><h3 id="行间注释"><a href="#行间注释" class="headerlink" title="行间注释"></a>行间注释</h3><hr>
-  <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> admin;<span class="comment">-- 注释符后面有个空格 </span></span><br></pre></td></tr></table></figure>
+<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2><p>点开源码分析</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">	<span class="comment">// Feedback for end user</span></span><br><span class="line">	<span class="variable">$html</span> .= <span class="string">&#x27;&lt;pre&gt;Hello &#x27;</span> . <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
+<p>我们会发现没有任何的过滤和检查。那我们可以直接攻击。</p>
 <ul>
-<li><h1 id><a href="#" class="headerlink" title></a></h1><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span> admin;#这个注释符后面不用空格</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="行内注释"><a href="#行内注释" class="headerlink" title="行内注释"></a>行内注释</h3><ul>
-<li><p>/* 注释内容 */</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">DROP</span><span class="comment">/*comment*/</span>sampletable`   DR<span class="comment">/**/</span>OP<span class="comment">/*绕过过滤*/</span>sampletable`   <span class="keyword">SELECT</span><span class="comment">/*替换空格*/</span>password<span class="comment">/**/</span><span class="keyword">FROM</span><span class="comment">/**/</span>Members</span><br></pre></td></tr></table></figure></li>
-<li><p>/* mysql专属 */</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="comment">/* 注释内容 */</span> <span class="number">1</span> <span class="keyword">FROM</span> tablename</span><br></pre></td></tr></table></figure></li>
+<li>构造    <script>alert(1)</script>    输入。</li>
+<li><img src="https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/1.png" alt="1"></li>
 </ul>
 <hr>
-<h2 id="注入语句"><a href="#注入语句" class="headerlink" title="注入语句"></a>注入语句</h2>
+<h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><p>同样我们点开源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = str_replace( <span class="string">&#x27;&lt;script&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到源码中，使用 <strong>str_replace</strong> 函数将输入的 <strong><script></strong> 删除。也就实现了 <script> 的过滤。</p>
+<ul>
+<li><p>双写绕过</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;scr<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">ipt&gt;alert(<span class="built_in">document</span>.cookie)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/./DVWA-XSS-Reflected/2.png" alt="2"></p>
+</li>
+<li><p>大小写绕过</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">sCript</span>&gt;</span><span class="javascript">alert(<span class="built_in">document</span>.cookie)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>输入其他标签</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">IMG</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">alert(document.cookie)</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>这三种方法都可以绕过过滤，达到我们的预期效果。</p>
+</script></strong></p>
         </div>
 
         
@@ -323,7 +292,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://colson-max.github.io/2022/04/29/SQL%E6%B3%A8%E5%85%A5/">https://colson-max.github.io/2022/04/29/SQL%E6%B3%A8%E5%85%A5/</a></span>
+                        <span><a href="https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/">https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/</a></span>
                     </p>
                 
                 
@@ -347,9 +316,9 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/SQL%E6%B3%A8%E5%85%A5/"># -SQL注入</a>
+                        <a href="/tags/DVWA/"># -DVWA</a>
                     
-                        <a href="/tags/Web/"># -Web</a>
+                        <a href="/tags/XSS/"># -XSS</a>
                     
                         
                 </span>
@@ -362,10 +331,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2022/05/06/DVWA-XSS-Reflected/">DVWA-XSS-Reflected</a>
             
-            
-            <a class="next" rel="next" href="/2022/04/29/DVWA-XSS-DOM/">DVWA-XSS(DOM)</a>
+            <a class="next" rel="next" href="/2022/04/29/SQL%E6%B3%A8%E5%85%A5/">SQL注入</a>
             
         </section>
 

