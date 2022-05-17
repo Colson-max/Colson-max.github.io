@@ -1098,7 +1098,45 @@
 </li>
 </ul>
 <hr>
-<h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><hr>
+<h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><ul>
+<li><p>第一步还是有源码就分析源码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">	<span class="comment">// Get input</span></span><br><span class="line">	<span class="variable">$id</span> = <span class="variable">$_POST</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">	<span class="variable">$id</span> = mysqli_real_escape_string(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$id</span>);</span><br><span class="line"></span><br><span class="line">	<span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = <span class="subst">$id</span>;&quot;</span>;</span><br><span class="line">    </span><br><span class="line">	<span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$query</span>) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Get results</span></span><br><span class="line">	<span class="keyword">while</span>( <span class="variable">$row</span> = mysqli_fetch_assoc( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">		<span class="comment">// Display values</span></span><br><span class="line">		<span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">		<span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Feedback for end user</span></span><br><span class="line">		<span class="variable">$html</span> .= <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This is used later on in the index.php page</span></span><br><span class="line"><span class="comment">// Setting it here so we can close the database connection in here like in the rest of the source scripts</span></span><br><span class="line"><span class="variable">$query</span>  = <span class="string">&quot;SELECT COUNT(*) FROM users;&quot;</span>;</span><br><span class="line"><span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"><span class="variable">$number_of_rows</span> = mysqli_fetch_row( <span class="variable">$result</span> )[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此级别改为了 POST 提交数据</li>
+<li>对 id 进行了 mysqli_real_escape_string 转义，但我们依然可以发现它的注入类型是数字型注入。</li>
+<li>使用下拉链表选择id值（没啥d用）。</li>
+</ul>
+</li>
+<li><p>抛弃源码，判断注入类型</p>
+<ul>
+<li><p>输入 <code>1</code> 测试一下</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/15.png" alt="15"></p>
+<p>可以看出来成功回显。</p>
+</li>
+<li><p>再输入<code>1&#39;</code>测试</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/16.png" alt="16"></p>
+<p>报错，我们看过了源码，所以知到这是 mysql 转义的结果，平时我们注入的时候是根本看不到源码的，这时候我们抛弃源码思考的话，会猜测它可能是字符型注入。但是字符型注入的话和 LOW 等级的就一样了。</p>
+</li>
+<li><p>我们输入<code>1abc&#39;</code>测试</p>
+<img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/17.png" alt="17" style="zoom:50%;">
+
+<p>所以我们就发现它不仅仅是转义id，符号也转义了。所以可以判断基本<strong>不算是字符型注入</strong>。</p>
+</li>
+<li><p>确认是否是数字型</p>
+<p>若为数字型，那我们可以进行 <code>1+1=2</code> 的运算的，如图：</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/18.png" alt="18" style="zoom:50%;"><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/19.png" alt="19" style="zoom:150%;"></p>
+<p>可以发现二者回显是一样的。</p>
+<ul>
+<li>那我们可以断定它就是数字型注入</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>构造payload注入，绕过<code>&#39;</code>的转义。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1 union select column_name,2 from information_schema.columns where table_name=&#x27;users&#x27;7573657273</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
 <h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><hr>
 <h2 id="sqlmap-注入"><a href="#sqlmap-注入" class="headerlink" title="sqlmap 注入"></a>sqlmap 注入</h2><hr>
 <h3 id="Low-amp-amp-Medium"><a href="#Low-amp-amp-Medium" class="headerlink" title="Low &amp;&amp; Medium"></a>Low &amp;&amp; Medium</h3><p>Low 和 Medium 是一样的，把 cookie 改一下就行，这里演示以 low 为例。</p>
@@ -1179,7 +1217,17 @@
     <url>/2022/04/24/Java-%E5%8F%8D%E5%B0%84/</url>
     <content><![CDATA[<h1 id="Java-反射"><a href="#Java-反射" class="headerlink" title="Java - 反射"></a>Java - 反射</h1><hr>
 <p>参考：</p>
+<p><a href="https://www.freebuf.com/articles/web/284980.html">https://www.freebuf.com/articles/web/284980.html</a></p>
+<p><a href="https://www.wangan.com/docs/83">https://www.wangan.com/docs/83</a></p>
 <hr>
+<h3 id="动态语言和静态语言"><a href="#动态语言和静态语言" class="headerlink" title="动态语言和静态语言"></a>动态语言和静态语言</h3><ul>
+<li><p>动态语言</p>
+<p>运行时可以改变其结构的语言。主要的动态语言有：C# , Js , php , python 等</p>
+</li>
+<li><p>静态语言</p>
+<p>运行时结构不可变，比如 java , C , C++</p>
+</li>
+</ul>
 ]]></content>
       <tags>
         <tag>-Java</tag>
@@ -1371,6 +1419,20 @@
       <tags>
         <tag>-DVWA</tag>
         <tag>-XSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring Security OAuth2远程命令执行漏洞(CVE-2016-4977)</title>
+    <url>/2022/05/13/Spring-Security-OAuth2%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2016-4977/</url>
+    <content><![CDATA[<h2 id="Spring-Security-OAuth2远程命令执行漏洞-CVE-2016-4977"><a href="#Spring-Security-OAuth2远程命令执行漏洞-CVE-2016-4977" class="headerlink" title="Spring Security OAuth2远程命令执行漏洞(CVE-2016-4977)"></a>Spring Security OAuth2远程命令执行漏洞(CVE-2016-4977)</h2><hr>
+<p>参考：<a href="https://www.freebuf.com/vuls/329753.html">https://www.freebuf.com/vuls/329753.html</a></p>
+<p><a href="https://github.com/vulhub/vulhub/tree/master/spring/CVE-2016-4977">https://github.com/vulhub/vulhub/tree/master/spring/CVE-2016-4977</a></p>
+<hr>
+<h3 id="复现过程"><a href="#复现过程" class="headerlink" title="复现过程"></a>复现过程</h3>]]></content>
+      <tags>
+        <tag>-Java安全</tag>
+        <tag>-常见的Spring漏洞</tag>
+        <tag>-漏洞复现</tag>
       </tags>
   </entry>
 </search>

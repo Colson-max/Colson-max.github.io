@@ -324,7 +324,45 @@
 </li>
 </ul>
 <hr>
-<h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><hr>
+<h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><ul>
+<li><p>第一步还是有源码就分析源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">	<span class="comment">// Get input</span></span><br><span class="line">	<span class="variable">$id</span> = <span class="variable">$_POST</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">	<span class="variable">$id</span> = mysqli_real_escape_string(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$id</span>);</span><br><span class="line"></span><br><span class="line">	<span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = <span class="subst">$id</span>;&quot;</span>;</span><br><span class="line">    </span><br><span class="line">	<span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$query</span>) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Get results</span></span><br><span class="line">	<span class="keyword">while</span>( <span class="variable">$row</span> = mysqli_fetch_assoc( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">		<span class="comment">// Display values</span></span><br><span class="line">		<span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">		<span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Feedback for end user</span></span><br><span class="line">		<span class="variable">$html</span> .= <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This is used later on in the index.php page</span></span><br><span class="line"><span class="comment">// Setting it here so we can close the database connection in here like in the rest of the source scripts</span></span><br><span class="line"><span class="variable">$query</span>  = <span class="string">&quot;SELECT COUNT(*) FROM users;&quot;</span>;</span><br><span class="line"><span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"><span class="variable">$number_of_rows</span> = mysqli_fetch_row( <span class="variable">$result</span> )[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此级别改为了 POST 提交数据</li>
+<li>对 id 进行了 mysqli_real_escape_string 转义，但我们依然可以发现它的注入类型是数字型注入。</li>
+<li>使用下拉链表选择id值（没啥d用）。</li>
+</ul>
+</li>
+<li><p>抛弃源码，判断注入类型</p>
+<ul>
+<li><p>输入 <code>1</code> 测试一下</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/15.png" alt="15"></p>
+<p>可以看出来成功回显。</p>
+</li>
+<li><p>再输入<code>1&#39;</code>测试</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/16.png" alt="16"></p>
+<p>报错，我们看过了源码，所以知到这是 mysql 转义的结果，平时我们注入的时候是根本看不到源码的，这时候我们抛弃源码思考的话，会猜测它可能是字符型注入。但是字符型注入的话和 LOW 等级的就一样了。</p>
+</li>
+<li><p>我们输入<code>1abc&#39;</code>测试</p>
+<img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/17.png" alt="17" style="zoom:50%;">
+
+<p>所以我们就发现它不仅仅是转义id，符号也转义了。所以可以判断基本<strong>不算是字符型注入</strong>。</p>
+</li>
+<li><p>确认是否是数字型</p>
+<p>若为数字型，那我们可以进行 <code>1+1=2</code> 的运算的，如图：</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/18.png" alt="18" style="zoom:50%;"><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/19.png" alt="19" style="zoom:150%;"></p>
+<p>可以发现二者回显是一样的。</p>
+<ul>
+<li>那我们可以断定它就是数字型注入</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>构造payload注入，绕过<code>&#39;</code>的转义。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1 union select column_name,2 from information_schema.columns where table_name=&#x27;users&#x27;7573657273</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
 <h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><hr>
 <h2 id="sqlmap-注入"><a href="#sqlmap-注入" class="headerlink" title="sqlmap 注入"></a>sqlmap 注入</h2><hr>
 <h3 id="Low-amp-amp-Medium"><a href="#Low-amp-amp-Medium" class="headerlink" title="Low &amp;&amp; Medium"></a>Low &amp;&amp; Medium</h3><p>Low 和 Medium 是一样的，把 cookie 改一下就行，这里演示以 low 为例。</p>
