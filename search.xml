@@ -631,8 +631,60 @@
     <url>/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<h1 id="MongoDB-基础"><a href="#MongoDB-基础" class="headerlink" title="MongoDB 基础"></a>MongoDB 基础</h1><hr>
 <p>参考：</p>
+<p><a href="https://www.runoob.com/mongodb/mongodb-intro.html">https://www.runoob.com/mongodb/mongodb-intro.html</a></p>
+<p><a href="https://www.runoob.com/docker/docker-install-mongodb.html">https://www.runoob.com/docker/docker-install-mongodb.html</a></p>
 <hr>
-]]></content>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><hr>
+<p>副本集和分片是mongoDB 的一个难点（其实也不难理解），上次写了个关于 Docker部署mongodb副本集的文章，想了一下，还是把mongodb整体过一遍，就当期末复习了。</p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><hr>
+<ul>
+<li>MongoDB 是由C++语言编写的，是一个基于分布式文件存储的开源数据库系统。</li>
+<li>在高负载的情况下，添加更多的节点，可以保证服务器性能。</li>
+<li>MongoDB 旨在为WEB应用提供可扩展的高性能数据存储解决方案。</li>
+<li>MongoDB 将数据存储为一个文档，数据结构由键值(key=&gt;value)对组成。MongoDB 文档类似于 JSON 对象。字段值可以包含其他文档，数组及文档数组。</li>
+</ul>
+<h2 id="MongoDB-的部署"><a href="#MongoDB-的部署" class="headerlink" title="MongoDB 的部署"></a>MongoDB 的部署</h2><hr>
+<p>​    MongoDB 可以在 Windows 系统上 和 Linux 系统上安装，我个人选择在 linux 系统下利用 Docker 启动容器。拉取镜像文件，创建容器后连接mongoDB。</p>
+<p><img src="https://colson-max.github.io/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/1.png" alt="1"></p>
+<h2 id="MongoDB-数据库的基础操作"><a href="#MongoDB-数据库的基础操作" class="headerlink" title="MongoDB 数据库的基础操作"></a>MongoDB 数据库的基础操作</h2><hr>
+<h3 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h3><h4 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">use database_name</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看所有数据库"><a href="#查看所有数据库" class="headerlink" title="查看所有数据库"></a>查看所有数据库</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> dbs</span><br></pre></td></tr></table></figure>
+
+<h4 id="删除数据库"><a href="#删除数据库" class="headerlink" title="删除数据库"></a>删除数据库</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">use database_name # 切换到要删除的数据库</span><br><span class="line">db.dropDatabase()</span><br></pre></td></tr></table></figure>
+
+<p><strong>注：要向新建的数据库中插入一些数据，数据库才可以被<code>show dbs</code>查出来</strong></p>
+<p>​    <img src="https://colson-max.github.io/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/2.png" alt="2"></p>
+<h3 id="集合操作"><a href="#集合操作" class="headerlink" title="集合操作"></a>集合操作</h3><h4 id="创建集合"><a href="#创建集合" class="headerlink" title="创建集合"></a>创建集合</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">db.createCollection(name,options)</span><br><span class="line"># name 是创建的集合名称</span><br><span class="line"># options 是可选参数</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/3.png" alt="3"></p>
+<h4 id="查看已有集合"><a href="#查看已有集合" class="headerlink" title="查看已有集合"></a>查看已有集合</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">show</span> tables 或者 <span class="keyword">show</span> collections</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/4.png" alt="4"></p>
+<p>注：<strong>在MongoDB中，不需要创建集合，在插入文档是，mongoDB会自动创建集合。</strong>这也是为什么上图在输入命令查       看已有集合时会显示 <code>dbname_colson</code></p>
+<h4 id="删除集合"><a href="#删除集合" class="headerlink" title="删除集合"></a>删除集合</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">db.collection.drop()</span><br><span class="line"># 删除成功返回 ture ，否则返回 <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/5.png" alt="5"></p>
+<h3 id="文档操作"><a href="#文档操作" class="headerlink" title="文档操作"></a>文档操作</h3><h4 id="文档插入"><a href="#文档插入" class="headerlink" title="文档插入"></a>文档插入</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 单文档插入</span><br><span class="line">db.collection_name.insert(document)</span><br><span class="line"># 或者</span><br><span class="line">db.collection_name.save(document)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"># 多文档插入</span><br><span class="line">db.collection_name.insertMany([document1,document2,...])</span><br></pre></td></tr></table></figure>
+
+<p>上述语法中：</p>
+<ul>
+<li><code>db</code> 表示当前数据库</li>
+<li><code>collection_name</code> 表示当前集合</li>
+<li><code>insert()</code>和<code>save()</code>都是用于文档插入的方法，也都包含参数 document 。两种方法的区别在于，若使用<code>insert()</code>方法插入文档，且集合中已存在该文档，会报错；使用<code>save()</code>方法，则会自动更新，反之则写入。</li>
+<li><code>insertMany()</code>适用于插入多个文档。</li>
+</ul>
+<p><img src="https://colson-max.github.io/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/6.png" alt="6"></p>
+<h4 id="文档更新"><a href="#文档更新" class="headerlink" title="文档更新"></a>文档更新</h4><p>先插入一串数据</p>
+<p><img src="https://colson-max.github.io/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/7.png" alt="7"></p>
+<p>使用<code>update()</code>方法进行更新</p>
+<p><img src="https://colson-max.github.io/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/8.png" alt="8"></p>
+<h4 id="文档删除"><a href="#文档删除" class="headerlink" title="文档删除"></a>文档删除</h4><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">db.collection_name.remove(&#123;&#125;)	# 删除全部</span><br><span class="line">db.collection_name.remove(&#123;<span class="string">&#x27;key&#x27;</span>:<span class="string">&#x27;value&#x27;</span>&#125;)	# 删除 key 为 <span class="keyword">value</span> 的文档</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://colson-max.github.io/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/9.png" alt="9"></p>
+<h4 id="文档查询"><a href="#文档查询" class="headerlink" title="文档查询"></a>文档查询</h4><h3 id="聚合操作"><a href="#聚合操作" class="headerlink" title="聚合操作"></a>聚合操作</h3><h3 id="使用索引优化查询"><a href="#使用索引优化查询" class="headerlink" title="使用索引优化查询"></a>使用索引优化查询</h3>]]></content>
       <tags>
         <tag>-MongoDB</tag>
       </tags>
