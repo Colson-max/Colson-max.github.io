@@ -1445,4 +1445,123 @@
         <tag>-Java</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Java Basics</title>
+    <url>/2022/07/04/Java-Basics/</url>
+    <content><![CDATA[<h1 id="Java-Basics-基础"><a href="#Java-Basics-基础" class="headerlink" title="Java Basics(基础)"></a>Java Basics(基础)</h1><hr>
+<p>参考：</p>
+<p><a href="https://pdai.tech/">https://pdai.tech/</a></p>
+<hr>
+<h2 id="Java-面向对象"><a href="#Java-面向对象" class="headerlink" title="Java 面向对象"></a>Java 面向对象</h2><hr>
+<h3 id="三大特性"><a href="#三大特性" class="headerlink" title="三大特性"></a>三大特性</h3><h4 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h4><p>利用<strong>抽象数据类型</strong>将<strong>数据</strong>和<strong>基于数据的操作</strong>封装在一起，使其构成一个不可分割的独立实体。数据在抽象数据类型的内部，只保留一些接口与外部发生联系。用户无需知道对象内部的细节，可以通过对象对外提供的接口来访问该对象。</p>
+<p>优点:</p>
+<ul>
+<li><strong>减少耦合</strong>: 可以独立地开发、测试、优化、使用、理解和修改</li>
+<li><strong>减轻维护的负担</strong>: 可以更容易被程序员理解，并且在调试的时候可以不影响其他模块</li>
+<li><strong>有效地调节性能</strong>: 可以通过剖析确定哪些模块影响了系统的性能</li>
+<li><strong>提高软件的可重用性</strong></li>
+<li><strong>降低了构建大型系统的风险</strong>: 即使整个系统不可用，但是这些独立的模块却有可能是可用的</li>
+</ul>
+<h4 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">Animal animal = <span class="keyword">new</span> Cat();</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Cat 可以继承自 Animal，从而获得 Animal 非 private 的属性和方法。</li>
+<li>继承应该遵循<strong>里氏替换原则</strong>，子类对象必须能够替换掉所有父类对象。</li>
+<li>Cat 可以当做 Animal 来使用，也就是说可以使用 Animal 引用 Cat 对象。父类引用指向子类对象称为  <strong>向上转型</strong> 。</li>
+</ul>
+<h4 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h4>]]></content>
+      <tags>
+        <tag>-Java</tag>
+        <tag>-Java全栈</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java基础</title>
+    <url>/2022/07/02/Java%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="Java-基础"><a href="#Java-基础" class="headerlink" title="Java 基础"></a>Java 基础</h1><hr>
+<p>参考：</p>
+<p><a href="https://javaguide.cn/">https://javaguide.cn</a></p>
+<p><a href="https://www.bilibili.com/video/BV1vv4y1M7in?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click">https://www.bilibili.com/video/BV1vv4y1M7in?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click</a></p>
+<hr>
+<h2 id="Java语言的特点"><a href="#Java语言的特点" class="headerlink" title="Java语言的特点"></a>Java语言的特点</h2><hr>
+<ul>
+<li><p><strong>简单易学</strong></p>
+</li>
+<li><p><strong>面向对象</strong></p>
+</li>
+<li><p><strong>平台无关性</strong>（Java虚拟机来实现）</p>
+</li>
+<li><p><strong>支持多线程</strong></p>
+</li>
+<li><p><strong>安全可靠</strong></p>
+</li>
+<li><p><strong>支持网络编程</strong></p>
+</li>
+<li><p><strong>编译和解释并存</strong></p>
+<p>高级编程语言按照程序的执行方式可以分为两种：</p>
+<ul>
+<li><p><strong>编译型</strong>（C 、C++、Go）</p>
+<p>通过编译器，将源代码一次性翻译成平台可执行的机器码。执行速度快，开发效率低。</p>
+</li>
+<li><p><strong>解释型</strong>（Python、JavaScript、PHP）</p>
+<p>通过解释器，将代码一句一句的解释为机器码。开发效率高，执行速度慢。</p>
+</li>
+</ul>
+<p>[^为了提高编译语言的效率，已经发展出了“<strong>即时编译</strong>”技术，这种技术缩小了这两种语言的差距，混合了编译语言和解释型语言的优点。实时编译，生成字节码，到执行时将字节码直译、执行。比如说JAVA]: </p>
+</li>
+</ul>
+<p>[^<strong>跨平台</strong>曾经是JAVA语言最大的优势，目前市面上的虚拟化技术已经非常成熟，我们可以通过各种虚拟化技术来实现java的跨平台，比如说非常简单的docker。<strong>现在JAVA最大的优势应该是JAVA的生态！</strong>]: </p>
+<h2 id="JDK、JRE-和-JVM-的区别和联系"><a href="#JDK、JRE-和-JVM-的区别和联系" class="headerlink" title="JDK、JRE 和 JVM 的区别和联系"></a>JDK、JRE 和 JVM 的区别和联系</h2><hr>
+<ul>
+<li><p>JDK：( Java Development Kit ) 是 java 的开发工具。它拥有 JRE 所拥有的一切，还有编译器（javac）和工具（如 javadoc 和 jdb）。它能够创建和编译程序。</p>
+</li>
+<li><p>JRE：( Java Runtime Environment ) java运行时环境。它是运行已编译 Java 程序所需的所有内容的集合，包括 Java 虚拟机（JVM），Java 类库，java 命令和其他的一些基础构件。但是，它不能用于创建新程序。</p>
+</li>
+<li><p>JVM：( Java Virtual Machine) java虚拟机</p>
+<p>Java虚拟机是运行 Java字节码 的虚拟机。JVM 有针对不同系统的特定实现。可以使用相同的字节码来不同的系统出现相同的结果。</p>
+<p>[^JVM 不只有一种]: </p>
+</li>
+</ul>
+<h2 id="什么是字节码"><a href="#什么是字节码" class="headerlink" title="什么是字节码"></a>什么是字节码</h2><hr>
+<p>在JAVA中，JVM 可理解的代码叫做字节码（其实就是 .class 文件）</p>
+<h2 id="面向对象的理解"><a href="#面向对象的理解" class="headerlink" title="面向对象的理解"></a>面向对象的理解</h2><hr>
+<p>相比与面向过程，面向对象处理问题的角度不一样。面向过程更注重事情每一个步骤及顺序，面向对象更注重事情有哪些参与者、每个参与者需要做什么。<strong>面向过程</strong>更加的直接高效，而<strong>面向对象</strong>更易于复用、扩展和维护。</p>
+<p>三大特性：</p>
+<ul>
+<li><p>封装</p>
+<p>明确标识出允许外部使用的所有成员函数和数据项<br>内部细节对外部调用透明，外部调用无需修改或关系内部实现</p>
+<ol>
+<li><p>JavaBean的属性私有，提供 get set 方法对外访问，因为属性的赋值或者获取逻辑只能由javabean本身觉得，不能由外部胡乱修改。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">&quot;My_name_is_&quot;</span> + name;  <span class="comment">//该name有自己的命名规则，不能由外部直接赋值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>orm框架</p>
+<p>操作数据库，我们不需要关系链接时如何建立的，sql 是如何执行的，只需要引入 mybatis，调用方法即可。</p>
+</li>
+</ol>
+</li>
+<li><p>继承</p>
+<p>继承基类的方法，并作出自己的改变/扩展<br>子类共性的方法或属性直接使用父类的，而不需要自己再定义，只需扩展自己个性化的</p>
+</li>
+<li><p>多态</p>
+<p>基于对象所属类的不同，外部对同一个方法的调用，实际执行的逻辑不同。</p>
+<p>多态的三个条件：<u>继承</u>、<u>方法重写</u>、<u>父类引用指向子类对象</u>。</p>
+</li>
+</ul>
+<h2 id="和-equals-比较"><a href="#和-equals-比较" class="headerlink" title="== 和 equals 比较"></a>== 和 equals 比较</h2><hr>
+<ul>
+<li><p>== 对比的是<strong>栈</strong>中的值，基本数据类型是变量值，引用类型是堆中内存对象的地址。</p>
+</li>
+<li><p>equals ： Object中默认也是用 == 比较，通常会重写。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//Object</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span>(<span class="keyword">this</span> == obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>比如说：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object anObject)</span></span>&#123;                     <span class="comment">//重写 equals </span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span> == anObject)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(anObject <span class="keyword">instanceof</span> String)&#123;</span><br><span class="line">        String anotherString = (String)anObject;</span><br><span class="line">        <span class="keyword">int</span> n = value.length;</span><br><span class="line">        <span class="keyword">if</span>(n == anotherString.value.length)&#123;</span><br><span class="line">            <span class="keyword">char</span> v1[] = value;</span><br><span class="line">            <span class="keyword">char</span> v2[] = anotherString.value;</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span>(n-- != <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>( v1[i] != v2[i] )</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码可看出，String类中被复写的 equals() 方法其实是比较两个字符串的内容。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringDemo</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">        <span class="comment">/* 堆里面有一块特殊的内存空间叫常量值，直接定义字符串会在常量值里面新建 */</span></span><br><span class="line">        String str1 = <span class="string">&quot;Hello&quot;</span>; </span><br><span class="line">        <span class="comment">/* 在堆里面新建 */</span></span><br><span class="line">        String str2 = <span class="keyword">new</span> String(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">        <span class="comment">/* 引用传递，直接赋值 */</span></span><br><span class="line">        String str3 = str2;		</span><br><span class="line">       	System.out.println(str1 == str2);<span class="comment">//返回false</span></span><br><span class="line">        System.out.println(str1 == str3);<span class="comment">//返回false</span></span><br><span class="line">        System.out.println(str2 == str3);<span class="comment">//返回true</span></span><br><span class="line">        System.out.println(str1.equals(str2));<span class="comment">//返回true</span></span><br><span class="line">        System.out.println(str1.equals(str3));<span class="comment">//返回true</span></span><br><span class="line">        System.out.println(str2.equals(str3));<span class="comment">//返回true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>-Java</tag>
+      </tags>
+  </entry>
 </search>

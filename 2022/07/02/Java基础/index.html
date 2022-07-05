@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Colson·Max">
+
+
+
+
+
+<title>Java基础 | Colson</title>
+
+
+
+    <link rel="icon" href="/image/tommy-shelby.jpg">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Colson&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Colson&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Java基础</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Colson·Max</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 2, 2022&nbsp;&nbsp;21:41:31</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Java-基础"><a href="#Java-基础" class="headerlink" title="Java 基础"></a>Java 基础</h1><hr>
+<p>参考：</p>
+<p><a target="_blank" rel="noopener" href="https://javaguide.cn/">https://javaguide.cn</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1vv4y1M7in?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click">https://www.bilibili.com/video/BV1vv4y1M7in?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click</a></p>
+<hr>
+<h2 id="Java语言的特点"><a href="#Java语言的特点" class="headerlink" title="Java语言的特点"></a>Java语言的特点</h2><hr>
+<ul>
+<li><p><strong>简单易学</strong></p>
+</li>
+<li><p><strong>面向对象</strong></p>
+</li>
+<li><p><strong>平台无关性</strong>（Java虚拟机来实现）</p>
+</li>
+<li><p><strong>支持多线程</strong></p>
+</li>
+<li><p><strong>安全可靠</strong></p>
+</li>
+<li><p><strong>支持网络编程</strong></p>
+</li>
+<li><p><strong>编译和解释并存</strong></p>
+<p>高级编程语言按照程序的执行方式可以分为两种：</p>
+<ul>
+<li><p><strong>编译型</strong>（C 、C++、Go）</p>
+<p>通过编译器，将源代码一次性翻译成平台可执行的机器码。执行速度快，开发效率低。</p>
+</li>
+<li><p><strong>解释型</strong>（Python、JavaScript、PHP）</p>
+<p>通过解释器，将代码一句一句的解释为机器码。开发效率高，执行速度慢。</p>
+</li>
+</ul>
+<p>[^为了提高编译语言的效率，已经发展出了“<strong>即时编译</strong>”技术，这种技术缩小了这两种语言的差距，混合了编译语言和解释型语言的优点。实时编译，生成字节码，到执行时将字节码直译、执行。比如说JAVA]: </p>
+</li>
+</ul>
+<p>[^<strong>跨平台</strong>曾经是JAVA语言最大的优势，目前市面上的虚拟化技术已经非常成熟，我们可以通过各种虚拟化技术来实现java的跨平台，比如说非常简单的docker。<strong>现在JAVA最大的优势应该是JAVA的生态！</strong>]: </p>
+<h2 id="JDK、JRE-和-JVM-的区别和联系"><a href="#JDK、JRE-和-JVM-的区别和联系" class="headerlink" title="JDK、JRE 和 JVM 的区别和联系"></a>JDK、JRE 和 JVM 的区别和联系</h2><hr>
+<ul>
+<li><p>JDK：( Java Development Kit ) 是 java 的开发工具。它拥有 JRE 所拥有的一切，还有编译器（javac）和工具（如 javadoc 和 jdb）。它能够创建和编译程序。</p>
+</li>
+<li><p>JRE：( Java Runtime Environment ) java运行时环境。它是运行已编译 Java 程序所需的所有内容的集合，包括 Java 虚拟机（JVM），Java 类库，java 命令和其他的一些基础构件。但是，它不能用于创建新程序。</p>
+</li>
+<li><p>JVM：( Java Virtual Machine) java虚拟机</p>
+<p>Java虚拟机是运行 Java字节码 的虚拟机。JVM 有针对不同系统的特定实现。可以使用相同的字节码来不同的系统出现相同的结果。</p>
+<p>[^JVM 不只有一种]: </p>
+</li>
+</ul>
+<h2 id="什么是字节码"><a href="#什么是字节码" class="headerlink" title="什么是字节码"></a>什么是字节码</h2><hr>
+<p>在JAVA中，JVM 可理解的代码叫做字节码（其实就是 .class 文件）</p>
+<h2 id="面向对象的理解"><a href="#面向对象的理解" class="headerlink" title="面向对象的理解"></a>面向对象的理解</h2><hr>
+<p>相比与面向过程，面向对象处理问题的角度不一样。面向过程更注重事情每一个步骤及顺序，面向对象更注重事情有哪些参与者、每个参与者需要做什么。<strong>面向过程</strong>更加的直接高效，而<strong>面向对象</strong>更易于复用、扩展和维护。</p>
+<p>三大特性：</p>
+<ul>
+<li><p>封装</p>
+<p>明确标识出允许外部使用的所有成员函数和数据项<br>内部细节对外部调用透明，外部调用无需修改或关系内部实现</p>
+<ol>
+<li><p>JavaBean的属性私有，提供 get set 方法对外访问，因为属性的赋值或者获取逻辑只能由javabean本身觉得，不能由外部胡乱修改。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">&quot;My_name_is_&quot;</span> + name;  <span class="comment">//该name有自己的命名规则，不能由外部直接赋值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>orm框架</p>
+<p>操作数据库，我们不需要关系链接时如何建立的，sql 是如何执行的，只需要引入 mybatis，调用方法即可。</p>
+</li>
+</ol>
+</li>
+<li><p>继承</p>
+<p>继承基类的方法，并作出自己的改变/扩展<br>子类共性的方法或属性直接使用父类的，而不需要自己再定义，只需扩展自己个性化的</p>
+</li>
+<li><p>多态</p>
+<p>基于对象所属类的不同，外部对同一个方法的调用，实际执行的逻辑不同。</p>
+<p>多态的三个条件：<u>继承</u>、<u>方法重写</u>、<u>父类引用指向子类对象</u>。</p>
+</li>
+</ul>
+<h2 id="和-equals-比较"><a href="#和-equals-比较" class="headerlink" title="== 和 equals 比较"></a>== 和 equals 比较</h2><hr>
+<ul>
+<li><p>== 对比的是<strong>栈</strong>中的值，基本数据类型是变量值，引用类型是堆中内存对象的地址。</p>
+</li>
+<li><p>equals ： Object中默认也是用 == 比较，通常会重写。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Object</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span>(<span class="keyword">this</span> == obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>比如说：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object anObject)</span></span>&#123;                     <span class="comment">//重写 equals </span></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span> == anObject)&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(anObject <span class="keyword">instanceof</span> String)&#123;</span><br><span class="line">        String anotherString = (String)anObject;</span><br><span class="line">        <span class="keyword">int</span> n = value.length;</span><br><span class="line">        <span class="keyword">if</span>(n == anotherString.value.length)&#123;</span><br><span class="line">            <span class="keyword">char</span> v1[] = value;</span><br><span class="line">            <span class="keyword">char</span> v2[] = anotherString.value;</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span>(n-- != <span class="number">0</span>)&#123;</span><br><span class="line">                <span class="keyword">if</span>( v1[i] != v2[i] )</span><br><span class="line">                    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">                i++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上述代码可看出，String类中被复写的 equals() 方法其实是比较两个字符串的内容。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StringDemo</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">        <span class="comment">/* 堆里面有一块特殊的内存空间叫常量值，直接定义字符串会在常量值里面新建 */</span></span><br><span class="line">        String str1 = <span class="string">&quot;Hello&quot;</span>; </span><br><span class="line">        <span class="comment">/* 在堆里面新建 */</span></span><br><span class="line">        String str2 = <span class="keyword">new</span> String(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">        <span class="comment">/* 引用传递，直接赋值 */</span></span><br><span class="line">        String str3 = str2;		</span><br><span class="line">       	System.out.println(str1 == str2);<span class="comment">//返回false</span></span><br><span class="line">        System.out.println(str1 == str3);<span class="comment">//返回false</span></span><br><span class="line">        System.out.println(str2 == str3);<span class="comment">//返回true</span></span><br><span class="line">        System.out.println(str1.equals(str2));<span class="comment">//返回true</span></span><br><span class="line">        System.out.println(str1.equals(str3));<span class="comment">//返回true</span></span><br><span class="line">        System.out.println(str2.equals(str3));<span class="comment">//返回true</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Colson·Max</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://colson-max.github.io/2022/07/02/Java%E5%9F%BA%E7%A1%80/">https://colson-max.github.io/2022/07/02/Java%E5%9F%BA%E7%A1%80/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe world?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/Java/"># -Java</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2022/07/04/Java-Basics/">Java Basics</a>
+            
+            
+            <a class="next" rel="next" href="/2022/05/27/MongoDB%E5%9F%BA%E7%A1%80/">MongoDB基础</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Colson·Max | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
