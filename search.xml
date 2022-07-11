@@ -1476,13 +1476,14 @@
       </tags>
   </entry>
   <entry>
-    <title>Java基础</title>
-    <url>/2022/07/02/Java%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h1 id="Java-基础"><a href="#Java-基础" class="headerlink" title="Java 基础"></a>Java 基础</h1><hr>
+    <title>Java基础知识储备&amp;面试题总结</title>
+    <url>/2022/07/02/Java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86%E5%82%A8%E5%A4%87&amp;%E9%9D%A2%E8%AF%95%E9%A2%98%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="Java-基础知识储备-amp-面试题总结"><a href="#Java-基础知识储备-amp-面试题总结" class="headerlink" title="Java 基础知识储备&amp;面试题总结"></a>Java 基础知识储备&amp;面试题总结</h1><hr>
 <p>参考：</p>
 <p><a href="https://javaguide.cn/">https://javaguide.cn</a></p>
 <p><a href="https://www.bilibili.com/video/BV1vv4y1M7in?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click">https://www.bilibili.com/video/BV1vv4y1M7in?spm_id_from=333.1007.top_right_bar_window_custom_collection.content.click</a></p>
 <hr>
+<h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><hr>
 <h2 id="Java语言的特点"><a href="#Java语言的特点" class="headerlink" title="Java语言的特点"></a>Java语言的特点</h2><hr>
 <ul>
 <li><p><strong>简单易学</strong></p>
@@ -1524,12 +1525,56 @@
 </ul>
 <h2 id="什么是字节码"><a href="#什么是字节码" class="headerlink" title="什么是字节码"></a>什么是字节码</h2><hr>
 <p>在JAVA中，JVM 可理解的代码叫做字节码（其实就是 .class 文件）</p>
-<h2 id="面向对象的理解"><a href="#面向对象的理解" class="headerlink" title="面向对象的理解"></a>面向对象的理解</h2><hr>
-<p>相比与面向过程，面向对象处理问题的角度不一样。面向过程更注重事情每一个步骤及顺序，面向对象更注重事情有哪些参与者、每个参与者需要做什么。<strong>面向过程</strong>更加的直接高效，而<strong>面向对象</strong>更易于复用、扩展和维护。</p>
-<p>三大特性：</p>
+<h2 id="Java-和-C-的区别"><a href="#Java-和-C-的区别" class="headerlink" title="Java 和 C++ 的区别"></a>Java 和 C++ 的区别</h2><hr>
 <ul>
-<li><p>封装</p>
-<p>明确标识出允许外部使用的所有成员函数和数据项<br>内部细节对外部调用透明，外部调用无需修改或关系内部实现</p>
+<li>Java不提供指针来直接访问内存，程序内存更加安全</li>
+<li>Java 的类是单继承的（但是Java的接口可以多继承），C++支持多继承；</li>
+<li>Java 有自动内存管理垃圾回收机制，不需要程序员手动释放无用内存。</li>
+<li>C++ 同时支持方法重载和操作符重载，Java 只支持方法重载。（因为操作符重载增加了复杂性，这与Java最初的设计思想不符）</li>
+<li>。。。。。。</li>
+</ul>
+<h1 id="基础语法"><a href="#基础语法" class="headerlink" title="基础语法"></a>基础语法</h1><hr>
+<h2 id="字符型常量和字符串常量的区别"><a href="#字符型常量和字符串常量的区别" class="headerlink" title="字符型常量和字符串常量的区别"></a>字符型常量和字符串常量的区别</h2><hr>
+<ol>
+<li><strong>形式</strong>不同。字符型常量是单引号引起的单个字符，字符串常量是双引号引起的多个字符。</li>
+<li><strong>含义</strong>不同。字符型常量就是一个ASCII值，字符串常量代表一个地址。</li>
+<li><strong>大小</strong>不同。字符型常量占两个字节，字符串常量占若干个字节。</li>
+</ol>
+<h2 id="注释有哪几种形式"><a href="#注释有哪几种形式" class="headerlink" title="注释有哪几种形式"></a>注释有哪几种形式</h2><hr>
+<ol>
+<li>单行</li>
+<li>多行</li>
+<li>文档注释</li>
+</ol>
+<h2 id="标识符和关键字的区别"><a href="#标识符和关键字的区别" class="headerlink" title="标识符和关键字的区别"></a>标识符和关键字的区别</h2><hr>
+<ul>
+<li><strong>标识符</strong>我们可以理解为一个名字。</li>
+<li><strong>关键字</strong>是被赋予特殊含义的标识符。</li>
+</ul>
+<h2 id="自增-自减-运算符"><a href="#自增-自减-运算符" class="headerlink" title="自增/自减-运算符"></a>自增/自减-运算符</h2><hr>
+<p>自增运算符 ++ / 自减运算符 – ：</p>
+<p>符号在前就先加/减，符号在后就后加/减</p>
+<h2 id="continue、break-和-return-的区别"><a href="#continue、break-和-return-的区别" class="headerlink" title="continue、break 和 return 的区别"></a>continue、break 和 return 的区别</h2><hr>
+<ol>
+<li><p>continue：跳出当前循环，继续下一次循环。</p>
+</li>
+<li><p>break：跳出整个循环体，执行循环体下面的语句。</p>
+</li>
+<li><p>return：跳出当前方法，结束当前方法的运行：</p>
+<ul>
+<li><p>return;</p>
+<p>直接使用 return 结束方法执行，用于没有返回值函数的方法。</p>
+</li>
+<li><p>return value;</p>
+<p>return一个特定值，用于有返回值函数的方法。</p>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id="面向对象的理解"><a href="#面向对象的理解" class="headerlink" title="面向对象的理解"></a>面向对象的理解</h1><hr>
+<p>相比与面向过程，面向对象处理问题的角度不一样。面向过程更注重事情每一个步骤及顺序，面向对象更注重事情有哪些参与者、每个参与者需要做什么。<strong>面向过程</strong>更加的直接高效，而<strong>面向对象</strong>更易于复用、扩展和维护。</p>
+<h3 id="三大特性："><a href="#三大特性：" class="headerlink" title="三大特性："></a>三大特性：</h3><ul>
+<li><h4 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h4><p>明确标识出允许外部使用的所有成员函数和数据项<br>内部细节对外部调用透明，外部调用无需修改或关系内部实现</p>
 <ol>
 <li><p>JavaBean的属性私有，提供 get set 方法对外访问，因为属性的赋值或者获取逻辑只能由javabean本身觉得，不能由外部胡乱修改。</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span></span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">&quot;My_name_is_&quot;</span> + name;  <span class="comment">//该name有自己的命名规则，不能由外部直接赋值</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
@@ -1538,11 +1583,9 @@
 </li>
 </ol>
 </li>
-<li><p>继承</p>
-<p>继承基类的方法，并作出自己的改变/扩展<br>子类共性的方法或属性直接使用父类的，而不需要自己再定义，只需扩展自己个性化的</p>
+<li><h4 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h4><p>继承基类的方法，并作出自己的改变/扩展<br>子类共性的方法或属性直接使用父类的，而不需要自己再定义，只需扩展自己个性化的</p>
 </li>
-<li><p>多态</p>
-<p>基于对象所属类的不同，外部对同一个方法的调用，实际执行的逻辑不同。</p>
+<li><h4 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h4><p>基于对象所属类的不同，外部对同一个方法的调用，实际执行的逻辑不同。</p>
 <p>多态的三个条件：<u>继承</u>、<u>方法重写</u>、<u>父类引用指向子类对象</u>。</p>
 </li>
 </ul>
